@@ -73,6 +73,7 @@ def account():
 #         return render_template("login.html",status="Not Logged In :(")
 
 @app.route('/table')
+@login_required
 def table():
     return render_template("maintable.html")
 

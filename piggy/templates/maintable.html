@@ -2,10 +2,15 @@
 {%block title%}TABLE{%endblock%}
 
 {%block content%}
+
 <h1>TABLE :)</h1>
-<button class="btn btn-outline-success" data-toggle="modal" data-target="#add_wind">Add Income/Exapnse</button>
-<!-- ADD LOG POP UP-->
-<div class="modal fade" id="add_wind"> <!-- ARIA?-->
+<button class="btn btn-info" data-toggle="modal" data-target="#add_popup">
+   <svg class="big-icon-white"><use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic" /></svg>
+</button>
+
+
+<!-- In/Out ADD-POPUP-->
+<div class="modal fade" id="add_popup"> <!-- ARIA?-->
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <form action="#" method="post">
@@ -17,14 +22,12 @@
                 </div>
 
                 <div class="modal-body">
-
                     <div class="form-group btn-group btn-group-toggle col-11" data-toggle="buttons">
-
                         <label class="btn btn-outline-success">
                             <input type="radio" name="log_type" autocomplete="off"> Income
                         </label>
                         <label class="btn btn-outline-danger">
-                            <input type="radio" name="log_type" autocomplete="off"> Outcome
+                            <input type="radio" name="log_type" autocomplete="off"> Expanse
                         </label>
                     </div>
 
@@ -32,7 +35,7 @@
                         <label for="amount" class="col-sm-2 col-form-label">Amount:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="amount" aria-describedby="amout_help"/>
-                            <small id="amout_help" class="form-text text-muted">Amount of income in NIS</small>
+                            <small id="amout_help" class="form-text text-muted">Amount of Income/Expanse in NIS</small>
                         </div>
                     </div>
 
@@ -50,8 +53,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-info">Add</button>
-            </form>
-        </div>
+            </div></form>
     </div>
 </div>
 
