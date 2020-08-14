@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="site" uuid="e9d6a164-93bf-460e-9db9-038da93c3846">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\MatanBT\Google Drive\Coding Projects\Python For Fun\UNTITLED WEB-BIGDATA-PROJECT\site.db</jdbc-url>
+    </data-source>
+  </component>
+</project>

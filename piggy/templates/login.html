@@ -1,0 +1,50 @@
+{%extends "layout.html"%}
+{%block title%}Login{%endblock%}
+
+{%block content%}
+<div class="col-md-6 text-left">
+<h1 class="mb-3 pb-2 border-bottom text-center">Login</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+     <div class="form-group">
+        {{form.username.label(class='form-control-label')}}
+        {% if form.username.errors %}
+                {{form.username(class='form-control is-invalid', id="username")}}
+                <div class="invalid-feedback">
+                    {%for error in form.username.errors%}
+                    <span> {{ error }} </span>
+                    {%endfor%}
+                </div>
+        {% else %}
+            {{form.username(class='form-control', id="username")}}
+        {% endif %}
+    </div>
+
+      <div class="form-group">
+        {{form.password.label(class='form-control-label')}}
+        {% if form.password.errors %}
+                {{form.password(class='form-control is-invalid', id="password")}}
+                <div class="invalid-feedback">
+                    {%for error in form.password.errors%}
+                    <span> {{ error }} </span>
+                    {%endfor%}
+                </div>
+        {% else %}
+            {{form.password(class='form-control', id="password")}}
+        {% endif %}
+    </div>
+
+    <div class="form-group form-check">
+        {{form.remember(class='form-check-input')}}
+        {{form.remember.label(class='form-check-label')}}
+    </div>
+
+    <div class="form-group text-center">
+        {{form.submit(class='btn btn-outline-info')}}
+        <small class="text-muted ml-2"><a href="#">Forgot Password?</a></small>
+    </div>
+
+</form></div>
+
+{%endblock%}
