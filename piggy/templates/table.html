@@ -1,0 +1,152 @@
+{%extends "layout.html"%}
+{%block title%}Table{%endblock%}
+
+{%block content%}
+<h1>Incomes / Expanses</h1>
+
+    <div class="row justify-content-center">
+
+        <!-- SIDE BAR-->
+        <div class="col-lg-2 text-center p-3">
+            <div class="card" style="width: 100%;">
+                <div class="card-header"><h5>Summary</h5></div>
+                <div class="card-body border-bottom">
+                    <h5 class="card-title">Balance:</h5>
+                    <h4 class="card-text">{{ logs_pack['balance'] }}</h4>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-info" data-toggle="modal" data-target="#add_popup">
+                        <svg class="big-icon-white">
+                            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="card-footer">
+                    <small>Shows all Incomes and Expanses sorted by date</small>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MAIN TABLE-->
+        <div class="col-lg-8 text-left mt-3 mb-5">
+            <table class="table text-center table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Month</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Options</th>
+                </tr>
+                </thead>
+
+                {% for log in logs_pack['sorted_logs'] %}
+                    <tr>
+                        {% if logs_pack['months_count'][log.date_logged.date().strftime("%B %y'")][1] == log %}
+                            <td rowspan="{{ logs_pack['months_count'][log.date_logged.date().strftime("%B %y'")][0] * 2 }}">
+                                {{ log.date_logged.date().strftime("%B %y'") }}</td>
+                        {% endif %}
+
+                        <td>{{ log.date_logged.strftime("%d/%m/%y") }}</td>
+                        <td style="background-color:{{ '#ff6666' if log.is_outcome else '#99ff99' }};">{{ log.amount }}</td>
+                        <!-- todo setteled coloring-->
+                        <td>{{ log.category.title() }}</td>
+                        <td>
+
+                            <button class='btn btn-warning mr-2 mb-2' type="button" data-target="#expand-row_{{ log.id }}"
+                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">
+                                <svg class="icon">
+                                    <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#edit_ic"/>
+                                </svg>
+                            </button>
+                            <button class='btn btn-info mr-2 mb-2' type="button" data-target="#expand-row_{{ log.id }}"
+                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">
+                                <svg class="icon-white">
+                                    <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#more_ic"/>
+                                </svg>
+                            </button>
+                        </td>
+                    <tr>
+                        <td colspan="5" class="collapse" id='expand-row_{{ log.id }}'>
+                            <div class="row">
+                                <div class="col-md"><h6 style="font-weight: normal">
+                                    {{ ("Description: <b>"+log.title+"</b>" if log.title.strip() else "") | safe }}</h6></div>
+                                <div class="col-md"><h6 style="font-weight: normal"> Time: <b>{{ log.date_logged.date().strftime("%d/%m/%Y %H:%m") }}</b></h6></div>
+                            </div>
+
+
+                        </td>
+                    </tr>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- In/Out ADD-POPUP-->
+    <div class="modal fade" id="add_popup"> <!-- ARIA?-->
+        {% if add_form_pack['is_adding'] %}
+            <script type="text/javascript">
+                $(window).on('load', function () {
+                    $('#add_popup').modal('show');
+                });
+            </script>
+        {% endif %}
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form action="#" method="post" novalidate>     {{ add_form.hidden_tag() }}
+                <div class="modal-header">
+                    <h5 class="modal-title">Income/Expanses Addition</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group btn-group btn-group-toggle col-11" data-toggle="buttons">
+                        <label class="btn btn-outline-success">
+                            {{ add_form_pack['radio_lst'][0]}}Income
+                        </label>
+                        <label class="btn btn-outline-danger">
+                            {{ add_form_pack['radio_lst'][1] }}Expanse
+                        </label>
+                    </div>
+
+                    <div align='left' class="form-group row">
+                        {{ add_form.amount.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ add_form.amount(class="form-control" + (" is-invalid" if add_form.amount.errors else "") ,id="amount") }}
+                        <small id="amount_help" class="form-text text-muted">{{ add_form.amount.description }}</small>
+                        </div>
+                    </div>
+
+                    <div align='left' class="form-group row">
+                        {{ add_form.category.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10"><!-- todo JAVA-SCRIPT dynamic select, first you choose IN/OUT-->
+                            {{ add_form.category(class="form-control" + (" is-invalid" if add_form.category.errors else "")) }}
+                            <small id="category_help" class="form-text text-muted">Categories Lists can be edited in <a href="{{ url_for('account') }}">Account</a></small>
+                        </div>
+                    </div>
+
+                     <div align='left' class="form-group row">
+                         {{ add_form.title.label(class='col-sm-2 col-form-label') }}
+                        <div class="col-sm-10">
+                             {{ add_form.title(class='form-control'+ (" is-invalid" if add_form.title.errors else ""), placeholder=add_form.title.description) }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Add</button>
+            </div></form>
+    </div>
+</div>
+
+</div>
+{%endblock%}

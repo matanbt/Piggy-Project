@@ -6,8 +6,9 @@ from flask_login import login_user,logout_user, current_user,login_required
 
 from . import app, db, bcrypt, login_manager
 from .scripts import news_scraping  # TO DELETE
-from .forms import RegisterForm,LoginForm
+from .scripts import misc
 from .models import User,Log
+from .forms import RegisterForm,LoginForm, AddLogForm
 
 
 @app.route('/home')
@@ -15,9 +16,9 @@ from .models import User,Log
 def home():
     return render_template("home.html")
 
+
 @app.route('/login', methods=['GET','POST'])
 def login():
-
     if current_user.is_authenticated:
         flash(f'<b>{current_user.username}</b>, you are already logged in', "info")
         return redirect(url_for('home'))
@@ -25,7 +26,7 @@ def login():
     form=LoginForm()
     if form.validate_on_submit():
         #if session and check form.username.data as validator
-        user=User.query.filter_by(username=form.username.data).first()
+        user=User.query.filter_by(username=form.username.data.lower()).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
             login_user(user,remember=form.remember.data)
             flash(f'<b>{form.username.data}</b> Logged in Succesfully!',"success")
@@ -50,8 +51,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'<b>{form.username.data}</b> Registered Succesfully! Please Login to start Piggying',"success")
-        return redirect(url_for('login')) # ... bonus auto login and guide (helper)
-    return render_template('register.html',title="Register", form=form)
+        return redirect(url_for('login')) # ... todo auto login and guide (helper)
+    return render_template('register.html', form=form)
 
 @app.route('/logout')
 def logout():
@@ -72,10 +73,32 @@ def account():
 #     else: # GET
 #         return render_template("login.html",status="Not Logged In :(")
 
-@app.route('/table')
+
+@app.route('/table',methods=['GET', 'POST'])
 @login_required
 def table():
-    return render_template("maintable.html")
+    logs_pack={'sorted_logs':current_user.logs,'months_count':misc.count_by_months(current_user.logs), #todo sorted logs by date
+               'balance':sum([log.amount for log in current_user.logs])}
+
+    #ADD-LOG form:
+    add_form = AddLogForm()
+    add_form_pack = {'radio_lst': list(add_form.log_type), 'is_adding': False}
+
+    if add_form.validate_on_submit():
+        is_outcome = add_form.log_type.data == 'out'
+        new_log=Log(is_outcome=is_outcome,title=add_form.title.data,user_id=current_user.id,
+                    category=add_form.category.data,amount=((-1 if is_outcome else 1) * float(add_form.amount.data)))
+        db.session.add(new_log)
+        db.session.commit()
+        flash(f'<b>{"Expanse" if is_outcome else "Income" }</b> Added Succesfully!', "success")
+        return redirect(url_for('table'))
+
+    elif add_form.is_submitted(): # there are errors in add_form
+        print(add_form.errors)
+        flash(f"Failed add Income/Expanse, Try Again", "danger")
+        add_form_pack['is_adding']=True
+
+    return render_template("table.html", add_form=add_form, add_form_pack=add_form_pack,logs_pack=logs_pack)
 
 
 LAST_UPDATED_NEWS=None
@@ -92,6 +115,4 @@ def news():
     return render_template("news.html", countries_lst=countries_ids,
                            countries_names=countries_names,df_tuple=df_tuple,
                            last_updated=LAST_UPDATED_NEWS)
-
-
 
