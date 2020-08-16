@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, FloatField, RadioField, SelectField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms.fields.html5 import DateTimeLocalField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, InputRequired
 from .models import User
 
 
@@ -42,15 +45,18 @@ class AddLogForm(FlaskForm):
     log_type = RadioField('',validators=[DataRequired()], choices=[('in', 'Income'),('out','Expanse')]) # defined in HTML
     amount = FloatField("Amount", description='Amount of Income/Expanse in NIS, Positive value',
                         validators=[DataRequired('Field must be a valid number.')])
-    # todo lists originated in SQL table, _ illigal key
+
+    time_logged=DateTimeLocalField('Time',format='%Y-%m-%dT%H:%M',validators=[InputRequired()],description='Default time is now')
+
+    # todo categories lists in account
     in_cats=[('in_salary','Salary'),('in_allowance','Allowance'),('in_bonus','Bonus')]
     out_cats=[('out_food','Food'),('out_entertainment','Entertainment'),('out_transportation','Transportation'),
               ('out_education','Education'),('out_health','Health'),('out_beauty','Beauty'),('out_household','Household')]
 
     category = SelectField("Category",default='other',choices=[('other','Other')]+in_cats+ out_cats,
                            validators=[DataRequired()])
-    title = StringField("Title", description='Optional short description',
-                        default='', validators=[Length(max=20)])
+    title = StringField("Title", description='*Optional short description',
+                        default="", validators=[Length(max=20)])
 
     def validate(self):
         result = True

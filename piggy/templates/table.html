@@ -14,12 +14,21 @@
                     <h5 class="card-title">Balance:</h5>
                     <h4 class="card-text">{{ logs_pack['balance'] }}</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body border-bottom">
                     <button class="btn btn-info" data-toggle="modal" data-target="#add_popup">
                         <svg class="big-icon-white">
                             <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic"/>
                         </svg>
                     </button>
+                </div>
+                <div class="card-body border-bottom">
+                    Collapse/ Expand all
+                </div>
+                <div class="card-body border-bottom">
+                    <svg class="icon" style="fill:#1D6F42">
+                        <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
+                    </svg>
+                    <small>Export to CSV</small>
                 </div>
                 <div class="card-footer">
                     <small>Shows all Incomes and Expanses sorted by date</small>
@@ -43,12 +52,12 @@
 
                 {% for log in logs_pack['sorted_logs'] %}
                     <tr>
-                        {% if logs_pack['months_count'][log.date_logged.date().strftime("%B %y'")][1] == log %}
-                            <td rowspan="{{ logs_pack['months_count'][log.date_logged.date().strftime("%B %y'")][0] * 2 }}">
-                                {{ log.date_logged.date().strftime("%B %y'") }}</td>
+                        {% if logs_pack['months_count'][log.time_logged.date().strftime("%B %y'")][1] == log %}
+                            <td rowspan="{{ logs_pack['months_count'][log.time_logged.date().strftime("%B %y'")][0] * 2 }}">
+                                {{ log.time_logged.date().strftime("%B %y'") }}</td>
                         {% endif %}
 
-                        <td>{{ log.date_logged.strftime("%d/%m/%y") }}</td>
+                        <td>{{ log.time_logged.strftime("%d/%m/%y") }}</td>
                         <td style="background-color:{{ '#ff6666' if log.is_outcome else '#99ff99' }};">{{ log.amount }}</td>
                         <!-- todo setteled coloring-->
                         <td>{{ log.category.title() }}</td>
@@ -72,7 +81,7 @@
                             <div class="row">
                                 <div class="col-md"><h6 style="font-weight: normal">
                                     {{ ("Description: <b>"+log.title+"</b>" if log.title.strip() else "") | safe }}</h6></div>
-                                <div class="col-md"><h6 style="font-weight: normal"> Time: <b>{{ log.date_logged.date().strftime("%d/%m/%Y %H:%m") }}</b></h6></div>
+                                <div class="col-md"><h6 style="font-weight: normal"> Time: <b>{{ log.time_logged.strftime("%d/%m/%Y %H:%M") }}</b></h6></div>
                             </div>
 
 
@@ -137,6 +146,14 @@
                          {{ add_form.title.label(class='col-sm-2 col-form-label') }}
                         <div class="col-sm-10">
                              {{ add_form.title(class='form-control'+ (" is-invalid" if add_form.title.errors else ""), placeholder=add_form.title.description) }}
+                        </div>
+                    </div>
+
+                    <div align='left' class="form-group row">
+                         {{ add_form.time_logged.label(class='col-sm-2 col-form-label') }}
+                        <div class="col-sm-10">
+                             {{ add_form.time_logged(value=add_form_pack['datetime_val'], class='form-control'+ (" is-invalid" if add_form.time_logged.errors else ""))}}
+                            <small class="form-text text-muted">{{ add_form.time_logged.description }}</small>
                         </div>
                     </div>
 

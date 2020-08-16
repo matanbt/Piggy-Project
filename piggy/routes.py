@@ -46,9 +46,12 @@ def register():
     form=RegisterForm()
     if form.validate_on_submit():
         hashed_pass=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user=User(username=form.username.data.lower(), email=form.email.data.lower(),
-                  password=hashed_pass,init_balance=form.balance.data)
+        user=User(username=form.username.data.lower(), email=form.email.data.lower(), password=hashed_pass)
         db.session.add(user)
+        db.session.commit()
+        new_log = Log(is_outcome=(form.balance.data < 0), title='Initial Balance', user_id=user.id,
+                      time_logged=datetime.datetime.now(), category='other', amount=form.balance.data)
+        db.session.add(new_log)
         db.session.commit()
         flash(f'<b>{form.username.data}</b> Registered Succesfully! Please Login to start Piggying',"success")
         return redirect(url_for('login')) # ... todo auto login and guide (helper)
@@ -77,16 +80,20 @@ def account():
 @app.route('/table',methods=['GET', 'POST'])
 @login_required
 def table():
+
     logs_pack={'sorted_logs':current_user.logs,'months_count':misc.count_by_months(current_user.logs), #todo sorted logs by date
                'balance':sum([log.amount for log in current_user.logs])}
 
     #ADD-LOG form:
     add_form = AddLogForm()
-    add_form_pack = {'radio_lst': list(add_form.log_type), 'is_adding': False}
-
+    add_form_pack = {'radio_lst': list(add_form.log_type),
+                     'datetime_val':add_form.time_logged.data if add_form.time_logged.data else datetime.datetime.now().strftime("%Y-%m-%dT%H:%M"),
+                     'is_adding': False}
+    print(add_form.time_logged.data)
     if add_form.validate_on_submit():
         is_outcome = add_form.log_type.data == 'out'
         new_log=Log(is_outcome=is_outcome,title=add_form.title.data,user_id=current_user.id,
+                    time_logged=datetime.datetime.strptime(str(add_form.time_logged.data),"%Y-%m-%d %H:%M:%S"),
                     category=add_form.category.data,amount=((-1 if is_outcome else 1) * float(add_form.amount.data)))
         db.session.add(new_log)
         db.session.commit()

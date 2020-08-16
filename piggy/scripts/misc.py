@@ -10,7 +10,7 @@ def count_by_months(user_logs: List[Log]) -> Dict:
     """ gets Logs-list and counts amount of logs for each month (in a year), assumes list sorted by date"""
     out_dict={}
     for log in user_logs:
-        curr_month=log.date_logged.date().strftime("%B %y'")
+        curr_month=log.time_logged.date().strftime("%B %y'")
         if curr_month not in out_dict:
             out_dict[curr_month]=[1,log]
         else:

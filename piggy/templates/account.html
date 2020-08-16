@@ -6,7 +6,15 @@
 <h2>{{current_user.username.title()}}'s DASHBOARD HERE</h2>
     <h6>{{ current_user.email }}</h6>
     <br><h3 ALIGN="LEFT">
-    <a href="https://getbootstrap.com/docs/4.5/components/input-group/#button-addons"> input-group-prepend,</a> <br><ul> <li> on change: turn button-active</li><li> put input-warning</li><li> update button to each field</li><li>password change link</li></li></ul>
+    <a href="https://getbootstrap.com/docs/4.5/components/input-group/#button-addons"> input-group-prepend,</a>
+    <br><ul> <li> on change: turn button-active</li>
+    <li> put input-warning</li>
+    <li> update button to each field</li>
+    <li>password change link</li>
+    <li>edit categories - adding freely (underscore is forbidden | with limit, maybe make SELECT scrolllable), delete allowed only if the user has no logs with this category</li>
+
+    <li>delete account</li>
+</ul>
     </h3>
 
 {%endblock%}
