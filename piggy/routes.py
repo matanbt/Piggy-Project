@@ -80,7 +80,7 @@ def account():
 @app.route('/table',methods=['GET', 'POST'])
 @login_required
 def table():
-
+    current_user.logs.sort(reverse=True,key=lambda log:log.time_logged)
     logs_pack={'sorted_logs':current_user.logs,'months_count':misc.count_by_months(current_user.logs), #todo sorted logs by date
                'balance':sum([log.amount for log in current_user.logs])}
 
@@ -89,8 +89,8 @@ def table():
     add_form_pack = {'radio_lst': list(add_form.log_type),
                      'datetime_val':add_form.time_logged.data if add_form.time_logged.data else datetime.datetime.now().strftime("%Y-%m-%dT%H:%M"),
                      'is_adding': False}
-    print(add_form.time_logged.data)
-    if add_form.validate_on_submit():
+
+    if add_form.validate_on_submit(): # todo - set form-type ADD/EDIT, is_adding will be the id
         is_outcome = add_form.log_type.data == 'out'
         new_log=Log(is_outcome=is_outcome,title=add_form.title.data,user_id=current_user.id,
                     time_logged=datetime.datetime.strptime(str(add_form.time_logged.data),"%Y-%m-%d %H:%M:%S"),

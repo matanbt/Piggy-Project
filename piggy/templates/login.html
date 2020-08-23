@@ -42,7 +42,13 @@
 
     <div class="form-group text-center">
         {{form.submit(class='btn btn-outline-info')}}
-        <small class="text-muted ml-2"><a href="#">Forgot Password?</a></small>
+    </div>
+
+    <div class="form-group text-center border-top pt-2">
+        Forgot your Password? <a href="#">Reset password</a>
+    </div>
+    <div class="form-group text-center border-top pt-2">
+        New in town? <a href="{{ url_for('register') }}">Sign up here</a>
     </div>
 
 </form></div>

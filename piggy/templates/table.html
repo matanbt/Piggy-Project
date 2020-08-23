@@ -38,8 +38,8 @@
         </div>
 
         <!-- MAIN TABLE-->
-        <div class="col-lg-8 text-left mt-3 mb-5">
-            <table class="table text-center table-hover">
+        <div class="col-lg-8 mt-3 mb-5">
+            <table class="table table-responsive-sm text-center table-hover">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Month</th>
@@ -60,16 +60,16 @@
                         <td>{{ log.time_logged.strftime("%d/%m/%y") }}</td>
                         <td style="background-color:{{ '#ff6666' if log.is_outcome else '#99ff99' }};">{{ log.amount }}</td>
                         <!-- todo setteled coloring-->
-                        <td>{{ log.category.title() }}</td>
+                        <td>{{ log.category.split('_')[-1].title() }}</td>
                         <td>
 
-                            <button class='btn btn-warning mr-2 mb-2' type="button" data-target="#expand-row_{{ log.id }}"
+                            <button class='btn btn-warning mr-2 mb-2' type="button" data-target="#expand-row_{{ "{}_{}".format(log.user_id,log.id)}}"
                                     data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">
                                 <svg class="icon">
                                     <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#edit_ic"/>
                                 </svg>
                             </button>
-                            <button class='btn btn-info mr-2 mb-2' type="button" data-target="#expand-row_{{ log.id }}"
+                            <button class='btn btn-info mr-2 mb-2' type="button" data-target="#expand-row_{{ "{}_{}".format(log.user_id,log.id) }}"
                                     data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">
                                 <svg class="icon-white">
                                     <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#more_ic"/>
@@ -77,7 +77,7 @@
                             </button>
                         </td>
                     <tr>
-                        <td colspan="5" class="collapse" id='expand-row_{{ log.id }}'>
+                        <td colspan="5" class="collapse" id='expand-row_{{ "{}_{}".format(log.user_id,log.id)}}'>
                             <div class="row">
                                 <div class="col-md"><h6 style="font-weight: normal">
                                     {{ ("Description: <b>"+log.title+"</b>" if log.title.strip() else "") | safe }}</h6></div>
@@ -105,7 +105,7 @@
                 });
             </script>
         {% endif %}
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
         <div class="modal-content">
             <form action="#" method="post" novalidate>     {{ add_form.hidden_tag() }}
                 <div class="modal-header">
