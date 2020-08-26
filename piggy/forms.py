@@ -1,15 +1,18 @@
 from datetime import datetime
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, FloatField, RadioField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, FloatField, \
+                    RadioField, SelectField,HiddenField
 from wtforms.fields.html5 import DateTimeLocalField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, InputRequired
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 from .models import User
 
 
 class RegisterForm(FlaskForm):
 
     # my validators:
+    def noWhiteSpaces(self,str):
+        return str.strip()==str and len(str.strip())!=0
 
     def unique_username(self, username):
         if User.query.filter_by(username=username.data.lower()).first():
@@ -19,7 +22,7 @@ class RegisterForm(FlaskForm):
         if User.query.filter_by(email=email.data.lower()).first():
             raise ValidationError('Email is taken, try different one (Maybe you should log in?)')
 
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20), unique_username])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20), noWhiteSpaces,unique_username])
     email = StringField('Email', validators=[DataRequired(), Email(), unique_email])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=3)])  # add func?
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
@@ -36,27 +39,29 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+def noWhiteSpaces(self,field):
+    return field.data.strip()==str and len(field.strip())!=0
 
 class AddLogForm(FlaskForm):
-    def check_log_type(self, log_type):
-        if log_type.data not in ('in', 'out'):
-            raise ValidationError('Type was not chosen')
 
-    log_type = RadioField('',validators=[DataRequired()], choices=[('in', 'Income'),('out','Expanse')]) # defined in HTML
+    log_id = HiddenField('', default='') #new log - '', existing log - 'number of id'
+    log_type = RadioField('',validators=[DataRequired()], choices=[('in', 'Income'),('exp','Expanse')]) # defined in HTML
     amount = FloatField("Amount", description='Amount of Income/Expanse in NIS, Positive value',
-                        validators=[DataRequired('Field must be a valid number.')])
+                        validators=[DataRequired('Field must be a valid number.'),NumberRange(min=0)])
 
-    time_logged=DateTimeLocalField('Time',format='%Y-%m-%dT%H:%M',validators=[InputRequired()],description='Default time is now')
+    time_logged=DateTimeLocalField('Time',format='%Y-%m-%dT%H:%M',validators=[DataRequired()],description='Default time is now')
 
     # todo categories lists in account
     in_cats=[('in_salary','Salary'),('in_allowance','Allowance'),('in_bonus','Bonus')]
-    out_cats=[('out_food','Food'),('out_entertainment','Entertainment'),('out_transportation','Transportation'),
-              ('out_education','Education'),('out_health','Health'),('out_beauty','Beauty'),('out_household','Household')]
+    exp_cats=[('exp_food','Food'),('exp_entertainment','Entertainment'),('exp_transportation','Transportation'),
+              ('exp_education','Education'),('exp_health','Health'),('exp_beauty','Beauty'),('exp_household','Household')]
 
-    category = SelectField("Category",default='other',choices=[('other','Other')]+in_cats+ out_cats,
+    category = SelectField("Category",default='other',choices=[('other','Other')]+in_cats+ exp_cats,
                            validators=[DataRequired()])
     title = StringField("Title", description='*Optional short description',
-                        default="", validators=[Length(max=20)])
+                        default="", validators=[Length(max=20), noWhiteSpaces])
+    submit_dialog=SubmitField('Add')
+    delete_dialog=SubmitField('Delete (!)')
 
     def validate(self):
         result = True

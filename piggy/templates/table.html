@@ -2,6 +2,7 @@
 {%block title%}Table{%endblock%}
 
 {%block content%}
+    <script src='{{ url_for('static',filename='table.js') }}'></script>
 <h1>Incomes / Expanses</h1>
 
     <div class="row justify-content-center">
@@ -15,7 +16,7 @@
                     <h4 class="card-text">{{ logs_pack['balance'] }}</h4>
                 </div>
                 <div class="card-body border-bottom">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#add_popup">
+                    <button class="btn btn-info" onclick="dialog.open_add()">
                         <svg class="big-icon-white">
                             <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic"/>
                         </svg>
@@ -58,19 +59,26 @@
                         {% endif %}
 
                         <td>{{ log.time_logged.strftime("%d/%m/%y") }}</td>
-                        <td style="background-color:{{ '#ff6666' if log.is_outcome else '#99ff99' }};">{{ log.amount }}</td>
+                        <td style="background-color:{{ '#ff6666' if log.is_exp else '#99ff99' }};">{{ log.amount }}</td>
                         <!-- todo setteled coloring-->
                         <td>{{ log.category.split('_')[-1].title() }}</td>
                         <td>
 
-                            <button class='btn btn-warning mr-2 mb-2' type="button" data-target="#expand-row_{{ "{}_{}".format(log.user_id,log.id)}}"
-                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">
+                            <button class='btn btn-warning mr-2 mb-2' type="button" id='edit-btn'
+                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample"
+                            onclick="dialog.open_edit(new Log(
+                                    {{ log.id }},
+                                    '{{ log.is_exp }}',
+                                    '{{ log.amount }}',
+                                    '{{ log.category }}',
+                                    '{{ log.title }}',
+                                    '{{ log.time_logged.strftime('%Y-%m-%dT%H:%M') }}' ))" >
                                 <svg class="icon">
-                                    <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#edit_ic"/>
+                                    <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#edit_ic">
                                 </svg>
                             </button>
-                            <button class='btn btn-info mr-2 mb-2' type="button" data-target="#expand-row_{{ "{}_{}".format(log.user_id,log.id) }}"
-                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">
+                            <button class='btn btn-info mr-2 mb-2' type="button" id='expand-btn' data-target="#expand-row_{{ "{}_{}".format(log.user_id,log.id) }}"
+                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample"/>
                                 <svg class="icon-white">
                                     <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#more_ic"/>
                                 </svg>
@@ -92,22 +100,28 @@
 
             </table>
         </div>
-
     </div>
 
 
     <!-- In/Out ADD-POPUP-->
     <div class="modal fade" id="add_popup"> <!-- ARIA?-->
-        {% if add_form_pack['is_adding'] %}
-            <script type="text/javascript">
+
+        <script>
+
+            {% if add_form_pack['open_dialog_on_load'] %}
                 $(window).on('load', function () {
                     $('#add_popup').modal('show');
                 });
-            </script>
-        {% endif %}
+            {% endif %}
+        </script>
+        <style>
+            select option[disabled] {
+            display: none;
+            }
+        </style>
     <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
         <div class="modal-content">
-            <form action="#" method="post" novalidate>     {{ add_form.hidden_tag() }}
+            <form action="" method="POST" id="dialog_form" onsubmit="return fields.validate_submit(event)" novalidate> {{ add_form.hidden_tag() }}
                 <div class="modal-header">
                     <h5 class="modal-title">Income/Expanses Addition</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -116,7 +130,6 @@
                 </div>
 
                 <div class="modal-body">
-
                     <div class="form-group btn-group btn-group-toggle col-11" data-toggle="buttons">
                         <label class="btn btn-outline-success">
                             {{ add_form_pack['radio_lst'][0]}}Income
@@ -136,7 +149,7 @@
 
                     <div align='left' class="form-group row">
                         {{ add_form.category.label(class="col-sm-2 col-form-label") }}
-                        <div class="col-sm-10"><!-- todo JAVA-SCRIPT dynamic select, first you choose IN/OUT-->
+                        <div class="col-sm-10">
                             {{ add_form.category(class="form-control" + (" is-invalid" if add_form.category.errors else "")) }}
                             <small id="category_help" class="form-text text-muted">Categories Lists can be edited in <a href="{{ url_for('account') }}">Account</a></small>
                         </div>
@@ -145,23 +158,25 @@
                      <div align='left' class="form-group row">
                          {{ add_form.title.label(class='col-sm-2 col-form-label') }}
                         <div class="col-sm-10">
-                             {{ add_form.title(class='form-control'+ (" is-invalid" if add_form.title.errors else ""), placeholder=add_form.title.description) }}
+                             {{ add_form.title(class='form-control'+ (" is-invalid" if add_form.title.errors else ""), maxlength='20',placeholder=add_form.title.description) }}
                         </div>
                     </div>
 
                     <div align='left' class="form-group row">
                          {{ add_form.time_logged.label(class='col-sm-2 col-form-label') }}
                         <div class="col-sm-10">
-                             {{ add_form.time_logged(value=add_form_pack['datetime_val'], class='form-control'+ (" is-invalid" if add_form.time_logged.errors else ""))}}
+                             {{ add_form.time_logged(class='form-control'+ (" is-invalid" if add_form.time_logged.errors else ""))}}
                             <small class="form-text text-muted">{{ add_form.time_logged.description }}</small>
                         </div>
                     </div>
-
+                <div class="fa-align-right">lolololo</div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-info">Add</button>
-            </div></form>
+                    {{ add_form.submit_dialog(class='btn btn-info') }}
+                    {{ add_form.delete_dialog(class='btn btn-danger') }}
+        </div></form>
     </div>
 </div>
 
