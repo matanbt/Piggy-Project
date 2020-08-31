@@ -5,6 +5,97 @@
 
 <h2>{{current_user.username.title()}}'s DASHBOARD HERE</h2>
     <h6>{{ current_user.email }}</h6>
+    <div>
+
+    <div class="input-group border-2" style="max-width: 35em">
+      <input type="text" class="form-control" placeholder="Email">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="btn-change-email">Modify</button>
+      </div>
+    </div>
+
+    <div class="row">
+    <div class="col-6">
+        <div class="card todo-list-card">
+  <div class="card-header">
+   <h2> My Goals List</h2>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <input type="text" placeholder="Goal Here" class="add-todo-input" />
+      <button type="button" id="button-addon2" class="btn btn-primary add-todo-btn">
+        ADD
+      </button>
+    </li>
+    <li class="list-group-item">
+        <svg class="del-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
+        </svg>
+        task....
+        <svg class="move-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
+        </svg>
+    </li>
+    <li class="list-group-item">
+        <svg class="del-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
+        </svg>
+        task....
+        <svg class="move-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
+        </svg>
+    </li>
+
+  </ul>
+  <div class="card-footer">
+    footer
+  </div>
+</div>
+    </div>
+    <div class="col-6">
+        <div class="card todo-list-card">
+  <div class="card-header">
+   <h2> My Goals List</h2>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <input type="text" placeholder="Goal Here" class="add-todo-input" />
+      <button type="button" id="button-addon2" class="btn btn-primary add-todo-btn">
+        ADD
+      </button>
+    </li>
+    <li class="list-group-item">
+        <svg class="del-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
+        </svg>
+        task....
+        <svg class="move-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
+        </svg>
+    </li>
+    <li class="list-group-item">
+        <svg class="del-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
+        </svg>
+        task....
+        <svg class="move-box">
+            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
+        </svg>
+    </li>
+
+  </ul>
+  <div class="card-footer">
+    footer
+  </div>
+</div>
+    </div>
+
+    </div>
+
+    </div>
+
+
+    <hr>
     <br><h3 ALIGN="LEFT">
     <a href="https://getbootstrap.com/docs/4.5/components/input-group/#button-addons"> input-group-prepend,</a>
     <br><ul> <li> on change: turn button-active</li>

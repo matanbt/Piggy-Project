@@ -25,9 +25,16 @@ class Log(db.Model):
     is_exp = db.Column(db.Boolean, nullable=False)
     title = db.Column(db.String(100), nullable=False, default="")
     amount = db.Column(db.Float, nullable=False)
-    time_logged = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    time_logged = db.Column(db.DateTime, nullable=False)
+
+    #chosen from Users List TODO
     category = db.Column(db.String(100), nullable=False, default="Other")
 
+    # real post-time (in unix), will be used to verify when modifying Log by ID
+    # ASSUMES user won't post and delete in the *same* milli-second
+    utc_ms_verification=db.Column(db.Integer, nullable=False)
+
+    # logger ID
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def modify_log(self, title, amount, time_logged, category):
@@ -36,5 +43,26 @@ class Log(db.Model):
         self.time_logged = time_logged
         self.category = category
 
+    def serialize_dev(self):
+        return {
+            'id' : self.id,
+            'is_exp' : self.is_exp,
+            'title' : self.title,
+            'amount' : self.amount,
+            'category' : self.category,
+            'time_logged': self.time_logged.strftime('%Y-%m-%dT%H:%M'),
+            'user_id': self.user_id
+        }
+
+    def serialize_api_user(self):
+        return {
+            'id' : self.id,
+            'is_exp' : self.is_exp,
+            'title' : self.title,
+            'amount' : self.amount,
+            'category' : self.category,
+            'time_logged': self.time_logged.strftime('%Y-%m-%dT%H:%M'),
+            'user_id': self.user_id
+        }
     def __repr__(self):
         return f"Log('{self.title}','{self.amount}','{self.category}', '{self.time_logged}')"

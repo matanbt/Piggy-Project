@@ -7,13 +7,14 @@ from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 from .models import User
 
+# ---static validators---:
+def noWhiteSpaces(self,field):
+    return field.data.strip()==str and len(field.strip())!=0
+
 
 class RegisterForm(FlaskForm):
 
     # my validators:
-    def noWhiteSpaces(self,str):
-        return str.strip()==str and len(str.strip())!=0
-
     def unique_username(self, username):
         if User.query.filter_by(username=username.data.lower()).first():
             raise ValidationError('Username is taken, try different one')
@@ -39,12 +40,13 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-def noWhiteSpaces(self,field):
-    return field.data.strip()==str and len(field.strip())!=0
+
 
 class AddLogForm(FlaskForm):
 
     log_id = HiddenField('', default='') #new log - '', existing log - 'number of id'
+    log_utc = HiddenField('', default='')
+
     log_type = RadioField('',validators=[DataRequired()], choices=[('in', 'Income'),('exp','Expanse')]) # defined in HTML
     amount = FloatField("Amount", description='Amount of Income/Expanse in NIS, Positive value',
                         validators=[DataRequired('Field must be a valid number.'),NumberRange(min=0)])
@@ -75,3 +77,4 @@ class AddLogForm(FlaskForm):
             result = False
 
         return result
+

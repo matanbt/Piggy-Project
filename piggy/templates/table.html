@@ -2,7 +2,7 @@
 {%block title%}Table{%endblock%}
 
 {%block content%}
-    <script src='{{ url_for('static',filename='table.js') }}'></script>
+    <script type='module' src='{{ url_for('static',filename='js/table.js') }}'></script>
 <h1>Incomes / Expanses</h1>
 
     <div class="row justify-content-center">
@@ -16,9 +16,9 @@
                     <h4 class="card-text">{{ logs_pack['balance'] }}</h4>
                 </div>
                 <div class="card-body border-bottom">
-                    <button class="btn btn-info" onclick="dialog.open_add()">
+                    <button id='open_add_btn' class="btn btn-info">
                         <svg class="big-icon-white">
-                            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic"/>
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic"/>
                         </svg>
                     </button>
                 </div>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="card-body border-bottom">
                     <svg class="icon" style="fill:#1D6F42">
-                        <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
+                        <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
                     </svg>
                     <small>Export to CSV</small>
                 </div>
@@ -66,8 +66,9 @@
 
                             <button class='btn btn-warning mr-2 mb-2' type="button" id='edit-btn'
                                     data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample"
-                            onclick="dialog.open_edit(new Log(
+                            onclick="open_edit(new Log(
                                     {{ log.id }},
+                                    {{ log.utc_ms_verification }},
                                     '{{ log.is_exp }}',
                                     '{{ log.amount }}',
                                     '{{ log.category }}',
@@ -107,7 +108,6 @@
     <div class="modal fade" id="add_popup"> <!-- ARIA?-->
 
         <script>
-
             {% if add_form_pack['open_dialog_on_load'] %}
                 $(window).on('load', function () {
                     $('#add_popup').modal('show');
@@ -121,7 +121,7 @@
         </style>
     <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
         <div class="modal-content">
-            <form action="" method="POST" id="dialog_form" onsubmit="return fields.validate_submit(event)" novalidate> {{ add_form.hidden_tag() }}
+            <form action="" method="POST" id="dialog_form" novalidate> {{ add_form.hidden_tag() }}
                 <div class="modal-header">
                     <h5 class="modal-title">Income/Expanses Addition</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -169,8 +169,6 @@
                             <small class="form-text text-muted">{{ add_form.time_logged.description }}</small>
                         </div>
                     </div>
-                <div class="fa-align-right">lolololo</div>
-                </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

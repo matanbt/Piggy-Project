@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="site" uuid="23303bef-99e9-4da2-bbdb-7f268067fff2">
+    <data-source source="LOCAL" name="site" uuid="d2710cc9-1f29-4d99-8701-eb4dada2d822">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\MatanBT\Google Drive\Coding Projects\Python For Fun\Piggy-Project\piggy\site.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\MatanBT\Google Drive\Coding Projects\Piggy-Project\piggy\site.db</jdbc-url>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/sqlite-jdbc-3.31.1.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>

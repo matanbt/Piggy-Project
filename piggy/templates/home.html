@@ -2,12 +2,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+<script type="module" src="{{ url_for('static', filename='js/test.js') }}"></script>
 {% if current_user.is_authenticated %}
     <h1>USER HOME: Basic Analysis SUCH AS -
         welcome, 3 months back pi, last expanses and incomes _ 3 each [add more link to table], :)</h1>
 {% else %}
     <h1>Non-user home _ insert App Promo here</h1>
 {% endif %}
-
+    <a href="{{ url_for('home', export=1) }}">Click to see get</a>
 {% endblock %}

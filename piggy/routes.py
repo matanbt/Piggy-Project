@@ -1,7 +1,7 @@
-import datetime
+import datetime,time
 
 from flask import render_template, flash, \
-    redirect, url_for, request, abort
+    redirect, url_for, request, abort, jsonify
 from flask_login import login_user,logout_user, current_user,login_required
 
 from . import app, db, bcrypt, login_manager
@@ -14,6 +14,7 @@ from .forms import RegisterForm,LoginForm, AddLogForm
 @app.route('/home')
 @app.route('/')
 def home():
+    print(request.args)
     return render_template("home.html")
 
 @app.route('/login', methods=['GET','POST'])
@@ -49,6 +50,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         new_log = Log(is_exp=(form.balance.data < 0), title='Initial Balance', user_id=user.id,
+                      utc_ms_verification=int(time.time() * 1000),
                       time_logged=datetime.datetime.now(), category='other', amount=form.balance.data)
         db.session.add(new_log)
         db.session.commit()
@@ -75,14 +77,21 @@ def account():
 #     else: # GET
 #         return render_template("login.html",status="Not Logged In :(")
 
+@app.route('/json/logs')
+@login_required
+def getLogsJson():
+    current_user.logs.sort(reverse=True,key=lambda log:(log.time_logged, log.id))
+    print(type(current_user.logs),current_user.logs)
+    return jsonify([log.serialize_dev() for log in current_user.logs])
+
 
 @app.route('/table',methods=['GET', 'POST'])
 @login_required
 def table():
-    current_user.logs.sort(reverse=True,key=lambda log:log.time_logged)
+    current_user.logs.sort(reverse=True,key=lambda log: (log.time_logged, log.id))
     logs_pack={'sorted_logs':current_user.logs,'months_count':misc.count_by_months(current_user.logs),
                'balance':sum([log.amount for log in current_user.logs])}
-    #ADD-LOG form: #todo delete form (RED button)
+    #ADD-LOG form:
     add_form = AddLogForm()
     add_form_pack = {'radio_lst': list(add_form.log_type),'open_dialog_on_load': False}
     is_exp = add_form.log_type.data == 'exp'
@@ -91,7 +100,10 @@ def table():
     if add_form.is_submitted() and add_form.delete_dialog.data and add_form.log_id.data:
         curr_log = Log.query.get_or_404(int(add_form.log_id.data))
         if current_user.id!=curr_log.user_id:
-            abort(403)
+            abort(403) #trying to access another user's log
+        if int(add_form.log_utc.data)!=curr_log.utc_ms_verification:
+            abort(403) # time stamp verification failed --> not the designated log
+
         db.session.delete(curr_log)
         db.session.commit()
         flash(f'<b>{"Expanse" if curr_log.is_exp else "Income"}</b> Deleted Succesfully!', "success")
@@ -101,6 +113,7 @@ def table():
         # ADD
         if not add_form.log_id.data:
             new_log=Log(is_exp=is_exp,title=add_form.title.data,user_id=current_user.id,
+                        utc_ms_verification=int(time.time()*1000),
                         time_logged=datetime.datetime.strptime(str(add_form.time_logged.data),"%Y-%m-%d %H:%M:%S"),
                         category=add_form.category.data,amount=((-1 if is_exp else 1) * float(add_form.amount.data)))
             db.session.add(new_log)
@@ -112,7 +125,10 @@ def table():
         else:
             curr_log=Log.query.get_or_404(int(add_form.log_id.data))
             if current_user.id != curr_log.user_id:
-                abort(403)
+                abort(403) # trying to access another user's log
+            if int(add_form.log_utc.data) != curr_log.utc_ms_verification:
+                abort(403)  # time stamp verification failed --> not the designated log
+
             curr_log.modify_log(title=add_form.title.data, category=add_form.category.data,
                                 time_logged=datetime.datetime.strptime(str(add_form.time_logged.data), "%Y-%m-%d %H:%M:%S"),
                                 amount=((-1 if curr_log.is_exp else 1) * float(add_form.amount.data)))

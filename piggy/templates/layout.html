@@ -24,6 +24,7 @@
     .collapsing {
         transition: none !important;
     }
+
     .big-icon-white {
     display: inline-block;
     width: 75px;
@@ -53,6 +54,70 @@
     {
         background: #ffffb2 !important;
     }
+
+      .todo-list-card {
+    max-width: 35em;
+  }
+  .todo-list-card > ul > li {
+    display: flex;
+    justify-content: space-between;
+    padding:0;
+    margin:0;
+    height:3.3em;
+    align-items: center;
+    cursor: pointer;
+    border-color: black;
+  }
+  .todo-list-card > ul > li > .add-todo-input {
+    flex: 5;
+    border: 0px;
+    text-align: center;
+    padding: 1em;
+    background: rgb(204, 231, 248);
+    height:100%;
+  }
+
+  .todo-list-card > ul > li  > .add-todo-btn
+  {
+    flex: 1;
+    border-radius: 0px;
+    height:100%;
+  }
+
+  .todo-list-card > ul > li  > .del-box
+  {
+    background: #e74c3c;
+    fill:white;
+    padding:0.3em;
+    height:100%;
+    width:0;
+	margin-right: 0.5em;
+	transition: 0.2s linear;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .todo-list-card > ul > li:hover .del-box
+  {
+    width: 2em;
+	opacity: 1.0;
+  }
+
+  .todo-list-card > ul > li.completed
+  {
+    color:gray;
+    text-decoration: line-through;
+  }
+
+  .todo-list-card > ul > li  > .move-box
+  {
+    background: #42e73c;
+    fill:white;
+    padding:0.3em;
+    height:100%;
+    width: 2em;
+    cursor: pointer;
+  }
     </style>
     <!--TODO: TO CSS-->
 
