@@ -5,94 +5,97 @@
 
 <h2>{{current_user.username.title()}}'s DASHBOARD HERE</h2>
     <h6>{{ current_user.email }}</h6>
-    <div>
 
-    <div class="input-group border-2" style="max-width: 35em">
-      <input type="text" class="form-control" placeholder="Email">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="btn-change-email">Modify</button>
-      </div>
+    <!-- EMAIL CHANGE-->
+    <div class="row mt-4 pb-4 border-bottom">
+        <div class="col-2">Email</div>
+        <div class="col-10 input-group border-2" style="max-width: 35em">
+            <input type="text" class="form-control" placeholder="Email">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="btn-change-email">Modify</button>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
-    <div class="col-6">
-        <div class="card todo-list-card">
-  <div class="card-header">
-   <h2> My Goals List</h2>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-      <input type="text" placeholder="Goal Here" class="add-todo-input" />
-      <button type="button" id="button-addon2" class="btn btn-primary add-todo-btn">
-        ADD
-      </button>
-    </li>
-    <li class="list-group-item">
-        <svg class="del-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
-        </svg>
-        task....
-        <svg class="move-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
-        </svg>
-    </li>
-    <li class="list-group-item">
-        <svg class="del-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
-        </svg>
-        task....
-        <svg class="move-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
-        </svg>
-    </li>
+    <!-- CATEGORIES CHANGE-->
+    <div class="row p-1 mt-3 pb-2 align-items-center border-bottom">
+        <div class="col-2">Categories</div>
+        <div class="col-10">
+            <div class="row p-1 mb-3 align-items-center">
+            <div id="in_cats" class="col-md p-1 m-1" style="border-radius:0.7em; background: rgba(67 ,228 ,104 ,0.28);">
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+            </div>
+            <div id="exp_cats" class="col-md p-1 m-1" style="border-radius:0.7em; background: rgba(228 ,67, 67 , 0.3);">
+                 <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+                <span class="t_block" id="in_salary">
+                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
+                </span>
+            </div>
+            </div>
 
-  </ul>
-  <div class="card-footer">
-    footer
-  </div>
-</div>
-    </div>
-    <div class="col-6">
-        <div class="card todo-list-card">
-  <div class="card-header">
-   <h2> My Goals List</h2>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-      <input type="text" placeholder="Goal Here" class="add-todo-input" />
-      <button type="button" id="button-addon2" class="btn btn-primary add-todo-btn">
-        ADD
-      </button>
-    </li>
-    <li class="list-group-item">
-        <svg class="del-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
-        </svg>
-        task....
-        <svg class="move-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
-        </svg>
-    </li>
-    <li class="list-group-item">
-        <svg class="del-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#del_ic"/>
-        </svg>
-        task....
-        <svg class="move-box">
-            <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#move_ic"/>
-        </svg>
-    </li>
+            <div class="row p-1 mb-2 align-items-center justify-content-around">
+                <div class="col-md p-1"><input type="text" style="width:20em" class="form-control" placeholder="Add new category..."></div>
+                <div class="col-md p-1 form-group btn-group btn-group-toggle m-0" data-toggle="buttons">
+                    <label class="btn btn-outline-success ">
+                        <input id="log_type-0" name="log_type" type="radio" value="in">Income
+                    </label>
+                    <label class="btn btn-outline-danger">
+                        <input id="log_type-1" name="log_type" type="radio" value="exp">Expanse
+                    </label>
+                </div>
+                <div class="col-md p-1 m-0"><button class="btn btn-secondary">Add</button></div>
+            </div>
+            <div class="row p-1 mt-3 align-items-center align-content-center">
+                <div class="col">
+                    <p><small class="text-muted">Notice: You can not delete an active category</small></p>
 
-  </ul>
-  <div class="card-footer">
-    footer
-  </div>
-</div>
-    </div>
+                    <button class="btn btn-info">Update Categories</button>
+                    <button class="btn btn-outline-danger">Reset Current Changes</button>
+                </div>
+            </div>
+        </div>
 
     </div>
 
+    <div class="row  pt-3 pb-3 align-items-center align-content-center border-bottom">
+        <div class="col">
+            <button class="btn btn-warning">Change Password</button>
+        </div>
     </div>
+
+    <div class="row pt-3 pb-3 align-items-center align-content-center border-bottom">
+        <div class="col">
+            <button class="btn btn-danger">Delete Account</button>
+        </div>
+    </div>
+
+
+
 
 
     <hr>

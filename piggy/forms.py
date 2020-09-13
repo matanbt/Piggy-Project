@@ -54,16 +54,21 @@ class AddLogForm(FlaskForm):
     time_logged=DateTimeLocalField('Time',format='%Y-%m-%dT%H:%M',validators=[DataRequired()],description='Default time is now')
 
     # todo categories lists in account
+    categories=[]
+
     in_cats=[('in_salary','Salary'),('in_allowance','Allowance'),('in_bonus','Bonus')]
     exp_cats=[('exp_food','Food'),('exp_entertainment','Entertainment'),('exp_transportation','Transportation'),
               ('exp_education','Education'),('exp_health','Health'),('exp_beauty','Beauty'),('exp_household','Household')]
 
-    category = SelectField("Category",default='other',choices=[('other','Other')]+in_cats+ exp_cats,
+    category = SelectField("Category",default='other',choices=[('other','Other')]+categories,
                            validators=[DataRequired()])
     title = StringField("Title", description='*Optional short description',
                         default="", validators=[Length(max=20), noWhiteSpaces])
     submit_dialog=SubmitField('Add')
     delete_dialog=SubmitField('Delete (!)')
+
+    def setCategories(self,categories):
+        self.categories=[(cat,cat.split('_')[-1].title()) for cat in categories]
 
     def validate(self):
         result = True

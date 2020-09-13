@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <script type="module" src="{{ url_for('static',filename='js/analysis.js') }}"></script>
+    <h1>Analyze Data</h1>
+    <div class="row justify-content-center">
+
+        <!--   SIDE BAR   -->
+        <div class="col-md-3 text-center p-3">
+            <div class="card" style="width: 100%;">
+                <div class="card-header"><h5>Summary</h5></div>
+                <!--
+                <div class="card-body m-0 p-0">
+                    <a href="" class="list-group-item list-group-item-action active">Table Display</a>
+                    <a href="" class="list-group-item list-group-item-action">Graph Display</a>
+                </div>
+                 -->
+
+                 <div class="card-body border-bottom">
+                    <button id='sync_table_btn' class="btn btn-primary">
+                        <svg class="icon-white">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#refresh_ic"/>
+                        </svg>
+                        Sync Table
+                    </button>
+
+                </div>
+                <div class="card-body border-bottom">
+                    <button id='btn_filter_dialog' style='width:100%' class='btn btn-secondary' type="button">
+                        <svg class="icon-white">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#filter_ic"></use>
+                        </svg>
+                        Filter
+                    </button>
+                </div>
+                <div id="filter_status_bar" style="display: none;">
+                    <b>Filters:</b>
+                    <span class="t_block" id="fb_search"> Look for: <span class="fb-text">lol</span> <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_sortBy"> Sort By: <span class="fb-text">lol</span> <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_type"> Type:  <span class="fb-text">lol</span> <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_date_from"> From: <span class="fb-text">lol</span> <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_date_until"> Until: <span class="fb-text">lol</span> <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_amount_min"> Min: <span class="fb-text">lol</span> NIS <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_amount_max"> Max: <span class="fb-text">lol</span> NIS <span
+                            class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_category"> Categories: <span
+                            class="fb-text">lol,lol,lol</span> <span class="del-t_block">&times;</span></span>
+                    <a id="clear_filters" class="t_block" href=""><b>Clear all</b></a>
+                </div>
+
+                <a class="card-link" href="#">
+                <div class="media card-body border-bottom">
+                    <svg class="icon" style="fill:#1D6F42">
+                        <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
+                    </svg>
+
+                    <span class="media-body">Export to CSV</span>
+                </div></a>
+
+                <div class="card-footer">FOOTER</div>
+            </div>
+
+        </div>
+
+
+        <!--MAIN-->
+        <div class="col-md-9 mt-3 mb-5">
+            <!--SUM MONTHS-->
+            <div class="row align-items-center border-bottom mb-4">
+                <div class="col-md-3 p-3">
+                    <h3>Sum Months:</h3>
+                </div>
+                <div class="col-md-9">
+                    <table id='mini_table' style="display:table !important;" class="table table-responsive-lg text-center mt-3 table-hover">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Category</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <!--GRAPH 1-->
+            <div class="row align-items-center border-bottom p-2">
+                <div class="col-md-9">
+
+                    <canvas id="myChart" width="400" height="400"></canvas>
+
+                </div>
+                <div class="col-md-3"><h3>Incomes VS Expanses</h3></div>
+            </div>
+
+        </div>
+
+    </div>
+
+     <!--Filters PopUP-->
+    <div class="modal fade" id="filter_popup">
+        <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Table Filters</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="filter_form">
+                    <div class="form-group">
+                        <input style="width:100%; padding:0.35em; border-radius: 5px; border-width: thin;" id="filter_search" placeholder="Search" type="text"/>
+                    <svg class="icon" style="position: absolute; width:1.2em;margin-top:0.3em; margin-left:-1.7em;">
+                        <use href="{{url_for('static',filename='my-icons.svg')}}#search_ic"/>
+                    </svg>
+                    </div>
+                    <div class="form-group row m-0">
+                        <select id="filter_type" class="form-control mb-3">
+                            <option value="">Filter by Type</option>
+                            <option value="exp">Expanses Only</option>
+                            <option value="inc">Incomes Only</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <div class="col-1">
+                            <label class='m-0' for="filter_date_from">From:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="date" id="filter_date_from" class="form-control ml-1"/>
+                        </div>
+                        <div class="col-1">
+                        <label  class='m-0' for="filter_date_until">Until:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="date" id="filter_date_until" class="form-control ml-1"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <div class="col-1">
+                            <label class='m-0' for="filter_amount_min">Min:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="number" min='0' id="filter_amount_min" class="form-control ml-1"/>
+                        </div>
+                        <div class="col-1">
+                        <label  class='m-0' for="filter_amount_max">Max:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="number" min='0' id="filter_amount_max" class="form-control ml-1"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <div class="col-2">
+                            Categories:
+                        </div>
+                        <div id="filter_categories" class="col">
+                            <div id="filter_cat_inc" class="mb-1 pb-2 border-bottom">
+                            <a href="" class="badge badge-secondary">chosen</a>
+                            <a href="" class="badge badge-secondary">chosen</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            </div>
+                            <div id="filter_cat_exp">
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            <a href="" class="badge badge-secondary">Primary</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Apply" class="btn btn-info"/>
+                        <button type="reset" class="btn btn-outline-danger">Clear</button>
+                    </div>
+               </form> </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    </div>
+
+{% endblock %}

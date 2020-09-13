@@ -10,8 +10,29 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
+    <script src="{{url_for('static',filename='mark.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
+    <script>
+
+        //from server to script:
+        window.from_server={
+            url_for:{
+                json_logs : '{{ url_for('getJson', data_type='logs') }}',
+                json_categories : '{{ url_for('getJson', data_type='categories') }}',
+                static : '{{ url_for('static',filename='') }}',
+                static_icons :'{{ url_for('static',filename='my-icons.svg') }}'
+            }
+        }
+
+    </script>
     <style>
+        mark {
+            background: orange;
+            color: black;
+            padding: 0px !important;
+        }
+
     body {
         background-color: rgba(238, 238, 238, 0.08);
     }
@@ -39,14 +60,21 @@
     }
     .icon-white {
         display: inline-block;
-        width: 27px;
-        height: 27px;
+        width: 1.5em;
+        height: 1.5em;
         fill: white;
     }
     .icon{
         display: inline-block;
-        width: 27px;
-        height: 27px;
+        width: 1.5em;
+        height: 1.5em;
+        fill: black;
+    }
+
+    .icon-inline{
+        display: inline-block;
+        width: 1em;
+        height: 1em;
         fill: black;
     }
 
@@ -118,7 +146,52 @@
     width: 2em;
     cursor: pointer;
   }
-    </style>
+
+    .del-t_block {
+        opacity: 0.5;
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-right: 0.9em;
+        margin-left: 0.3em;
+        cursor: pointer;
+    }
+    .t_block{
+        border-right-width: thin;
+        display:inline-block;
+        transition: visibility 1s, opacity 0.5s linear;
+    }
+
+    .t_block:hover .del-t_block {
+        opacity: 1.0;
+    }
+
+    #filter_status_bar {
+        padding: 0.35em;
+        background-color: #edf2f5;
+    }
+
+    .exp_cell{
+        background-color:rgba(255,102,102,0.8);
+    }
+    .inc_cell{
+        background-color:rgba(153,255,153,0.8);
+    }
+
+     .exp_span{
+        background-color:rgba(255,102,102,0.5);
+    }
+    .inc_span{
+        background-color:rgba(153,255,153,0.5);
+    }
+
+    .row-sum{
+        background-color: #e9ecef; /*eeeee*/
+    }
+
+    .badge.chosen {
+        background-color: yellow;
+    }
+</style>
     <!--TODO: TO CSS-->
 
     <title>Piggy - {%block title%}{%endblock%}</title>
@@ -147,24 +220,21 @@
                 <a class="nav-link" href="{{url_for('table')}}">Table</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('news')}}">Analysis</a>
+                <a class="nav-link" href="{{url_for('analysis')}}">Analysis</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('news')}}">Goals</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="{{url_for('goals')}}">Goals</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    More...
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Quick Guide</a>
+                    <a class="dropdown-item" href="#">API Doc.</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="#">About</a>
                 </div>
             </li>
 
@@ -201,7 +271,7 @@
         {%block content%}{%endblock%}
 </div>
 
-<!--MAIN CONTAINER-->
 
 </body>
+
 </html>

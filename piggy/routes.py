@@ -1,4 +1,5 @@
 import datetime,time
+import json
 
 from flask import render_template, flash, \
     redirect, url_for, request, abort, jsonify
@@ -47,6 +48,7 @@ def register():
     if form.validate_on_submit():
         hashed_pass=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user=User(username=form.username.data.lower(), email=form.email.data.lower(), password=hashed_pass)
+        user.setDefaultOnRegister()
         db.session.add(user)
         db.session.commit()
         new_log = Log(is_exp=(form.balance.data < 0), title='Initial Balance', user_id=user.id,
@@ -77,12 +79,16 @@ def account():
 #     else: # GET
 #         return render_template("login.html",status="Not Logged In :(")
 
-@app.route('/json/logs')
+@app.route('/json/<data_type>')
 @login_required
-def getLogsJson():
-    current_user.logs.sort(reverse=True,key=lambda log:(log.time_logged, log.id))
-    print(type(current_user.logs),current_user.logs)
-    return jsonify([log.serialize_dev() for log in current_user.logs])
+def getJson(data_type):
+    if data_type=='logs':
+        current_user.logs.sort(reverse=True,key=lambda log:(log.time_logged, log.id))
+        return jsonify([log.serialize_dev() for log in current_user.logs])
+    if data_type=='categories':
+        return jsonify(json.loads(current_user.categories))
+    else:
+        abort(404)
 
 
 @app.route('/table',methods=['GET', 'POST'])
@@ -93,6 +99,7 @@ def table():
                'balance':sum([log.amount for log in current_user.logs])}
     #ADD-LOG form:
     add_form = AddLogForm()
+    add_form.setCategories(json.loads(current_user.categories))
     add_form_pack = {'radio_lst': list(add_form.log_type),'open_dialog_on_load': False}
     is_exp = add_form.log_type.data == 'exp'
 
@@ -112,10 +119,11 @@ def table():
     elif add_form.validate_on_submit():
         # ADD
         if not add_form.log_id.data:
-            new_log=Log(is_exp=is_exp,title=add_form.title.data,user_id=current_user.id,
+            new_log=Log(is_exp=is_exp,title=add_form.title.data.strip(),user_id=current_user.id,
                         utc_ms_verification=int(time.time()*1000),
                         time_logged=datetime.datetime.strptime(str(add_form.time_logged.data),"%Y-%m-%d %H:%M:%S"),
-                        category=add_form.category.data,amount=((-1 if is_exp else 1) * float(add_form.amount.data)))
+                        category=add_form.category.data,
+                        amount=((-1 if is_exp else 1) * misc.limit_digits(float(add_form.amount.data))) )
             db.session.add(new_log)
             db.session.commit()
             flash(f'<b>{"Expanse" if is_exp else "Income" }</b> Added Succesfully!', "success")
@@ -129,9 +137,10 @@ def table():
             if int(add_form.log_utc.data) != curr_log.utc_ms_verification:
                 abort(403)  # time stamp verification failed --> not the designated log
 
-            curr_log.modify_log(title=add_form.title.data, category=add_form.category.data,
+            curr_log.modify_log(title=add_form.title.data.strip(), category=add_form.category.data,
                                 time_logged=datetime.datetime.strptime(str(add_form.time_logged.data), "%Y-%m-%d %H:%M:%S"),
-                                amount=((-1 if curr_log.is_exp else 1) * float(add_form.amount.data)))
+                                amount=((-1 if is_exp else 1) * misc.limit_digits(float(add_form.amount.data))))
+            db.session.commit()
             db.session.commit()
             flash(f'<b>{"Expanse" if curr_log.is_exp else "Income"}</b> Updated Succesfully!', "success")
             return redirect(url_for('table'))
@@ -145,6 +154,10 @@ def table():
 
     return render_template("table.html", add_form=add_form, add_form_pack=add_form_pack,logs_pack=logs_pack)
 
+@app.route('/analysis',methods=['GET', 'POST'])
+@login_required
+def analysis():
+    return render_template('analysis.html')
 
 @app.route('/goals')
 @login_required

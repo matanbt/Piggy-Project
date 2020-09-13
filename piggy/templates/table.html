@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
 
         <!-- SIDE BAR-->
-        <div class="col-lg-2 text-center p-3">
+        <div class="col-md-3 text-center p-3">
             <div class="card" style="width: 100%;">
                 <div class="card-header"><h5>Summary</h5></div>
                 <div class="card-body border-bottom">
@@ -23,13 +23,29 @@
                     </button>
                 </div>
                 <div class="card-body border-bottom">
-                    Collapse/ Expand all
+                    <button id='sync_table_btn' class="btn btn-primary">
+                        <svg class="icon-white">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#refresh_ic"/>
+                        </svg>
+                        Sync Table
+                    </button>
+
                 </div>
-                <div class="card-body border-bottom">
+
+                <a class="card-link" href="#">
+                <div class="media card-body border-bottom">
                     <svg class="icon" style="fill:#1D6F42">
                         <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
                     </svg>
-                    <small>Export to CSV</small>
+
+                    <span class="media-body">Export to CSV</span>
+                </div></a>
+
+                <div class="media card-body border-bottom">
+                    <svg class="icon" style="fill:#d2840c">
+                        <use href="{{ url_for('static',filename='my-icons.svg') }}#analyze_ic"/>
+                    </svg>
+                    <span class="media-body">Take Table to Analysis</span>
                 </div>
                 <div class="card-footer">
                     <small>Shows all Incomes and Expanses sorted by date</small>
@@ -38,9 +54,60 @@
             </div>
         </div>
 
-        <!-- MAIN TABLE-->
-        <div class="col-lg-8 mt-3 mb-5">
-            <table class="table table-responsive-sm text-center table-hover">
+        <!--TOOLBAR -->
+        <div class="col-md-9 mt-3 mb-5">
+            <div class="toolbar row p-2 m-0 align-items-center rounded" style="background-color:#d3e9f8;">
+                <div class="col-3">
+                     <button id='open_add_btn_toolbar' style='width:100%' class='btn btn-info' type="button">
+                        <svg class="icon-white">
+                            <use href="{{ url_for('static',filename='my-icons.svg')}}#add_log_ic"></use>
+                        </svg>
+                         New Log
+                    </button>
+                </div>
+                <div class="col-2 border-left border-right" style="border-color: white;">
+                    <button id='btn-expand_all' style='width:100%' class='btn btn-primary' type="button">
+                        <svg class="icon-white">
+                            <use href="{{ url_for('static',filename='my-icons.svg')}}#expand_ic"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-3 border-right">
+                    <button id='btn_filter_dialog' style='width:100%' class='btn btn-secondary' type="button">
+                        <svg class="icon-white">
+                            <use href="{{ url_for('static',filename='my-icons.svg')}}#filter_ic"></use>
+                        </svg>
+                        Filter
+                    </button>
+                </div>
+                <div class="col">
+                    <input style="width:100%; padding:0.35em; border-radius: 5px; border-width: thin;" id="filter_search" placeholder="Search" type="text"/>
+                    <svg class="icon" style="position: absolute; width:1.2em;margin-top:0.3em; margin-left:-1.7em;">
+                        <use href="{{url_for('static',filename='my-icons.svg')}}#search_ic"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="filters row p-2 align-items-center border rounded"
+                 style="width:90%; border-top-left-radius:0px;border-top-right-radius:0px;  background-color:#edf2f5;">
+
+                <div id="filter_status_bar" style="display: none;" class='col-12'>
+                    <b>Filters:</b>
+                    <span class="t_block" id="fb_search"> Look for: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_sortBy"> Sort By: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_type"> Type:  <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_date_from"> From: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_date_until"> Until: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_amount_min"> Min: <span class="fb-text">lol</span> NIS <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_amount_max"> Max: <span class="fb-text">lol</span> NIS <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_category"> Categories: <span class="fb-text">lol,lol,lol</span> <span class="del-t_block">&times;</span></span>
+                    <a id="clear_filters" class="t_block" href=""><b>Clear all</b></a>
+                </div>
+
+                </div>
+
+
+            <!-- MAIN TABLE-->
+            <table id='logs_table' class="table table-responsive-sm text-center mt-3 table-hover">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Month</th>
@@ -50,55 +117,8 @@
                     <th scope="col">Options</th>
                 </tr>
                 </thead>
-
-                {% for log in logs_pack['sorted_logs'] %}
-                    <tr>
-                        {% if logs_pack['months_count'][log.time_logged.date().strftime("%B %y'")][1] == log %}
-                            <td rowspan="{{ logs_pack['months_count'][log.time_logged.date().strftime("%B %y'")][0] * 2 }}">
-                                {{ log.time_logged.date().strftime("%B %y'") }}</td>
-                        {% endif %}
-
-                        <td>{{ log.time_logged.strftime("%d/%m/%y") }}</td>
-                        <td style="background-color:{{ '#ff6666' if log.is_exp else '#99ff99' }};">{{ log.amount }}</td>
-                        <!-- todo setteled coloring-->
-                        <td>{{ log.category.split('_')[-1].title() }}</td>
-                        <td>
-
-                            <button class='btn btn-warning mr-2 mb-2' type="button" id='edit-btn'
-                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample"
-                            onclick="open_edit(new Log(
-                                    {{ log.id }},
-                                    {{ log.utc_ms_verification }},
-                                    '{{ log.is_exp }}',
-                                    '{{ log.amount }}',
-                                    '{{ log.category }}',
-                                    '{{ log.title }}',
-                                    '{{ log.time_logged.strftime('%Y-%m-%dT%H:%M') }}' ))" >
-                                <svg class="icon">
-                                    <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#edit_ic">
-                                </svg>
-                            </button>
-                            <button class='btn btn-info mr-2 mb-2' type="button" id='expand-btn' data-target="#expand-row_{{ "{}_{}".format(log.user_id,log.id) }}"
-                                    data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample"/>
-                                <svg class="icon-white">
-                                    <use xlink:href="{{ url_for('static',filename='my-icons.svg') }}#more_ic"/>
-                                </svg>
-                            </button>
-                        </td>
-                    <tr>
-                        <td colspan="5" class="collapse" id='expand-row_{{ "{}_{}".format(log.user_id,log.id)}}'>
-                            <div class="row">
-                                <div class="col-md"><h6 style="font-weight: normal">
-                                    {{ ("Description: <b>"+log.title+"</b>" if log.title.strip() else "") | safe }}</h6></div>
-                                <div class="col-md"><h6 style="font-weight: normal"> Time: <b>{{ log.time_logged.strftime("%d/%m/%Y %H:%M") }}</b></h6></div>
-                            </div>
-
-
-                        </td>
-                    </tr>
-                    </tr>
-                {% endfor %}
-
+                <tbody>
+                </tbody>
             </table>
         </div>
     </div>
@@ -116,67 +136,148 @@
         </script>
         <style>
             select option[disabled] {
-            display: none;
+                display: none;
             }
         </style>
-    <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
-        <div class="modal-content">
-            <form action="" method="POST" id="dialog_form" novalidate> {{ add_form.hidden_tag() }}
+        <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
+            <div class="modal-content">
+                <form action="" method="POST" id="dialog_form" novalidate> {{ add_form.hidden_tag() }}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Income/Expanses Addition</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group btn-group btn-group-toggle col-11" data-toggle="buttons">
+                            <label class="btn btn-outline-success">
+                                {{ add_form_pack['radio_lst'][0] }}Income
+                            </label>
+                            <label class="btn btn-outline-danger">
+                                {{ add_form_pack['radio_lst'][1] }}Expanse
+                            </label>
+                        </div>
+
+                        <div align='left' class="form-group row">
+                            {{ add_form.amount.label(class="col-sm-2 col-form-label") }}
+                            <div class="col-sm-10">
+                                {{ add_form.amount(class="form-control" + (" is-invalid" if add_form.amount.errors else "") ,id="amount") }}
+                                <small id="amount_help"
+                                       class="form-text text-muted">{{ add_form.amount.description }}</small>
+                            </div>
+                        </div>
+
+                        <div align='left' class="form-group row">
+                            {{ add_form.category.label(class="col-sm-2 col-form-label") }}
+                            <div class="col-sm-10">
+                                {{ add_form.category(class="form-control" + (" is-invalid" if add_form.category.errors else "")) }}
+                                <small id="category_help" class="form-text text-muted">Categories Lists can be edited in
+                                    <a href="{{ url_for('account') }}">Account</a></small>
+                            </div>
+                        </div>
+
+                        <div align='left' class="form-group row">
+                            {{ add_form.title.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-10">
+                                {{ add_form.title(class='form-control'+ (" is-invalid" if add_form.title.errors else ""), maxlength='20',placeholder=add_form.title.description) }}
+                            </div>
+                        </div>
+
+                        <div align='left' class="form-group row">
+                            {{ add_form.time_logged.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-10">
+                                {{ add_form.time_logged(class='form-control'+ (" is-invalid" if add_form.time_logged.errors else "")) }}
+                                <small class="form-text text-muted">{{ add_form.time_logged.description }}</small>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            {{ add_form.submit_dialog(class='btn btn-info') }}
+                            {{ add_form.delete_dialog(class='btn btn-danger') }}
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Filters PopUP-->
+    <div class="modal fade" id="filter_popup">
+        <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Income/Expanses Addition</h5>
+                    <h5 class="modal-title">Table Filters</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
                 <div class="modal-body">
-                    <div class="form-group btn-group btn-group-toggle col-11" data-toggle="buttons">
-                        <label class="btn btn-outline-success">
-                            {{ add_form_pack['radio_lst'][0]}}Income
-                        </label>
-                        <label class="btn btn-outline-danger">
-                            {{ add_form_pack['radio_lst'][1] }}Expanse
-                        </label>
+                    <form id="filter_form">
+                    <div class="form-group row m-0">
+                        <select id="filter_type" class="form-control mb-3">
+                            <option value="">Filter by Type</option>
+                            <option value="exp">Expanses Only</option>
+                            <option value="inc">Incomes Only</option>
+                        </select>
                     </div>
 
-                    <div align='left' class="form-group row">
-                        {{ add_form.amount.label(class="col-sm-2 col-form-label") }}
-                        <div class="col-sm-10">
-                            {{ add_form.amount(class="form-control" + (" is-invalid" if add_form.amount.errors else "") ,id="amount") }}
-                        <small id="amount_help" class="form-text text-muted">{{ add_form.amount.description }}</small>
+                    <div class="form-group row align-items-center">
+                        <div class="col-1">
+                            <label class='m-0' for="filter_date_from">From:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="date" id="filter_date_from" class="form-control ml-1"/>
+                        </div>
+                        <div class="col-1">
+                        <label  class='m-0' for="filter_date_until">Until:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="date" id="filter_date_until" class="form-control ml-1"/>
                         </div>
                     </div>
 
-                    <div align='left' class="form-group row">
-                        {{ add_form.category.label(class="col-sm-2 col-form-label") }}
-                        <div class="col-sm-10">
-                            {{ add_form.category(class="form-control" + (" is-invalid" if add_form.category.errors else "")) }}
-                            <small id="category_help" class="form-text text-muted">Categories Lists can be edited in <a href="{{ url_for('account') }}">Account</a></small>
+                    <div class="form-group row align-items-center">
+                        <div class="col-1">
+                            <label class='m-0' for="filter_amount_min">Min:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="number" min='0' id="filter_amount_min" class="form-control ml-1"/>
+                        </div>
+                        <div class="col-1">
+                        <label  class='m-0' for="filter_amount_max">Max:</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="number" min='0' id="filter_amount_max" class="form-control ml-1"/>
                         </div>
                     </div>
 
-                     <div align='left' class="form-group row">
-                         {{ add_form.title.label(class='col-sm-2 col-form-label') }}
-                        <div class="col-sm-10">
-                             {{ add_form.title(class='form-control'+ (" is-invalid" if add_form.title.errors else ""), maxlength='20',placeholder=add_form.title.description) }}
+                    <div class="form-group row align-items-center">
+                        <div class="col-2">
+                            Categories:
+                        </div>
+                        <div id="filter_cat" class="col">
+                            <div id="filter_cat_in" class="mb-1 pb-2 border-bottom">
+                            <a href="" class="badge badge-secondary chosen">chosen</a>
+                                <!--JS RENDER-->
+                            </div>
+                            <div id="filter_cat_exp">
+
+                            </div>
                         </div>
                     </div>
 
-                    <div align='left' class="form-group row">
-                         {{ add_form.time_logged.label(class='col-sm-2 col-form-label') }}
-                        <div class="col-sm-10">
-                             {{ add_form.time_logged(class='form-control'+ (" is-invalid" if add_form.time_logged.errors else ""))}}
-                            <small class="form-text text-muted">{{ add_form.time_logged.description }}</small>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Apply" class="btn btn-info"/>
+                        <button type="reset" class="btn btn-outline-danger">Clear</button>
                     </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    {{ add_form.submit_dialog(class='btn btn-info') }}
-                    {{ add_form.delete_dialog(class='btn btn-danger') }}
-        </div></form>
+               </form> </div>
+            </div>
+        </div>
     </div>
-</div>
 
-</div>
+
 {%endblock%}

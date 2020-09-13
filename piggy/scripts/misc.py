@@ -17,3 +17,6 @@ def count_by_months(user_logs: List[Log]) -> Dict:
             out_dict[curr_month][0]=out_dict[curr_month][0]+1
     print(out_dict)
     return out_dict
+
+def limit_digits(num,digits=3):
+    return int(num*10**digits)/10**digits
