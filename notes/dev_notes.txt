@@ -1,3 +1,70 @@
+#NOW!: move maketags to helper markupElements.js
+
+Features To Add: 
+
+Table Page:
+#Scroll Spy with shortcuts to the Monthes (a MUST for long table management)
+#Separate HTML elements that TABLE and ANALYSIS shares - for html saving
+
+analysis page: 
+#Scroll spy for charts
+#FACTS ROW:
+--->average monthly net income
+--->most weighted category (income, expanses separately)
+--->
+
+home page:
+#static cards - more ideas - Biggest Expanse / Income lately?
+dynamic cards! or at least smart cards (pseudo AI)
+#dynamic cards: user notes! saved in SQL
+
+Account:
+#define different month start and end
+#define constant expanses
+#change password, change email
+
+pages to add:
+API Documentation with User-Authetication
+
+------------------------
+z-index: 1030;
+    position: sticky;
+    top: 3em;
+
+Welcome back, 'username'
+
+cards line - 
+#card - BALANCE
+#card - arrow up/down + curr month net income
+#card - 'Added X Logs last week, keep it going! Add more' OR 'No logs added last week, did you forget? Add these now'
+# card - add cards??
+
+table goes 5 logs back - botton line Balance --> 'More... Manage your Expanses and Incomes'
+
+PIE (exp vs inc) goes 3 monthes back --> 'More... Analyse your Expanses and INcomes'
+
+
+non user
+
+
+NON USER - FETURES CAROUSLE :
+LOGO - Piggy -<br> Control Your Budget Wisely <br>Get Started Now
+
+carusle:
+Keep Track on your Budget, Anytime, Anywhere
+Manage (TABLE)
+ANALYZE ( GRAPHS )
+
+
+Features:
+Manage - Manage your Incomes and expanses in ONE place
+Control- Control your Incomes and Expanses in any way your prefer
+Analyze - Analyize your Incomes and Expanses from various perspectives
+Customize - Create Your Own Expanses and Incomes Categories
+Join Now!- What are you waiting for? '(link)Sign Up'
+
+--------------------
+
 דף אחד - 3 סיקורי ישראל אחרונים מכל אתר (TIMES, BBC, CNN...),
 אם יש נושא חד משמעי / בעל רוב מוחלט, להציגו בגדול.
 איסוף המידע לתוך csv עם: כותרת, מקור, תגית נושא (פוליטיקת פנים, סכסוך פלסטיני, סכסוך אירני, יחסי חוץ....), מיקום הידיעה ביחס ליתר הידיעות? [תגיות - למשל ע"י KEYWORDS FINDER]
@@ -26,4 +93,23 @@
 מידע נוסף - ממוצע הוצאות, ממוצע הכנסות
 
 FLASHES TO TOASTS?
+
+z-index: 1030;
+    position: sticky;
+    top: 3em;
+
+Welcome back, 'username'
+
+cards line - 
+#card - BALANCE
+#card - arrow up/down + curr month net income
+#card - 'Added X Logs last week, keep it going! Add more' OR 'No logs added last week, did you forget? Add these now'
+# card - ?
+
+table goes 5 logs back - botton line Balance --> 'More... Manage your Expanses and Incomes'
+
+PIE (exp vs inc) goes 3 monthes back --> 'More... Analyse your Expanses and INcomes'
+
+
+non user
 

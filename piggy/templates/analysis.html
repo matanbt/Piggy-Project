@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Analysis{% endblock %}
 
 {% block content %}
     <script type="module" src="{{ url_for('static',filename='js/analysis.js') }}"></script>
@@ -9,7 +9,8 @@
         <!--   SIDE BAR   -->
         <div class="col-md-3 text-center p-3">
             <div class="card" style="width: 100%;">
-                <div class="card-header"><h5>Summary</h5></div>
+                <div class="card-header"><small>
+                    Analyze your Incomes and Expanses, from various perspectives</small></div>
                 <!--
                 <div class="card-body m-0 p-0">
                     <a href="" class="list-group-item list-group-item-action active">Table Display</a>
@@ -36,26 +37,26 @@
                 </div>
                 <div id="filter_status_bar" style="display: none;">
                     <b>Filters:</b>
-                    <span class="t_block" id="fb_search"> Look for: <span class="fb-text">lol</span> <span
+                    <span class="t_block" id="fb_search"> Look for: <span class="fb-text"></span> <span
                             class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_sortBy"> Sort By: <span class="fb-text">lol</span> <span
+                    <span class="t_block" id="fb_sortBy"> Sort By: <span class="fb-text"></span> <span
                             class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_type"> Type:  <span class="fb-text">lol</span> <span
+                    <span class="t_block" id="fb_type"> Type:  <span class="fb-text"></span> <span
                             class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_date_from"> From: <span class="fb-text">lol</span> <span
+                    <span class="t_block" id="fb_date_from"> From: <span class="fb-text"></span> <span
                             class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_date_until"> Until: <span class="fb-text">lol</span> <span
+                    <span class="t_block" id="fb_date_until"> Until: <span class="fb-text"></span> <span
                             class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_amount_min"> Min: <span class="fb-text">lol</span> NIS <span
+                    <span class="t_block" id="fb_amount_min"> Min: <span class="fb-text"></span> ₪ <span
                             class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_amount_max"> Max: <span class="fb-text">lol</span> NIS <span
+                    <span class="t_block" id="fb_amount_max"> Max: <span class="fb-text"></span> ₪ <span
                             class="del-t_block">&times;</span></span>
                     <span class="t_block" id="fb_category"> Categories: <span
                             class="fb-text">lol,lol,lol</span> <span class="del-t_block">&times;</span></span>
                     <a id="clear_filters" class="t_block" href=""><b>Clear all</b></a>
                 </div>
 
-                <a class="card-link" href="#">
+                <a id="a_export_csv" class="card-link" href="#">
                 <div class="media card-body border-bottom">
                     <svg class="icon" style="fill:#1D6F42">
                         <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
@@ -64,21 +65,29 @@
                     <span class="media-body">Export to CSV</span>
                 </div></a>
 
-                <div class="card-footer">FOOTER</div>
+                <a id="a_take_filters" class="card-link" style="margin-left: 0"  href="#">
+                <div class="media card-body border-bottom">
+                    <svg class="icon" style="fill:#d2840c">
+                        <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>
+                    </svg>
+                    <span class="media-body">Take Filters to Table</span>
+                </div></a>
+
+                <div class="card-footer"></div>
             </div>
 
         </div>
 
 
         <!--MAIN-->
-        <div class="col-md-9 mt-3 mb-5">
+        <div class="col-md-9 mt-3">
             <!--SUM MONTHS-->
-            <div class="row align-items-center border-bottom mb-4">
-                <div class="col-md-3 p-3">
-                    <h3>Sum Months:</h3>
+            <div class="content_block row align-items-center border-bottom">
+                <div class="col-lg-3">
+                    <h3>Monthly Summary:</h3>
                 </div>
-                <div class="col-md-9">
-                    <table id='mini_table' style="display:table !important;" class="table table-responsive-lg text-center mt-3 table-hover">
+                <div class="col-lg-9">
+                    <table id='mini_table' style="display:table !important;" class="table table-responsive-lg shadow-sm text-center mt-3 table-hover">
                         <thead class="thead-light">
                         <tr>
                             <th scope="col">Date</th>
@@ -89,20 +98,82 @@
                     </table>
                 </div>
             </div>
+        </div>  </div>
+
+
+        <div class="row justify-content-center"><div class="col">
 
             <!--GRAPH 1-->
-            <div class="row align-items-center border-bottom p-2">
-                <div class="col-md-9">
-
-                    <canvas id="myChart" width="400" height="400"></canvas>
-
-                </div>
+            <div class="content_block row align-items-center border-bottom">
                 <div class="col-md-3"><h3>Incomes VS Expanses</h3></div>
+
+                <div class="col-md-9">
+                    <canvas id="exp_vs_inc" style="max-height: 500px; max-width: 500px;"></canvas>
+                </div>
             </div>
 
-        </div>
+            <!--GRAPH 2-->
+             <div class="content_block row align-items-center border-bottom">
+                <div class="col-md-3"><h3>Expanses VS Incomes <br> (Monthly)</h3></div>
 
-    </div>
+                <div class="col-md-9" >
+
+                    <canvas id="exp_vs_inc_per_month" style="max-height: 800px; max-width: 600px;"></canvas>
+
+                </div>
+            </div>
+
+            <!--GRAPH 3-->
+            <div class="content_block row align-items-center border-bottom">
+                <div class="col-md-3">
+                    <h3>Net Income<br> (Per Month) </h3>
+                    <small class="text-muted">'Net Average' is calculated over documented months only</small>
+                </div>
+
+                <div class="col-md-9" >
+
+                    <canvas id="net_per_month" style="max-height: 800px; max-width: 600px;"></canvas>
+
+                </div>
+            </div>
+
+            <!--GRAPH 4-->
+            <div class="content_block row align-items-center border-bottom">
+                <div class="col-md-3"><h3>Balance Tracker <br> (Monthly)</h3>
+                <small class="text-muted">Records the balance at the end of each month</small></div>
+
+                <div class="col-md-9" >
+
+                    <canvas id="balance_tracker" style="max-height: 800px; max-width: 800px;"></canvas>
+
+                </div>
+            </div>
+
+            <!--GRAPH 5-->
+            <div class="content_block row align-items-center border-bottom">
+                <div class="col-md-3"><h3>Amount Spent Per Category</h3></div>
+
+                <div class="col-md-9" >
+
+                    <canvas id="exp_per_category" style="max-height: 500px; max-width: 500px;"></canvas>
+
+                </div>
+            </div>
+
+            <!--GRAPH 6-->
+            <div class="content_block row align-items-center border-bottom">
+                <div class="col-md-3"><h3>Amount Earned Per Category</h3></div>
+
+                <div class="col-md-9" >
+
+                    <canvas id="inc_per_category" style="max-height: 500px; max-width: 500px;"></canvas>
+
+                </div>
+            </div>
+
+
+
+        </div></div>
 
      <!--Filters PopUP-->
     <div class="modal fade" id="filter_popup">
@@ -164,26 +235,17 @@
                         <div class="col-2">
                             Categories:
                         </div>
-                        <div id="filter_categories" class="col">
-                            <div id="filter_cat_inc" class="mb-1 pb-2 border-bottom">
-                            <a href="" class="badge badge-secondary">chosen</a>
-                            <a href="" class="badge badge-secondary">chosen</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
+                         <div id="filter_cat" class="col">
+                            <div id="filter_cat_in" class="mb-1 pb-2 border-bottom">
+                                <!--JS RENDER-->
                             </div>
-                            <div id="filter_cat_exp">
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
-                            <a href="" class="badge badge-secondary">Primary</a>
+                            <div id="filter_cat_exp" class="mb-1 pb-2 border-bottom">
+
                             </div>
+                            <div id="filter_cat_other">
+                                <a href="" id="other" class="badge badge-secondary mr-1">Other</a>
+                            </div>
+
                         </div>
                     </div>
 

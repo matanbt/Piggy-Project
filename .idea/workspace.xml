@@ -70,11 +70,12 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="Piggy-Project" is-module-sdk="true">
+        <option name="useSoftWraps" value="true" />
         <option name="myUseModuleSdk" value="true" />
         <option name="myModuleName" value="Piggy-Project" />
       </console-settings>
@@ -139,6 +140,8 @@
       <workItem from="1598805284205" duration="109750000" />
       <workItem from="1599226179783" duration="50512000" />
       <workItem from="1599723694685" duration="65833000" />
+      <workItem from="1599992476272" duration="26000" />
+      <workItem from="1600015287725" duration="78807000" />
     </task>
     <servers />
   </component>
@@ -166,51 +169,51 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599211151843" />
-    <state width="1493" height="326" key="GridCell.Tab.0.bottom" timestamp="1599992451169">
+    <state width="1493" height="26" key="GridCell.Tab.0.bottom" timestamp="1600419388693">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="326" key="GridCell.Tab.0.bottom/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599992451169" />
+    <state width="1493" height="26" key="GridCell.Tab.0.bottom/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600419388693" />
     <state width="1257" height="186" key="GridCell.Tab.0.bottom/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597684830029" />
-    <state width="1493" height="326" key="GridCell.Tab.0.center" timestamp="1599992451169">
+    <state width="1493" height="26" key="GridCell.Tab.0.center" timestamp="1600419388693">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="326" key="GridCell.Tab.0.center/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599992451169" />
+    <state width="1493" height="26" key="GridCell.Tab.0.center/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600419388693" />
     <state width="1257" height="186" key="GridCell.Tab.0.center/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597684830029" />
-    <state width="1493" height="326" key="GridCell.Tab.0.left" timestamp="1599992451169">
+    <state width="1493" height="26" key="GridCell.Tab.0.left" timestamp="1600419388693">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="326" key="GridCell.Tab.0.left/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599992451169" />
+    <state width="1493" height="26" key="GridCell.Tab.0.left/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600419388693" />
     <state width="1257" height="186" key="GridCell.Tab.0.left/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597684830029" />
-    <state width="1493" height="326" key="GridCell.Tab.0.right" timestamp="1599992451169">
+    <state width="1493" height="26" key="GridCell.Tab.0.right" timestamp="1600419388693">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="326" key="GridCell.Tab.0.right/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599992451169" />
+    <state width="1493" height="26" key="GridCell.Tab.0.right/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600419388693" />
     <state width="1257" height="186" key="GridCell.Tab.0.right/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597684830029" />
     <state width="189" height="457" key="HiddenNamespacesPopup" timestamp="1598551055082">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="189" height="457" key="HiddenNamespacesPopup/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1598551055082" />
     <state width="189" height="457" key="HiddenNamespacesPopup/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597587170679" />
-    <state x="478" y="52" key="SettingsEditor" timestamp="1598805424184">
+    <state x="478" y="52" key="SettingsEditor" timestamp="1600016536943">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="478" y="52" key="SettingsEditor/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1598805424184" />
+    <state x="478" y="52" key="SettingsEditor/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600016536943" />
     <state x="312" y="48" key="SettingsEditor/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597587349450" />
     <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1597481839419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597481839419" />
-    <state x="479" y="17" width="577" height="789" key="find.popup" timestamp="1599230835115">
+    <state x="479" y="17" width="577" height="789" key="find.popup" timestamp="1600348490752">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="479" y="17" width="577" height="789" key="find.popup/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599230835115" />
+    <state x="479" y="17" width="577" height="789" key="find.popup/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600348490752" />
     <state width="600" height="440" key="javadoc.popup" timestamp="1598955472383">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="412" height="500" key="javadoc.popup.new" timestamp="1599985875786">
+    <state width="412" height="500" key="javadoc.popup.new" timestamp="1600286277537">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="412" height="500" key="javadoc.popup.new/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1599985875786" />
+    <state width="412" height="500" key="javadoc.popup.new/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600286277537" />
     <state width="600" height="440" key="javadoc.popup/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1598955472383" />
     <state x="346" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599755916179">
       <screen x="0" y="0" width="1536" height="824" />
@@ -219,6 +222,6 @@
     <state x="346" y="145" width="672" height="678" key="search.everywhere.popup/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597496419378" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Piggy_Project$run.coverage" NAME="run Coverage Results" MODIFIED="1599932428695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Piggy_Project$run.coverage" NAME="run Coverage Results" MODIFIED="1600330586192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

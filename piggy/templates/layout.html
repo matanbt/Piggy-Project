@@ -21,7 +21,10 @@
                 json_logs : '{{ url_for('getJson', data_type='logs') }}',
                 json_categories : '{{ url_for('getJson', data_type='categories') }}',
                 static : '{{ url_for('static',filename='') }}',
-                static_icons :'{{ url_for('static',filename='my-icons.svg') }}'
+                static_icons :'{{ url_for('static',filename='my-icons.svg') }}',
+
+                analysis: '{{ url_for('analysis') }}',
+                table : '{{ url_for('table') }}'
             }
         }
 
@@ -56,7 +59,7 @@
     display: inline-block;
     width: 75px;
     height: 75px;
-    fill: black;
+    fill:#1454d4;
     }
     .icon-white {
         display: inline-block;
@@ -71,6 +74,7 @@
         fill: black;
     }
 
+
     .icon-inline{
         display: inline-block;
         width: 1em;
@@ -83,69 +87,6 @@
         background: #ffffb2 !important;
     }
 
-      .todo-list-card {
-    max-width: 35em;
-  }
-  .todo-list-card > ul > li {
-    display: flex;
-    justify-content: space-between;
-    padding:0;
-    margin:0;
-    height:3.3em;
-    align-items: center;
-    cursor: pointer;
-    border-color: black;
-  }
-  .todo-list-card > ul > li > .add-todo-input {
-    flex: 5;
-    border: 0px;
-    text-align: center;
-    padding: 1em;
-    background: rgb(204, 231, 248);
-    height:100%;
-  }
-
-  .todo-list-card > ul > li  > .add-todo-btn
-  {
-    flex: 1;
-    border-radius: 0px;
-    height:100%;
-  }
-
-  .todo-list-card > ul > li  > .del-box
-  {
-    background: #e74c3c;
-    fill:white;
-    padding:0.3em;
-    height:100%;
-    width:0;
-	margin-right: 0.5em;
-	transition: 0.2s linear;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .todo-list-card > ul > li:hover .del-box
-  {
-    width: 2em;
-	opacity: 1.0;
-  }
-
-  .todo-list-card > ul > li.completed
-  {
-    color:gray;
-    text-decoration: line-through;
-  }
-
-  .todo-list-card > ul > li  > .move-box
-  {
-    background: #42e73c;
-    fill:white;
-    padding:0.3em;
-    height:100%;
-    width: 2em;
-    cursor: pointer;
-  }
 
     .del-t_block {
         opacity: 0.5;
@@ -163,6 +104,17 @@
 
     .t_block:hover .del-t_block {
         opacity: 1.0;
+    }
+
+    .t_block.delete .fb-text {
+        text-decoration: line-through;
+        text-decoration-color: rgba(30, 30, 30, 0.5);
+    }
+
+    .t_block.new .fb-text::after {
+        content: " (Added)";
+        font-size: 0.7em;
+        color: #6c757d;
     }
 
     #filter_status_bar {
@@ -191,6 +143,10 @@
     .badge.chosen {
         background-color: yellow;
     }
+
+    .content_block{
+                    padding: 3em 1.5em 3em 1.5em;
+                }
 </style>
     <!--TODO: TO CSS-->
 
@@ -222,9 +178,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('analysis')}}">Analysis</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('goals')}}">Goals</a>
-            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -234,7 +188,7 @@
                     <a class="dropdown-item" href="#">Quick Guide</a>
                     <a class="dropdown-item" href="#">API Doc.</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">About</a>
+                    <a class="dropdown-item" href="{{url_for('about')}}">About</a>
                 </div>
             </li>
 

@@ -1,17 +1,28 @@
 import {tableUI} from './table-view.js';
-import {Helpers} from "./table-model.js";
+import {helpers} from "../helpers.js";
 
-export const myViews={
+export const views={
     miniTable : document.getElementById('mini_table'),
     miniTable_body: () => document.querySelector('#mini_table tbody'),
     table_rows : () => document.querySelectorAll('table#mini_table tbody tr'),
+    sync_table_btn :document.getElementById('sync_table_btn'),
+
+
+    graph_views :{
+        expVSinc : 'exp_vs_inc',
+        expVSincPerMonth : 'exp_vs_inc_per_month',
+        netPerMonth : 'net_per_month',
+        balanceTracker : 'balance_tracker',
+        expPerCategory : 'exp_per_category',
+        incPerCategory : 'inc_per_category',
+    },
 };
 
 export const miniTableUI ={
     renderTable : function (logs) {
         let markup='';
-        let [inc,exp,prevLog]=[0,0,null];
-        console.log(logs);
+        let [inc,exp,prevLog,balance]=[0,0,null,0];
+
         for (let log of logs){
             if (prevLog && log.getShortDate() !== prevLog.getShortDate()) {
                 markup += this.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,false);
@@ -19,18 +30,24 @@ export const miniTableUI ={
             }
 
             markup+=tableUI.makeTags_row(log,false);
+            balance+=log.amount;
             inc += Math.max(0,log.amount);
             exp += Math.min(0,log.amount);
 
             prevLog=log;
         }
         if(prevLog) markup += this.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,false);
-        myViews.miniTable.insertAdjacentHTML('beforeend',markup);
+
+        //footer balance:
+        markup+=`<tr class='row-sum'>
+                    <td colspan="3"><h5>Total Balance: ${balance}</h5></td>
+                </tr>`
+        views.miniTable.insertAdjacentHTML('beforeend',markup);
     },
 
     //todo add show and hide rows
     makeTags_sumMonth : (month,inc,exp,big_table=true) =>{
-        let total=Helpers.removeDigits(inc + exp);
+        let total=helpers.removeDigits(inc + exp);
         return `
         <tr class="row-sum" style="">
             <td colspan="${big_table ? 2 :1}"><b>-- ${month} --</b></td>
@@ -53,7 +70,7 @@ export const miniTableUI ={
     },
 
     clearTable: () => {
-        for (let row of myViews.table_rows()) { row.remove();}
+        for (let row of views.table_rows()) { row.remove();}
     },
 
     toggleMonth : (state,event) =>{
@@ -69,6 +86,3 @@ export const miniTableUI ={
 
 };
 
-export const filtersUI ={
-
-};

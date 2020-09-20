@@ -1,16 +1,16 @@
-{%extends "layout.html"%}
-{%block title%}Account{%endblock%}
+{% extends "layout.html" %}
+{% block title %}Account{% endblock %}
 
-{%block content%}
-
-<h2>{{current_user.username.title()}}'s DASHBOARD HERE</h2>
+{% block content %}
+    <script type="module" src="{{ url_for('static',filename='js/account.js') }}"></script>
+    <h2>{{ current_user.username.title() }}'s User Dashboard</h2>
     <h6>{{ current_user.email }}</h6>
 
     <!-- EMAIL CHANGE-->
     <div class="row mt-4 pb-4 border-bottom">
-        <div class="col-2">Email</div>
+        <div class="col-2">Change Email:</div>
         <div class="col-10 input-group border-2" style="max-width: 35em">
-            <input type="text" class="form-control" placeholder="Email">
+            <input type="text" class="form-control" style="height:inherit;" placeholder="Email" disabled>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" id="btn-change-email">Modify</button>
             </div>
@@ -19,47 +19,22 @@
 
     <!-- CATEGORIES CHANGE-->
     <div class="row p-1 mt-3 pb-2 align-items-center border-bottom">
-        <div class="col-2">Categories</div>
+        <div class="col-2">Modify Categories:</div>
         <div class="col-10">
             <div class="row p-1 mb-3 align-items-center">
-            <div id="in_cats" class="col-md p-1 m-1" style="border-radius:0.7em; background: rgba(67 ,228 ,104 ,0.28);">
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-            </div>
-            <div id="exp_cats" class="col-md p-1 m-1" style="border-radius:0.7em; background: rgba(228 ,67, 67 , 0.3);">
-                 <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-                <span class="t_block" id="in_salary">
-                    <span class="fb-text">Salary</span> <span class="del-t_block">×</span>
-                </span>
-            </div>
+                <div id="in_cats" class="col-md p-1 m-1"
+                     style="border-radius:0.7em; background: rgba(67 ,228 ,104 ,0.28);">
+
+                </div>
+                <div id="exp_cats" class="col-md p-1 m-1"
+                     style="border-radius:0.7em; background: rgba(228 ,67, 67 , 0.3);">
+
+                </div>
             </div>
 
             <div class="row p-1 mb-2 align-items-center justify-content-around">
-                <div class="col-md p-1"><input type="text" style="width:20em" class="form-control" placeholder="Add new category..."></div>
+                <div class="col-md-5 p-1"><input type="text" id="add_cat_input" maxlength="15" style="width: inherit"
+                                                 class="form-control" placeholder="Add new category..."></div>
                 <div class="col-md p-1 form-group btn-group btn-group-toggle m-0" data-toggle="buttons">
                     <label class="btn btn-outline-success ">
                         <input id="log_type-0" name="log_type" type="radio" value="in">Income
@@ -68,14 +43,20 @@
                         <input id="log_type-1" name="log_type" type="radio" value="exp">Expanse
                     </label>
                 </div>
-                <div class="col-md p-1 m-0"><button class="btn btn-secondary">Add</button></div>
+                <div class="col-md p-1 m-0">
+                    <button id="add_cat_submit" class="btn btn-secondary" style="width:inherit">Add</button>
+                </div>
             </div>
             <div class="row p-1 mt-3 align-items-center align-content-center">
                 <div class="col">
-                    <p><small class="text-muted">Notice: You can not delete an active category</small></p>
+                    <p>
+                        <small style='display: block' class="text-muted">Notice: You can not delete an active
+                            category</small>
+                        <small style='display: block' id="mod_cat_msg"></small>
+                    </p>
 
-                    <button class="btn btn-info">Update Categories</button>
-                    <button class="btn btn-outline-danger">Reset Current Changes</button>
+                    <button id="save_mod_cats" class="btn btn-info">Save Categories Changes</button>
+                    <button id="reset_mod_cats" class="btn btn-outline-danger">Reset Current Changes</button>
                 </div>
             </div>
         </div>
@@ -84,31 +65,46 @@
 
     <div class="row  pt-3 pb-3 align-items-center align-content-center border-bottom">
         <div class="col">
-            <button class="btn btn-warning">Change Password</button>
+            <button class="btn btn-warning" disabled>Change Password</button>
         </div>
     </div>
 
     <div class="row pt-3 pb-3 align-items-center align-content-center border-bottom">
         <div class="col">
-            <button class="btn btn-danger">Delete Account</button>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteUserPopup">Delete Account</button>
+        </div>
+    </div>
+
+    <!-- DELETE USER POPUP-->
+
+    <div class="modal fade" id="deleteUserPopup" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm User Deletion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                   <p> Be warned that deleting your account is <b> irreversible</b>.
+                    <br>This means all your Piggy data will be removed.</p>
+                    <p>If you wish to delete your account - Enter your Password:</p>
+                    <div class="form-group mt-3">
+
+                        <input type="password" class="form-control" id="password"  name="password"
+                               placeholder="Password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" name="user_deletion" class="btn btn-danger" value="Delete Me (!)"/>
+                </div>
+                </form>
+            </div>
         </div>
     </div>
 
 
-
-
-
-    <hr>
-    <br><h3 ALIGN="LEFT">
-    <a href="https://getbootstrap.com/docs/4.5/components/input-group/#button-addons"> input-group-prepend,</a>
-    <br><ul> <li> on change: turn button-active</li>
-    <li> put input-warning</li>
-    <li> update button to each field</li>
-    <li>password change link</li>
-    <li>edit categories - adding freely (underscore is forbidden | with limit, maybe make SELECT scrolllable), delete allowed only if the user has no logs with this category</li>
-
-    <li>delete account</li>
-</ul>
-    </h3>
-
-{%endblock%}
+{% endblock %}

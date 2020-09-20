@@ -1,13 +1,183 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 
+{% block head %}
+<script type="module" src="{{ url_for('static',filename='js/home.js') }}"></script>
+{% endblock %}
+
 {% block content %}
-<script type="module" src="{{ url_for('static', filename='js/test.js') }}"></script>
-{% if current_user.is_authenticated %}
-    <h1>USER HOME: Basic Analysis SUCH AS -
-        welcome, 3 months back pi, last expanses and incomes _ 3 each [add more link to table], :)</h1>
-{% else %}
-    <h1>Non-user home _ insert App Promo here</h1>
-{% endif %}
-    <a href="{{ url_for('home', export=1) }}">Click to see get</a>
+
+    {% if current_user.is_authenticated %}
+        <h2 class="p-3">Welcome back, {{ current_user.username.title() }} </h2>
+        <div class="row row-cols-1 row-cols-lg-3">
+
+            <div class="col mb-4">
+                <div class="card h-100">
+                    <div class="media">
+                        <svg class="big-icon align-self-center ml-3" style="fill:#1454d4;">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#wallet"/>
+                        </svg>
+
+                        <div class="card-body media-body">
+                            <h3 class="card-title">Balance</h3>
+                            <h6 class="card-subtitle mb-2 text-muted">Actual Money Balance</h6>
+                            <h1 id="balance">2493 ₪</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col mb-4">
+                <div class="card h-100">
+                    <div class="media">
+                        <svg class="big-icon align-self-center ml-3" style="fill:#1454d4;">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#calendar"/>
+                        </svg>
+
+                        <div class="card-body media-body">
+                            <h3 class="card-title"><span id="curr_month">CUURMONTH</span> Status</h3>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <h2 id="net_month">
+                                <svg class="icon-inline" style="fill:#1454d4; margin-bottom: 0.2em">
+                                    <use href="{{ url_for('static',filename='my-icons.svg') }}#arrow-down"/>
+                                </svg>
+
+                                <span>237</span></h2>
+                            <h6 id="month_desc" class="card-subtitle mb-2 text-muted">That's X% above / below the Monthly Average(no %
+                                for negative)</h6>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col mb-4">
+                <div class="card h-100">
+                    <div class="media">
+                        <svg class="big-icon align-self-center ml-3" style="fill:#1454d4;">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#checkbox"/>
+                        </svg>
+
+                        <div class="card-body media-body">
+                            <h3 class="card-title">Activity</h3>
+                            <h6 id="act_head" class="card-subtitle mb-2 text-muted">Good Job! OR Don't give up!</h6>
+                            <p id="act_desc" class="card-text">Added X Logs lately, keep it going! Add more.</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content_block row align-items-center border-top">
+            <div class="col-md-4 media mb-3">
+                <svg class="big-icon align-self-center" style="fill:#8414d4; margin-right:1em;">
+                    <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>
+                </svg>
+                <div class="media-body">
+                    <h3>Managing</h3>
+                    <h6>Most Recently Added</h6>
+                    <a href="{{ url_for('table') }}">Keep Managing...</a>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-8">
+                  <table id='mini_table' style="display:table !important;" class="table table-sm shadow-sm table-responsive-lg text-center mt-3 table-hover">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Category</th>
+                        </tr>
+                        </thead>
+                      <tbody>
+
+                      </tbody>
+
+                    </table>
+            </div>
+        </div>
+
+
+        <div class="content_block row align-items-center border-top">
+            <div class="col-md-4 media mb-3">
+                <svg class="big-icon align-self-center" style="fill:#d49e14; margin-right:1em;">
+                    <use href="{{ url_for('static',filename='my-icons.svg') }}#analyze_ic"/>
+                </svg>
+                <div class="media-body">
+                    <h3>Analysing</h3>
+                    <h6>Expanses VS Incomes</h6>
+                    <a href="{{ url_for('analysis') }}">Keep Analysing...</a><br>
+                    <small class="text-muted">*Showing Latest Months Documented</small>
+
+
+
+                </div>
+
+
+            </div>
+
+            <div class="col-md-8 shadow-sm">
+
+                <canvas id="net_per_month" style="max-height: 800px; max-width: 600px;"></canvas>
+
+            </div>
+        </div>
+
+
+    {% else %}
+        <!-- NON User Home: -->
+        <h2><a href="{{ url_for('register') }}">Sign Up</a> Now and Get To: </h2>
+        <div class="row row-cols-1 row-cols-lg-2 m-3">
+            <div class="col mb-4">
+                <svg class="big-icon mb-2">
+                    <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>
+                </svg>
+                <h2>Manage</h2>
+                <p>Manage your Incomes and expanses in ONE place.</p>
+            </div>
+
+         <div class="col mb-4">
+                <svg class="big-icon mb-2">
+                    <use href="{{ url_for('static',filename='my-icons.svg') }}#bullseye"/>
+                </svg>
+                <h2>Control</h2>
+                <p>Control your Incomes and Expanses in any way your prefer.</p>
+            </div>
+
+         <div class="col mb-4">
+                <svg class="big-icon mb-2">
+                    <use href="{{ url_for('static',filename='my-icons.svg') }}#analyze_ic"/>
+                </svg>
+                <h2>Analyze  </h2>
+                <p>Analyize your Incomes and Expanses from various perspectives.</p>
+            </div>
+
+        <div class="col mb-4">
+                <svg class="big-icon mb-2">
+                    <use href="{{ url_for('static',filename='my-icons.svg') }}#pen"/>
+                </svg>
+                <h2>Customize  </h2>
+                <p>Create Your Own Expanses and Incomes Categories.</p>
+            </div>
+
+        </div>
+
+        <div class="mb-5">
+             <a class="btn btn-primary btn-lg" href="{{url_for('register')}}" role="button">Get Started Now  »</a>
+        </div>
+
+
+
+        <div class="jumbotron" style="background: #baeef6;margin: -1em;position: relative;">
+             <h1 class="display-4">Piggy</h1>
+            <h3>Budget Management & Analysis App</h3>
+
+        </div>
+
+    {% endif %}
+
 {% endblock %}

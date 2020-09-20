@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Float
 from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 from .models import User
+#installed email validator
 
 # ---static validators---:
 def noWhiteSpaces(self,field):
@@ -44,7 +45,7 @@ class LoginForm(FlaskForm):
 
 class AddLogForm(FlaskForm):
 
-    log_id = HiddenField('', default='') #new log - '', existing log - 'number of id'
+    log_id = HiddenField('', default='') # new log - '', existing log - 'number of id'
     log_utc = HiddenField('', default='')
 
     log_type = RadioField('',validators=[DataRequired()], choices=[('in', 'Income'),('exp','Expanse')]) # defined in HTML
@@ -53,22 +54,15 @@ class AddLogForm(FlaskForm):
 
     time_logged=DateTimeLocalField('Time',format='%Y-%m-%dT%H:%M',validators=[DataRequired()],description='Default time is now')
 
-    # todo categories lists in account
     categories=[]
+    # category - SelectField - dynamic field --> defined in 'routes'
 
-    in_cats=[('in_salary','Salary'),('in_allowance','Allowance'),('in_bonus','Bonus')]
-    exp_cats=[('exp_food','Food'),('exp_entertainment','Entertainment'),('exp_transportation','Transportation'),
-              ('exp_education','Education'),('exp_health','Health'),('exp_beauty','Beauty'),('exp_household','Household')]
-
-    category = SelectField("Category",default='other',choices=[('other','Other')]+categories,
-                           validators=[DataRequired()])
     title = StringField("Title", description='*Optional short description',
                         default="", validators=[Length(max=20), noWhiteSpaces])
     submit_dialog=SubmitField('Add')
     delete_dialog=SubmitField('Delete (!)')
 
-    def setCategories(self,categories):
-        self.categories=[(cat,cat.split('_')[-1].title()) for cat in categories]
+
 
     def validate(self):
         result = True
@@ -82,4 +76,5 @@ class AddLogForm(FlaskForm):
             result = False
 
         return result
+
 

@@ -1,19 +1,30 @@
-import Log, {TQuery, getData, qTypes} from './table-model.js';
-import {myViews, miniTableUI} from './analysis-view.js';
-import {views} from './table-view.js';
-import {filtersControllerClass, filtersUI} from './filtersUI.js';
+import {views, miniTableUI} from './views/analysis-view.js';
+
+import {ChartsUI} from "./logs-charts.js";
+
+import {TQuery} from './models/log-querying.js';
+import {getData} from './helpers.js';
+import {Categories} from "./models/categories.js";
+
+import {FiltersController} from './filters.js';
+import {filtersUI} from "./views/filters-view.js";
+
 
 const state = {
     logs: null,
-    fLogs: null,
-    queries: new TQuery(),
+    filtered_logs: null,
+    queries: null,
+    categories: new Categories(),
+    charts: new ChartsUI(),
+
 };
+
 
 // on-scriptload gets data:
 const init_page = async (refreshData = true) => {
-
-    //todo render loaders all over, clear graphs all over
+    //todo set loaders
     miniTableUI.clearTable();
+    state.charts.destroyCharts();
 
     //get data, else will use existing data in state.logs
     if (refreshData) {
@@ -27,74 +38,37 @@ const init_page = async (refreshData = true) => {
     }
 
     filtersUI.updateFiltersBar(state.queries);
-    state.fLogs = state.queries.getFilteredLogs(state.logs);
+    state.filtered_logs = state.queries.getFilteredLogs(state.logs);
+
+    if(state.filtered_logs.length===0){
+        //todo zero stuff
+    } else{
 
     //todo clear loaders (one by one), render graphs
-    console.log(state.logs);
-    miniTableUI.renderTable(state.fLogs);
+   miniTableUI.renderTable(state.filtered_logs);
 
-}
+   state.charts.loadCharts(state.filtered_logs);
 
-const onchange_URL_HASH = () =>{
-        //could be cause from my inner-js manual update OR user change
-        //isUserChange iff user caused the change by modifying the URL
-        let isUserURLChange = state.queries.getQueriesFromURL();
-
-        if(isUserURLChange) {
-            filtersUI.updateFiltersBar(state.queries);
-            init_page(false);
-        }
     }
+};
 
+window.addEventListener('DOMContentLoaded', async () => {
+    //data
+    await getData.getCategories(state.categories);
+    state.queries = new TQuery(state.categories.getFullArr());
 
-const filtersController = new filtersControllerClass(init_page.bind(undefined,false));
+    //filters
+    const filtersController = new FiltersController(init_page.bind(undefined, false));
+    filtersController.onPageLoad(state, false, false);
 
+    await init_page();
 
-window.addEventListener('load', () => {
-    console.log('loaded');
-
-
-    init_page();
-
-    myViews.miniTable.addEventListener('click', miniTableUI.toggleMonth.bind(undefined, state));
-
-    views.filter_btn.addEventListener('click', filtersUI.open_dialog.bind(undefined, state.queries));
-    views.filter_form.addEventListener('submit', filtersController.applyFilters.bind(filtersController,state.queries));
-    views.filter_clear_all.addEventListener('click',filtersController.clearFilters.bind(filtersController,state.queries));
-    window.addEventListener('hashchange',filtersController.onchange_URL_HASH.bind(filtersController,state.queries));
-      views.apply_on_filter_blocks(block => {
-       views.filter_block_getDel(block).addEventListener('click',filtersController.deleteFilter.bind(filtersController,state.queries));
-    });
+    //mini table
+    views.miniTable.addEventListener('click', miniTableUI.toggleMonth.bind(undefined, state));
+    views.sync_table_btn.addEventListener('click', init_page.bind(undefined, true));
 
 
 
 
-
-
-
-
-
-
-
-    let ctx = document.getElementById('myChart').getContext('2d');
-    let chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'line',
-
-        // The data for our dataset
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45]
-            }]
-        },
-
-        // Configuration options go here
-        options: {}
-    });
 });
-
- window.state = state;
+window.state=state;

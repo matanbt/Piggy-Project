@@ -1,6 +1,12 @@
-import Log, {Categories,TQuery, validators, getData, qTypes} from './table-model.js';
-import {views, formUI, dialogUI, tableUI} from './table-view.js';
-import {filtersUI,filtersControllerClass} from './filtersUI.js';
+import {Categories} from './models/categories.js';
+import {TQuery} from './models/log-querying.js';
+import {getData} from "./helpers.js";
+import {validators} from './models/log-model.js';
+
+import {views, logFormUI, dialogUI, tableUI} from './views/table-view.js';
+
+import {filtersUI} from './views/filters-view.js';
+import {FiltersController} from './filters.js';
 
 /*
 * - logs - array of users log, sent from the server
@@ -12,15 +18,17 @@ import {filtersUI,filtersControllerClass} from './filtersUI.js';
 const state = {
     log: null,
     logs: null,
-    isExpanded: false,
     filtered_logs: null,
-    queries: new TQuery(),
-    mark_o: null,
 
-    categories: new Categories()
+    queries: null,
+    categories: new Categories(),
+
+    //UI vars:
+    isExpanded: false,
+    mark_o: null,
 };
 
-const logDialogController={
+const logDialogController = {
     //fields helpers (requires call from field)
     check_is_changed: {
         amount: () => parseFloat(views.amount.value) !== state.log.getPosAmount(),
@@ -44,7 +52,7 @@ const logDialogController={
         //THIS - in the field's context
         let check = false;
         if (this === views.category) {
-            check = validators.category(this.value, formUI.getLogType());
+            check = validators.category(this.value, logFormUI.getLogType());
         } else {
             check = validators[this.id](this.value);
         }
@@ -58,7 +66,7 @@ const logDialogController={
     },
 
     validate_submit: (event) => {
-        let submit_type = formUI.get_form_data();
+        let submit_type = logFormUI.get_form_data();
         views.dialog_form.dataset.type = '';
 
         // DELETE:
@@ -83,7 +91,7 @@ const logDialogController={
 
         //ADD OR MODIFY:
         let flag = true;
-        if (!formUI.getLogType()) {
+        if (!logFormUI.getLogType()) {
             flag = false;
         }
         for (let field_id of views.fields_ids.slice(1)) {
@@ -101,37 +109,37 @@ const logDialogController={
     open_edit: (log) => {
         state.log = log;
         dialogUI.init_edit(state.log);
-        formUI.onchange_type();
-        formUI.remove_styles_invalid_editing();
+        logFormUI.onchange_type();
+        logFormUI.remove_styles_invalid_editing();
         dialogUI.open();
     },
 
     open_add: () => {
         state.log = null;
         dialogUI.init_add();
-        formUI.remove_styles_invalid_editing();
+        logFormUI.remove_styles_invalid_editing();
         dialogUI.open();
     },
 
 }
 
 const tableController = {
-     setRowsListeners: () => {
+
+    setRowsListeners: () => {
         for (let log of state.logs) {
             views.btn_edit(log.id).addEventListener('click', logDialogController.open_edit.bind(undefined, log));
         }
-
     },
 
-    load_table: async function (reload=false)  {
+    load_table: async function () {
 
         //clearTable, renderSpinner
         tableUI.clearTable();
         tableUI.loading();
 
-        state.isExpanded=false;
+        state.isExpanded = false;
         state.logs = null;
-        state.filtered_logs=null;
+        state.filtered_logs = null;
 
         try {
             await getData.getLogs(state);
@@ -148,79 +156,73 @@ const tableController = {
             tableController.setRowsListeners();
 
         } catch (err) {
-            console.log('%cerror', 'background:red;');
-            console.info(err);
-            alert(err);
-            //print to table
+            console.log(err);
             tableUI.error();
         }
     },
 
+    //filters current Log Table by current TQuery Object, also updates Filters Bar
     load_filtered_table() {
         filtersUI.updateFiltersBar(state.queries);
 
-        //if no filters - shows sums
-        tableUI.toggleRowSum(state.queries.isEmpty());
-
+        //calculate Filtered-Logs and filters the table-view
         state.filtered_logs = state.queries.getFilteredLogs(state.logs);
-
         tableUI.filterRowByRow(state.filtered_logs, state.logs);
 
-        tableUI.toggleResultsRow(!state.queries.isEmpty(),state.filtered_logs);
-        filtersUI.styleByFilters(state.mark_o,state.queries);
+        //if no filters --> shows Monthly Sums
+        tableUI.toggleRowSum(state.queries.isEmpty());
+
+        //if filters --> styles
+        tableUI.toggleResultsRow(!state.queries.isEmpty(), state.filtered_logs);
+        tableUI.styleTableByFilters(state.mark_o, state.queries);
     },
 }
 
 
 //onload script
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', async function () {
+    console.log('loading.........');
+    state.mark_o = new Mark(views.table);
+    await getData.getCategories(state.categories);
+
+    state.queries = new TQuery(state.categories.getFullArr());
 
 
-    const filtersController = new filtersControllerClass(tableController.load_filtered_table);
-    filtersUI.renderCategories(state.categories)
-    views.inf_cat_div().addEventListener('click',filtersController.chooseCat);
-
-    views.apply_on_fields((field) => {
-        field.addEventListener('change', logDialogController.validate_field.bind(field));
-        field.addEventListener('change', logDialogController.onchange_field.bind(field));
-    });
-
-    views.apply_on_filter_blocks(block => {
-       views.filter_block_getDel(block).addEventListener('click',filtersController.deleteFilter.bind(filtersController,state.queries));
-    });
+    //filters
+    const filtersController = new FiltersController(tableController.load_filtered_table);
+    filtersController.onPageLoad(state, true, true);
 
 
-    views.dialog_form.addEventListener('submit', logDialogController.validate_submit);
+    //log dialog
+    {
+        views.apply_on_fields((field) => {
+            field.addEventListener('change', logDialogController.validate_field.bind(field));
+            field.addEventListener('change', logDialogController.onchange_field.bind(field));
+        });
 
-    views.open_add_btn.addEventListener('click', logDialogController.open_add);
-    views.open_add_btn_small.addEventListener('click', logDialogController.open_add);
+        views.dialog_form.addEventListener('submit', logDialogController.validate_submit);
+        //views.open_add_btn.addEventListener('click', logDialogController.open_add);
+        views.open_add_btn_small.addEventListener('click', logDialogController.open_add);
 
-    views.submit_dialog.addEventListener('click', () => {
-        views.dialog_form.dataset.type = 'submit'
-    });
-    views.delete_dialog.addEventListener('click', () => {
-        views.dialog_form.dataset.type = 'delete'
-    });
+        views.submit_dialog.addEventListener('click', () => {
+            views.dialog_form.dataset.type = 'submit';
+        });
+        views.delete_dialog.addEventListener('click', () => {
+            views.dialog_form.dataset.type = 'delete';
+        });
 
-    views.log_type_exp.onchange = formUI.onchange_type;
-    views.log_type_inc.onchange = formUI.onchange_type;
+        views.log_type_exp.onchange = logFormUI.onchange_type;
+        views.log_type_inc.onchange = logFormUI.onchange_type;
+    }
 
-    views.filter_btn.addEventListener('click', filtersUI.open_dialog.bind(undefined, state.queries));
-    views.search.addEventListener('input', filtersController.changeSearch.bind(filtersController,state.queries));
-    views.filter_form.addEventListener('submit', filtersController.applyFilters.bind(filtersController,state.queries));
-    views.filter_clear_all.addEventListener('click',filtersController.clearFilters.bind(filtersController,state.queries));
-    window.addEventListener('hashchange',filtersController.onchange_URL_HASH.bind(filtersController,state.queries));
 
-    views.expand_all_btn.addEventListener('click', tableUI.toggleAll.bind(undefined,state));
-    views.sync_table_btn.addEventListener('click', tableController.load_table.bind(true));
-
-    state.mark_o=new Mark(views.table);
+    //table
+    {
+        views.expand_all_btn.addEventListener('click', tableUI.toggleAll.bind(undefined, state));
+        views.sync_table_btn.addEventListener('click', tableController.load_table.bind(true));
+    }
 
     tableController.load_table();
 });
 
-
-window.func = tableUI.toggleAll
-
-window.views=views;
 window.state = state;

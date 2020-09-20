@@ -10,18 +10,26 @@
         <!-- SIDE BAR-->
         <div class="col-md-3 text-center p-3">
             <div class="card" style="width: 100%;">
-                <div class="card-header"><h5>Summary</h5></div>
-                <div class="card-body border-bottom">
+                <div class="card-header"><small>Manage, Add and Edit your Incomes and Expanses via Smart Table
+</small></div>
+                <div class="card-body border-bottom" style="background: #d5f7ff">
                     <h5 class="card-title">Balance:</h5>
                     <h4 class="card-text">{{ logs_pack['balance'] }}</h4>
                 </div>
+
+                <!--
                 <div class="card-body border-bottom">
-                    <button id='open_add_btn' class="btn btn-info">
+                    <button id='' class="btn btn-info">
                         <svg class="big-icon-white">
                             <use href="{{ url_for('static',filename='my-icons.svg') }}#add_log_ic"/>
                         </svg>
                     </button>
                 </div>
+
+                <div class="card-body border-bottom">
+                    ---monthes <br>scroll spy---
+                </div>-->
+
                 <div class="card-body border-bottom">
                     <button id='sync_table_btn' class="btn btn-primary">
                         <svg class="icon-white">
@@ -32,7 +40,7 @@
 
                 </div>
 
-                <a class="card-link" href="#">
+                <a id="a_export_csv" class="card-link" href="#">
                 <div class="media card-body border-bottom">
                     <svg class="icon" style="fill:#1D6F42">
                         <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
@@ -41,14 +49,16 @@
                     <span class="media-body">Export to CSV</span>
                 </div></a>
 
+                <a id="a_take_filters" class="card-link" style="margin-left: 0" href="#">
                 <div class="media card-body border-bottom">
                     <svg class="icon" style="fill:#d2840c">
                         <use href="{{ url_for('static',filename='my-icons.svg') }}#analyze_ic"/>
                     </svg>
-                    <span class="media-body">Take Table to Analysis</span>
-                </div>
+                    <span class="media-body">Take Filters to Analysis</span>
+                </div></a>
+
                 <div class="card-footer">
-                    <small>Shows all Incomes and Expanses sorted by date</small>
+                    <small></small>
                 </div>
 
             </div>
@@ -93,7 +103,7 @@
                 <div id="filter_status_bar" style="display: none;" class='col-12'>
                     <b>Filters:</b>
                     <span class="t_block" id="fb_search"> Look for: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
-                    <span class="t_block" id="fb_sortBy"> Sort By: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
+                    <span class="t_block" id="fb_sortBy"> Sort By: <span style="text-transform:capitalize;"class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
                     <span class="t_block" id="fb_type"> Type:  <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
                     <span class="t_block" id="fb_date_from"> From: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
                     <span class="t_block" id="fb_date_until"> Until: <span class="fb-text">lol</span> <span class="del-t_block">&times;</span></span>
@@ -110,15 +120,35 @@
             <table id='logs_table' class="table table-responsive-sm text-center mt-3 table-hover">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col">Month</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Category</th>
+                    <th scope="col">Month
+
+                    </th>
+                    <th scope="col">
+                        Date
+                        <svg class="icon-inline sort-table-icons" id="date_sort" alt="sort">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#sort_up"/>
+                        </svg>
+                    </th>
+                    <th scope="col">
+                        Amount
+                        <svg class="icon-inline sort-table-icons" id="amount_sort">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#sort"/>
+                        </svg>
+                    </th>
+                    <th scope="col">
+                        Category
+                        <svg class="icon-inline sort-table-icons" id="category_sort">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#sort"/>
+                        </svg>
+                    </th>
                     <th scope="col">Options</th>
                 </tr>
                 </thead>
                 <tbody>
                 </tbody>
+                <tfoot>
+
+                </tfoot>
             </table>
         </div>
     </div>
@@ -254,18 +284,21 @@
                         </div>
                     </div>
 
-                    <div class="form-group row align-items-center">
+                     <div class="form-group row align-items-center">
                         <div class="col-2">
                             Categories:
                         </div>
-                        <div id="filter_cat" class="col">
+                         <div id="filter_cat" class="col">
                             <div id="filter_cat_in" class="mb-1 pb-2 border-bottom">
-                            <a href="" class="badge badge-secondary chosen">chosen</a>
                                 <!--JS RENDER-->
                             </div>
-                            <div id="filter_cat_exp">
+                            <div id="filter_cat_exp" class="mb-1 pb-2 border-bottom">
 
                             </div>
+                            <div id="filter_cat_other">
+                                <a href="" id="other" class="badge badge-secondary mr-1">Other</a>
+                            </div>
+
                         </div>
                     </div>
 
