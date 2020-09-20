@@ -73,7 +73,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -85,13 +85,13 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\MatanBT\Google Drive\Coding Projects\Piggy-Project\piggy\static" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\MatanBT\Google Drive\Coding Projects\Piggy-Project\piggy\static\js" />
       <recent name="C:\Users\MatanBT\Google Drive\Coding Projects\Piggy-Project\piggy\static" />
       <recent name="C:\Users\MatanBT\Google Drive\Coding Projects\Piggy-Project\piggy\js" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\MatanBT\Google Drive\Coding Projects\Piggy-Project\piggy\static" />
     </key>
   </component>
   <component name="RunManager" selected="Python.run">
@@ -145,7 +145,7 @@
       <workItem from="1599723694685" duration="65833000" />
       <workItem from="1599992476272" duration="26000" />
       <workItem from="1600015287725" duration="78807000" />
-      <workItem from="1600593065013" duration="4557000" />
+      <workItem from="1600593065013" duration="5371000" />
     </task>
     <servers />
   </component>
@@ -198,10 +198,10 @@
     </state>
     <state width="189" height="457" key="HiddenNamespacesPopup/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1598551055082" />
     <state width="189" height="457" key="HiddenNamespacesPopup/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597587170679" />
-    <state x="478" y="52" key="SettingsEditor" timestamp="1600016536943">
+    <state x="478" y="52" key="SettingsEditor" timestamp="1600600106583">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="478" y="52" key="SettingsEditor/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600016536943" />
+    <state x="478" y="52" key="SettingsEditor/1920.-762.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1600600106583" />
     <state x="312" y="48" key="SettingsEditor/1920.0.1536.824/0.0.1536.824@0.0.1536.824" timestamp="1597587349450" />
     <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1597481839419">
       <screen x="0" y="0" width="1536" height="824" />
