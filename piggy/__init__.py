@@ -4,7 +4,6 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
 
-print('created app in INIT')
 app = Flask(__name__, static_folder='static', template_folder='templates')
 #app.add_url_rule('/js/<filename>', endpoint='js')
 app.config['SECRET_KEY']='42bb4f60250681687b6325e7783061ba'
