@@ -59,7 +59,7 @@ class Log(db.Model):
 
     # real post-time (in unix), will be used to verify when modifying Log by ID
     # ASSUMES user won't post and delete in the *same* milli-second
-    utc_ms_verification = db.Column(db.Integer, nullable=False)
+    utc_ms_verification = db.Column(db.BigInteger, nullable=False)
 
     # 'logger' ID
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
