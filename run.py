@@ -1,4 +1,7 @@
+import os
 from piggy import app
 
 if __name__ == "__main__":
-    app.run() #debug=True,host='192.168.1.221',port='5000'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.run(debug=True)

@@ -2,7 +2,9 @@
 {% block title %}Home{% endblock %}
 
 {% block head %}
-<script type="module" src="{{ url_for('static',filename='js/home.js') }}"></script>
+    {% if current_user.is_authenticated %}
+        <script type="module" src="{{ url_for('static',filename='js/home.js') }}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -12,7 +14,7 @@
         <div class="row row-cols-1 row-cols-lg-3">
 
             <div class="col mb-4">
-                <div class="card h-100">
+                <div class="card h-100 shadow-sm">
                     <div class="media">
                         <svg class="big-icon align-self-center ml-3" style="fill:#1454d4;">
                             <use href="{{ url_for('static',filename='my-icons.svg') }}#wallet"/>
@@ -28,7 +30,7 @@
             </div>
 
             <div class="col mb-4">
-                <div class="card h-100">
+                <div class="card h-100 shadow-sm">
                     <div class="media">
                         <svg class="big-icon align-self-center ml-3" style="fill:#1454d4;">
                             <use href="{{ url_for('static',filename='my-icons.svg') }}#calendar"/>
@@ -52,7 +54,7 @@
             </div>
 
             <div class="col mb-4">
-                <div class="card h-100">
+                <div class="card h-100 shadow-sm">
                     <div class="media">
                         <svg class="big-icon align-self-center ml-3" style="fill:#1454d4;">
                             <use href="{{ url_for('static',filename='my-icons.svg') }}#checkbox"/>
@@ -131,8 +133,8 @@
     {% else %}
         <!-- NON User Home: -->
         <h2><a href="{{ url_for('register') }}">Sign Up</a> Now and Get To: </h2>
-        <div class="row row-cols-1 row-cols-lg-2 m-3">
-            <div class="col mb-4">
+        <div class="row row-cols-1 row-cols-lg-2 mt-5 m-3">
+            <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>
                 </svg>
@@ -140,7 +142,7 @@
                 <p>Manage your Incomes and expanses in ONE place.</p>
             </div>
 
-         <div class="col mb-4">
+         <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#bullseye"/>
                 </svg>
@@ -148,7 +150,7 @@
                 <p>Control your Incomes and Expanses in any way your prefer.</p>
             </div>
 
-         <div class="col mb-4">
+         <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#analyze_ic"/>
                 </svg>
@@ -156,7 +158,7 @@
                 <p>Analyize your Incomes and Expanses from various perspectives.</p>
             </div>
 
-        <div class="col mb-4">
+        <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#pen"/>
                 </svg>
@@ -167,7 +169,7 @@
         </div>
 
         <div class="mb-5">
-             <a class="btn btn-primary btn-lg" href="{{url_for('register')}}" role="button">Get Started Now  »</a>
+             <a class="btn btn-primary btn-lg" href="{{url_for('register')}}" style="margin-top:-1.5em" role="button">Get Started Now  »</a>
         </div>
 
 

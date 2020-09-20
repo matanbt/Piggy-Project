@@ -1,0 +1,6 @@
+
+Some Useful Commands for Heroku CLI:
+
+--preload
+
+heroku ps:scale worker=1

@@ -1,16 +1,17 @@
-import datetime, time
+import datetime
 import json
+import time
 
 from flask import render_template, flash, \
-    redirect, url_for, request, abort, jsonify, make_response
+    redirect, url_for, request, abort, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from wtforms import SelectField
 from wtforms.validators import DataRequired
 
-from . import app, db, bcrypt, login_manager
-from .scripts import misc
-from .models import User, Log
+from . import app, db, bcrypt
 from .forms import RegisterForm, LoginForm, AddLogForm
+from .models import User, Log
+from .scripts import misc
 
 
 # ==============   USER PAGES  ============== #

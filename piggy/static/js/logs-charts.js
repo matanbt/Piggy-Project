@@ -236,7 +236,6 @@ export class ChartsUI {
                             borderColor: "rgb(9,52,79)",
                             // Changes this dataset to become a line
                             type: 'line',
-                            lineTension: 0.6,
                             order: 1
                         },
 
