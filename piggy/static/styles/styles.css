@@ -1,0 +1,122 @@
+mark {
+    background: orange;
+    color: black;
+    padding: 0px !important;
+}
+
+body {
+    background-color: rgba(238, 238, 238, 0.08);
+}
+
+td {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.collapsing {
+    transition: none !important;
+}
+
+.big-icon-white {
+    display: inline-block;
+    width: 75px;
+    height: 75px;
+    fill: white;
+}
+
+.big-icon {
+    display: inline-block;
+    width: 75px;
+    height: 75px;
+    fill: #1454d4;
+}
+
+.icon-white {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    fill: white;
+}
+
+.icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    fill: black;
+}
+
+
+.icon-inline {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: black;
+}
+
+.editing {
+    background: #ffffb2 !important;
+}
+
+
+.del-t_block {
+    opacity: 0.5;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 0.9em;
+    margin-left: 0.3em;
+    cursor: pointer;
+}
+
+.t_block {
+    border-right-width: thin;
+    display: inline-block;
+    transition: visibility 1s, opacity 0.5s linear;
+}
+
+.t_block:hover .del-t_block {
+    opacity: 1.0;
+}
+
+.t_block.delete .fb-text {
+    text-decoration: line-through;
+    text-decoration-color: rgba(30, 30, 30, 0.5);
+}
+
+.t_block.new .fb-text::after {
+    content: " (Added)";
+    font-size: 0.7em;
+    color: #6c757d;
+}
+
+#filter_status_bar {
+    padding: 0.35em;
+    background-color: #edf2f5;
+}
+
+.exp_cell {
+    background-color: rgba(255, 102, 102, 0.8);
+}
+
+.inc_cell {
+    background-color: rgba(153, 255, 153, 0.8);
+}
+
+.exp_span {
+    background-color: rgba(255, 102, 102, 0.5);
+}
+
+.inc_span {
+    background-color: rgba(153, 255, 153, 0.5);
+}
+
+.row-sum {
+    background-color: #e9ecef; /*eeeee*/
+}
+
+.badge.chosen {
+    background-color: yellow;
+}
+
+.content_block {
+    padding: 3em 1.5em 3em 1.5em;
+}

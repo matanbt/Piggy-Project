@@ -181,7 +181,8 @@ const tableController = {
 
 //onload script
 window.addEventListener('DOMContentLoaded', async function () {
-    console.log('loading.........');
+    tableUI.loading();
+
     state.mark_o = new Mark(views.table);
     await getData.getCategories(state.categories);
 
@@ -219,7 +220,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     //table
     {
         views.expand_all_btn.addEventListener('click', tableUI.toggleAll.bind(undefined, state));
-        views.sync_table_btn.addEventListener('click', tableController.load_table.bind(true));
+        views.sync_table_btn.addEventListener('click', tableController.load_table);
     }
 
     tableController.load_table();

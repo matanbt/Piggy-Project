@@ -1,4 +1,5 @@
 import {Categories} from "../models/categories.js";
+import {extraUI} from "../helpers.js";
 
 
 export const views={
@@ -82,6 +83,14 @@ export const modCatsUI ={
     clearMsg (){
         views.modCats_msg.classList.remove('text-success', 'text-danger');
         views.modCats_msg.innerHTML='';
-    }
+    },
+
+    loading(){
+      [views.in_cats_div,views.exp_cats_div].forEach(el=>extraUI.setSpinner(el));
+    },
+
+    clearLoading(){
+      [views.in_cats_div,views.exp_cats_div].forEach(el=>extraUI.delSpinner(el));
+    },
 };
 

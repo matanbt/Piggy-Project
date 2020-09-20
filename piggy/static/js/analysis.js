@@ -22,8 +22,9 @@ const state = {
 
 // on-scriptload gets data:
 const init_page = async (refreshData = true) => {
-    //todo set loaders
+
     miniTableUI.clearTable();
+    miniTableUI.loading();
     state.charts.destroyCharts();
 
     //get data, else will use existing data in state.logs
@@ -32,7 +33,7 @@ const init_page = async (refreshData = true) => {
             await getData.getLogs(state)
         } catch (err) {
             console.log(err);
-            //todo render error
+            miniTableUI.error();
             return;
         }
     }
@@ -40,19 +41,19 @@ const init_page = async (refreshData = true) => {
     filtersUI.updateFiltersBar(state.queries);
     state.filtered_logs = state.queries.getFilteredLogs(state.logs);
 
-    if(state.filtered_logs.length===0){
-        //todo zero stuff
-    } else{
+    if (state.filtered_logs.length === 0) {
+        //todo special treatment to zero case
+    } else {
 
-    //todo clear loaders (one by one), render graphs
-   miniTableUI.renderTable(state.filtered_logs);
-
-   state.charts.loadCharts(state.filtered_logs);
-
+        miniTableUI.clearTable();
+        miniTableUI.renderTable(state.filtered_logs);
+        state.charts.loadCharts(state.filtered_logs);
     }
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
+    miniTableUI.loading();
+
     //data
     await getData.getCategories(state.categories);
     state.queries = new TQuery(state.categories.getFullArr());
@@ -68,7 +69,5 @@ window.addEventListener('DOMContentLoaded', async () => {
     views.sync_table_btn.addEventListener('click', init_page.bind(undefined, true));
 
 
-
-
 });
-window.state=state;
+window.state = state;

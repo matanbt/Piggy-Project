@@ -24,6 +24,23 @@ export const getData = {
             obj.categories = null;
         }
 
+    },
+
+    setCategories : async (toAdd,toDelete) =>{
+      const resp = await fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                toAdd,
+                toDelete,
+            })
+        });
+        return {
+            ok : resp.ok,
+            json : await resp.json()
+        };
     }
 };
 

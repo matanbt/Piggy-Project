@@ -6,16 +6,6 @@
     <h2>{{ current_user.username.title() }}'s User Dashboard</h2>
     <h6>{{ current_user.email }}</h6>
 
-    <!-- EMAIL CHANGE-->
-    <div class="row mt-4 pb-4 border-bottom">
-        <div class="col-2">Change Email:</div>
-        <div class="col-10 input-group border-2" style="max-width: 35em">
-            <input type="text" class="form-control" style="height:inherit;" placeholder="Email" disabled>
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="btn-change-email">Modify</button>
-            </div>
-        </div>
-    </div>
 
     <!-- CATEGORIES CHANGE-->
     <div class="row p-1 mt-3 pb-2 align-items-center border-bottom">
@@ -63,6 +53,19 @@
 
     </div>
 
+
+    <!-- EMAIL CHANGE-->
+    <div class="row mt-4 pb-4 border-bottom">
+        <div class="col-2">Change Email:</div>
+        <div class="col-10 input-group border-2" style="max-width: 35em">
+            <input type="text" class="form-control" style="height:inherit;" placeholder="Email" disabled>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="btn-change-email">Modify</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSWORD CHANGE-->
     <div class="row  pt-3 pb-3 align-items-center align-content-center border-bottom">
         <div class="col">
             <button class="btn btn-warning" disabled>Change Password</button>

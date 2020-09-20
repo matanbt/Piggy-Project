@@ -54,7 +54,7 @@ def register():
         db.session.add(new_log)
         db.session.commit()
         flash(f'<b>{form.username.data}</b> Registered Succesfully! Please Login to start Piggying', "success")
-        return redirect(url_for('login'))  # ... todo auto login and guide (helper)
+        return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
 

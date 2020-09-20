@@ -124,7 +124,6 @@ export const tableUI = {
     },
 
     error : () =>{
-        //TODO getErrorMarkup
         views.table.insertAdjacentHTML('beforeend', `<tr><td colspan="5">
             ${extraUI.getErrorMarkup()}
             </td></tr>`);
@@ -334,7 +333,7 @@ export const dialogUI ={
         views.log_type_inc.disabled = false;
 
 
-        //new Date(Date.parse(new Date().toLocaleString())).toISOString() //TODO LOCAL TIME
+        //new Date(Date.parse(new Date().toLocaleString())).toISOString()
         views.time_logged.value = helpers.getNowToForm();
         //general cosmetic:
         views.form_title.textContent = 'Income/Expanses Addition';

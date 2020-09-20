@@ -1,4 +1,4 @@
-import {getData, helpers} from "./helpers.js";
+import {extraUI, getData, helpers} from "./helpers.js";
 import {chartsCalcs, ChartsUI} from "./logs-charts.js";
 import {tableUI} from "./views/table-view.js";
 
@@ -10,6 +10,7 @@ const state = {
 }
 const views = {
     example_chart: document.getElementById('net_per_month').getContext('2d'),
+    example_chart_elem: document.getElementById('net_per_month'),
 
     balance: document.querySelector('#balance'),
 
@@ -23,41 +24,41 @@ const views = {
 
     table: document.querySelector('#mini_table>tbody'),
 }
-
+window.views = views;
 const cardsUI = {
 
     loadCards: (state) => {
         //1 - balance
         views.balance.textContent = `${state.calcs.curr_balance} ₪`;
-        views.balance.classList.remove('text-danger','text-success');
+        views.balance.classList.remove('text-danger', 'text-success');
         views.balance.classList.add(`text-${state.calcs.curr_balance >= 0 ? 'success' : 'danger'}`);
 
         //2 - curr month
         let curr_month = helpers.getShortDate();
         views.curr_month.textContent = curr_month;
 
-        let month_index=state.calcs.active_months.indexOf(curr_month);
+        let month_index = state.calcs.active_months.indexOf(curr_month);
         if (month_index === -1) {
             views.net_month.textContent = '-';
             views.month_desc.innerHTML = `No Expanses or Incomes of this month, yet.
                                         <a href='${from_server.url_for.table}'>Add...</a>`
         } else {
             let net_month = state.calcs.net_arr[month_index];
-            let diff = helpers.removeDigits(Math.abs(net_month - state.calcs.net_avg),0);
-            let diff_sign=net_month - state.calcs.net_avg;
+            let diff = helpers.removeDigits(Math.abs(net_month - state.calcs.net_avg), 0);
+            let diff_sign = net_month - state.calcs.net_avg;
             let msg;
             if (diff_sign >= 0) {
-                views.net_month_ic.style.fill='#28a745';
+                views.net_month_ic.style.fill = '#28a745';
                 views.net_month_ic.querySelector('use')
-                .setAttribute('href',from_server.url_for.static_icons+'#arrow-up');
+                    .setAttribute('href', from_server.url_for.static_icons + '#arrow-up');
                 msg = `That's ${diff}₪ above the Monthly Average`;
             } else {
-                views.net_month_ic.style.fill='#dc3545';
+                views.net_month_ic.style.fill = '#dc3545';
                 views.net_month_ic.querySelector('use')
-                .setAttribute('href',from_server.url_for.static_icons+'#arrow-down');
+                    .setAttribute('href', from_server.url_for.static_icons + '#arrow-down');
                 msg = `That's ${diff}₪ below the Monthly Average`;
             }
-            views.net_month.textContent = net_month+' ₪';
+            views.net_month.textContent = net_month + ' ₪';
 
             views.month_desc.textContent = msg;
         }
@@ -76,42 +77,66 @@ const cardsUI = {
         }
 
         //end
-    }
+    },
+
+    loading: () => {
+
+        [views.balance, views.month_desc, views.act_head].map(el => el.parentElement).forEach(el => extraUI.setSpinner(el));
+    },
+
+    clearLoading: () => {
+        [views.balance, views.month_desc, views.act_head].map(el => el.parentElement).forEach(el => extraUI.delSpinner(el));
+    },
 
 }
 
-const examplesUI ={
-    loadChart(state){
+const examplesUI = {
+    loadChart(state) {
         //keeps
-        let newCalcs={
-            active_months : state.calcs.active_months.slice(-3),
+        let newCalcs = {
+            active_months: state.calcs.active_months.slice(-3),
             exp_arr: state.calcs.exp_arr.slice(-3),
             inc_arr: state.calcs.inc_arr.slice(-3)
         }
         state.exampleChart = ChartsUI.expVSincMonthly(views.example_chart, newCalcs);
     },
-  loadTable(state){
-        let markup='';
+    loadTable(state) {
+        let markup = '';
 
-        let logs=[...state.logs].sort((a,b)=> b.utc_ms_verification-a.utc_ms_verification);
-        for(let log of logs.slice(0,3)){
-            markup+=tableUI.makeTags_row(log,false,true);
+        let logs = [...state.logs].sort((a, b) => b.utc_ms_verification - a.utc_ms_verification);
+        for (let log of logs.slice(0, 3)) {
+            markup += tableUI.makeTags_row(log, false, true);
         }
 
-        views.table.innerHTML='';
+        views.table.innerHTML = '';
 
-        views.table.insertAdjacentHTML('beforeend',markup);
-  }
+        views.table.insertAdjacentHTML('beforeend', markup);
+    },
+
+    loading() {
+        [views.example_chart_elem, views.table.parentElement].map(el => el.parentElement).forEach(el => extraUI.setSpinner(el));
+    },
+    clearLoading() {
+        [views.example_chart_elem, views.table.parentElement].map(el => el.parentElement).forEach(el => extraUI.delSpinner(el));
+    },
+
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
+    cardsUI.loading();
+    examplesUI.loading();
+
     await getData.getLogs(state);
     state.calcs = chartsCalcs.perMonth(state.logs);
 
-
+    cardsUI.clearLoading();
     cardsUI.loadCards(state);
+
+    examplesUI.clearLoading();
     examplesUI.loadTable(state);
     examplesUI.loadChart(state);
+
+
 });
 
-window.state=state;
+window.state = state;

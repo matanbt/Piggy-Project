@@ -1,8 +1,13 @@
 {% extends "layout.html" %}
 {% block title %}Analysis{% endblock %}
+{% block head %}
+    <script type="module" src="{{ url_for('static',filename='js/analysis.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+{% endblock %}
 
 {% block content %}
-    <script type="module" src="{{ url_for('static',filename='js/analysis.js') }}"></script>
+
+
     <h1>Analyze Data</h1>
     <div class="row justify-content-center">
 
@@ -18,7 +23,7 @@
                 </div>
                  -->
 
-                 <div class="card-body border-bottom">
+                <div class="card-body border-bottom">
                     <button id='sync_table_btn' class="btn btn-primary">
                         <svg class="icon-white">
                             <use href="{{ url_for('static',filename='my-icons.svg') }}#refresh_ic"/>
@@ -57,21 +62,23 @@
                 </div>
 
                 <a id="a_export_csv" class="card-link" href="#">
-                <div class="media card-body border-bottom">
-                    <svg class="icon" style="fill:#1D6F42">
-                        <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
-                    </svg>
+                    <div class="media card-body border-bottom">
+                        <svg class="icon" style="fill:#1D6F42">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#export-sheet_ic"/>
+                        </svg>
 
-                    <span class="media-body">Export to CSV</span>
-                </div></a>
+                        <span class="media-body">Export to CSV</span>
+                    </div>
+                </a>
 
-                <a id="a_take_filters" class="card-link" style="margin-left: 0"  href="#">
-                <div class="media card-body border-bottom">
-                    <svg class="icon" style="fill:#d2840c">
-                        <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>
-                    </svg>
-                    <span class="media-body">Take Filters to Table</span>
-                </div></a>
+                <a id="a_take_filters" class="card-link" style="margin-left: 0" href="#">
+                    <div class="media card-body border-bottom">
+                        <svg class="icon" style="fill:#d2840c">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>
+                        </svg>
+                        <span class="media-body">Take Filters to Table</span>
+                    </div>
+                </a>
 
                 <div class="card-footer"></div>
             </div>
@@ -87,7 +94,8 @@
                     <h3>Monthly Summary:</h3>
                 </div>
                 <div class="col-lg-9">
-                    <table id='mini_table' style="display:table !important;" class="table table-responsive-lg shadow-sm text-center mt-3 table-hover">
+                    <table id='mini_table' style="display:table !important;"
+                           class="table table-responsive-lg shadow-sm text-center mt-3 table-hover">
                         <thead class="thead-light">
                         <tr>
                             <th scope="col">Date</th>
@@ -98,10 +106,12 @@
                     </table>
                 </div>
             </div>
-        </div>  </div>
+        </div>
+    </div>
 
 
-        <div class="row justify-content-center"><div class="col">
+    <div class="row justify-content-center">
+        <div class="col">
 
             <!--GRAPH 1-->
             <div class="content_block row align-items-center border-bottom">
@@ -113,12 +123,12 @@
             </div>
 
             <!--GRAPH 2-->
-             <div class="content_block row align-items-center border-bottom">
+            <div class="content_block row align-items-center border-bottom">
                 <div class="col-md-3"><h3>Expanses VS Incomes <br> (Monthly)</h3></div>
 
-                <div class="col-md-9" >
+                <div class="col-md-9">
 
-                    <canvas id="exp_vs_inc_per_month" style="max-height: 800px; max-width: 600px;"></canvas>
+                    <canvas id="exp_vs_inc_per_month" style="max-height: 750px; max-width: 750px;"></canvas>
 
                 </div>
             </div>
@@ -130,9 +140,9 @@
                     <small class="text-muted">'Net Average' is calculated over documented months only</small>
                 </div>
 
-                <div class="col-md-9" >
+                <div class="col-md-9">
 
-                    <canvas id="net_per_month" style="max-height: 800px; max-width: 600px;"></canvas>
+                    <canvas id="net_per_month" style="max-height: 750px; max-width: 750px;"></canvas>
 
                 </div>
             </div>
@@ -140,11 +150,11 @@
             <!--GRAPH 4-->
             <div class="content_block row align-items-center border-bottom">
                 <div class="col-md-3"><h3>Balance Tracker <br> (Monthly)</h3>
-                <small class="text-muted">Records the balance at the end of each month</small></div>
+                    <small class="text-muted">Records the balance at the end of each month</small></div>
 
-                <div class="col-md-9" >
+                <div class="col-md-9">
 
-                    <canvas id="balance_tracker" style="max-height: 800px; max-width: 800px;"></canvas>
+                    <canvas id="balance_tracker" style="max-height: 750px; max-width: 750px;"></canvas>
 
                 </div>
             </div>
@@ -153,9 +163,9 @@
             <div class="content_block row align-items-center border-bottom">
                 <div class="col-md-3"><h3>Amount Spent Per Category</h3></div>
 
-                <div class="col-md-9" >
+                <div class="col-md-9">
 
-                    <canvas id="exp_per_category" style="max-height: 500px; max-width: 500px;"></canvas>
+                    <canvas id="exp_per_category" style="max-height: 600px; max-width: 600px;"></canvas>
 
                 </div>
             </div>
@@ -164,18 +174,18 @@
             <div class="content_block row align-items-center border-bottom">
                 <div class="col-md-3"><h3>Amount Earned Per Category</h3></div>
 
-                <div class="col-md-9" >
+                <div class="col-md-9">
 
-                    <canvas id="inc_per_category" style="max-height: 500px; max-width: 500px;"></canvas>
+                    <canvas id="inc_per_category" style="max-height: 600px; max-width: 600px;"></canvas>
 
                 </div>
             </div>
 
 
+        </div>
+    </div>
 
-        </div></div>
-
-     <!--Filters PopUP-->
+    <!--Filters PopUP-->
     <div class="modal fade" id="filter_popup">
         <div class="modal-dialog modal-dialog-centered" style="overflow-y:auto;">
             <div class="modal-content">
@@ -187,74 +197,77 @@
                 </div>
                 <div class="modal-body">
                     <form id="filter_form">
-                    <div class="form-group">
-                        <input style="width:100%; padding:0.35em; border-radius: 5px; border-width: thin;" id="filter_search" placeholder="Search" type="text"/>
-                    <svg class="icon" style="position: absolute; width:1.2em;margin-top:0.3em; margin-left:-1.7em;">
-                        <use href="{{url_for('static',filename='my-icons.svg')}}#search_ic"/>
-                    </svg>
-                    </div>
-                    <div class="form-group row m-0">
-                        <select id="filter_type" class="form-control mb-3">
-                            <option value="">Filter by Type</option>
-                            <option value="exp">Expanses Only</option>
-                            <option value="inc">Incomes Only</option>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <input style="width:100%; padding:0.35em; border-radius: 5px; border-width: thin;"
+                                   id="filter_search" placeholder="Search" type="text"/>
+                            <svg class="icon"
+                                 style="position: absolute; width:1.2em;margin-top:0.3em; margin-left:-1.7em;">
+                                <use href="{{ url_for('static',filename='my-icons.svg') }}#search_ic"/>
+                            </svg>
+                        </div>
+                        <div class="form-group row m-0">
+                            <select id="filter_type" class="form-control mb-3">
+                                <option value="">Filter by Type</option>
+                                <option value="exp">Expanses Only</option>
+                                <option value="inc">Incomes Only</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group row align-items-center">
-                        <div class="col-1">
-                            <label class='m-0' for="filter_date_from">From:</label>
-                        </div>
-                        <div class="col-5">
-                            <input type="date" id="filter_date_from" class="form-control ml-1"/>
-                        </div>
-                        <div class="col-1">
-                        <label  class='m-0' for="filter_date_until">Until:</label>
-                        </div>
-                        <div class="col-5">
-                            <input type="date" id="filter_date_until" class="form-control ml-1"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group row align-items-center">
-                        <div class="col-1">
-                            <label class='m-0' for="filter_amount_min">Min:</label>
-                        </div>
-                        <div class="col-5">
-                            <input type="number" min='0' id="filter_amount_min" class="form-control ml-1"/>
-                        </div>
-                        <div class="col-1">
-                        <label  class='m-0' for="filter_amount_max">Max:</label>
-                        </div>
-                        <div class="col-5">
-                            <input type="number" min='0' id="filter_amount_max" class="form-control ml-1"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group row align-items-center">
-                        <div class="col-2">
-                            Categories:
-                        </div>
-                         <div id="filter_cat" class="col">
-                            <div id="filter_cat_in" class="mb-1 pb-2 border-bottom">
-                                <!--JS RENDER-->
+                        <div class="form-group row align-items-center">
+                            <div class="col-1">
+                                <label class='m-0' for="filter_date_from">From:</label>
                             </div>
-                            <div id="filter_cat_exp" class="mb-1 pb-2 border-bottom">
-
+                            <div class="col-5">
+                                <input type="date" id="filter_date_from" class="form-control ml-1"/>
                             </div>
-                            <div id="filter_cat_other">
-                                <a href="" id="other" class="badge badge-secondary mr-1">Other</a>
+                            <div class="col-1">
+                                <label class='m-0' for="filter_date_until">Until:</label>
                             </div>
-
+                            <div class="col-5">
+                                <input type="date" id="filter_date_until" class="form-control ml-1"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" value="Apply" class="btn btn-info"/>
-                        <button type="reset" class="btn btn-outline-danger">Clear</button>
-                    </div>
-               </form> </div>
+                        <div class="form-group row align-items-center">
+                            <div class="col-1">
+                                <label class='m-0' for="filter_amount_min">Min:</label>
+                            </div>
+                            <div class="col-5">
+                                <input type="number" min='0' id="filter_amount_min" class="form-control ml-1"/>
+                            </div>
+                            <div class="col-1">
+                                <label class='m-0' for="filter_amount_max">Max:</label>
+                            </div>
+                            <div class="col-5">
+                                <input type="number" min='0' id="filter_amount_max" class="form-control ml-1"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row align-items-center">
+                            <div class="col-2">
+                                Categories:
+                            </div>
+                            <div id="filter_cat" class="col">
+                                <div id="filter_cat_in" class="mb-1 pb-2 border-bottom">
+                                    <!--JS RENDER-->
+                                </div>
+                                <div id="filter_cat_exp" class="mb-1 pb-2 border-bottom">
+
+                                </div>
+                                <div id="filter_cat_other">
+                                    <a href="" id="other" class="badge badge-secondary mr-1">Other</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" value="Apply" class="btn btn-info"/>
+                            <button type="reset" class="btn btn-outline-danger">Clear</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

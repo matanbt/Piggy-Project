@@ -1,5 +1,8 @@
 {%extends "layout.html"%}
 {%block title%}Table{%endblock%}
+{% block head %}
+      <script src="{{ url_for('static',filename='mark.min.js') }}"></script>
+{% endblock %}
 
 {%block content%}
     <script type='module' src='{{ url_for('static',filename='js/table.js') }}'></script>

@@ -3,9 +3,28 @@
 
 {% block content %}
 
-<h2>Created By: Matan Ben Tov</h2>
-    <h4>mtnbt123@gmail.com</h4>
-    <br>
-    <h2>Source Code: <a href="">Github</a></h2>
+    <h2>
+        <svg class="big-icon mr-2 align-self-center" style="fill:#1454d4;">
+            <use href="{{ url_for('static',filename='my-icons.svg') }}#angle_brackets"/>
+        </svg>
+        By Matan Ben Tov
+    </h2>
+
+
+    <h2>
+        <svg class="big-icon mr-2 align-self-center" style="fill:#1454d4;">
+            <use href="{{ url_for('static',filename='my-icons.svg') }}#at_sign"/>
+        </svg>
+        mtnbt123@gmail.com
+    </h2>
+
+
+
+    <h2>
+        <svg class="big-icon mr-2 align-self-center" style="fill:#1454d4;">
+            <use href="{{ url_for('static',filename='my-icons.svg') }}#github"/>
+        </svg>
+        Source Code: <a href="https://github.com/matanbt/Piggy-Project">Github</a>
+    </h2>
 
 {% endblock %}

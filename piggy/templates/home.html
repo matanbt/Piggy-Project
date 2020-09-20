@@ -4,6 +4,7 @@
 {% block head %}
     {% if current_user.is_authenticated %}
         <script type="module" src="{{ url_for('static',filename='js/home.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     {% endif %}
 {% endblock %}
 
@@ -11,7 +12,7 @@
 
     {% if current_user.is_authenticated %}
         <h2 class="p-3">Welcome back, {{ current_user.username.title() }} </h2>
-        <div class="row row-cols-1 row-cols-lg-3">
+        <div id="cards" class="row row-cols-1 row-cols-lg-3">
 
             <div class="col mb-4">
                 <div class="card h-100 shadow-sm">
@@ -23,7 +24,7 @@
                         <div class="card-body media-body">
                             <h3 class="card-title">Balance</h3>
                             <h6 class="card-subtitle mb-2 text-muted">Actual Money Balance</h6>
-                            <h1 id="balance">2493 ₪</h1>
+                            <h1 id="balance"></h1>
                         </div>
                     </div>
                 </div>
@@ -37,7 +38,7 @@
                         </svg>
 
                         <div class="card-body media-body">
-                            <h3 class="card-title"><span id="curr_month">CUURMONTH</span> Status</h3>
+                            <h3 class="card-title"><span id="curr_month">---</span> Status</h3>
                             <h6 class="card-subtitle mb-2 text-muted"></h6>
                             <h2 id="net_month">
                                 <svg class="icon-inline" style="fill:#1454d4; margin-bottom: 0.2em">
@@ -45,8 +46,7 @@
                                 </svg>
 
                                 <span>237</span></h2>
-                            <h6 id="month_desc" class="card-subtitle mb-2 text-muted">That's X% above / below the Monthly Average(no %
-                                for negative)</h6>
+                            <h6 id="month_desc" class="card-subtitle mb-2 text-muted"></h6>
 
                         </div>
                     </div>
@@ -62,8 +62,8 @@
 
                         <div class="card-body media-body">
                             <h3 class="card-title">Activity</h3>
-                            <h6 id="act_head" class="card-subtitle mb-2 text-muted">Good Job! OR Don't give up!</h6>
-                            <p id="act_desc" class="card-text">Added X Logs lately, keep it going! Add more.</p>
+                            <h6 id="act_head" class="card-subtitle mb-2 text-muted">---</h6>
+                            <p id="act_desc" class="card-text"></p>
 
                         </div>
                     </div>
@@ -133,7 +133,7 @@
     {% else %}
         <!-- NON User Home: -->
         <h2><a href="{{ url_for('register') }}">Sign Up</a> Now and Get To: </h2>
-        <div class="row row-cols-1 row-cols-lg-2 mt-5 m-3">
+        <div id="cards" class="row row-cols-1 row-cols-lg-2 mt-5 m-3">
             <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#table_ic"/>

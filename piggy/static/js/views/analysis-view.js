@@ -1,5 +1,5 @@
 import {tableUI} from './table-view.js';
-import {helpers} from "../helpers.js";
+import {extraUI, helpers} from "../helpers.js";
 
 export const views={
     miniTable : document.getElementById('mini_table'),
@@ -45,7 +45,6 @@ export const miniTableUI ={
         views.miniTable.insertAdjacentHTML('beforeend',markup);
     },
 
-    //todo add show and hide rows
     makeTags_sumMonth : (month,inc,exp,big_table=true) =>{
         let total=helpers.removeDigits(inc + exp);
         return `
@@ -71,6 +70,16 @@ export const miniTableUI ={
 
     clearTable: () => {
         for (let row of views.table_rows()) { row.remove();}
+    },
+
+    loading : ()=>{
+        extraUI.setSpinner(views.miniTable,3);
+    },
+
+    error : () =>{
+        views.miniTable.insertAdjacentHTML('beforeend', `<tr><td colspan="3">
+            ${extraUI.getErrorMarkup()}
+            </td></tr>`);
     },
 
     toggleMonth : (state,event) =>{
