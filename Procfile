@@ -1,1 +1,1 @@
-web:gunicorn piggy:app
+web gunicorn run:app
