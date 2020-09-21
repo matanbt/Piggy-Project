@@ -23,7 +23,7 @@ explantdfsfsdfg
  - **/piggy/templates:** all the HTML files
  - **/piggy/static/js:** all the JS code, arranged and written using MVC.
  - **/piggy/styles:** all the CSS files
- - **Procfile, requirements.txt, runtime.txt:** - Files for production.
+ - **Procfile, requirements.txt, runtime.txt:** Files for production.
  - **run.py:** Contains the initiated `app`, and runs the web-app when called as a script. 
  - **dev_scripts.py:** scripts for developer use.
 
@@ -63,7 +63,7 @@ explantdfsfsdfg
 
  - **Account:**
    - define different month start and end
-   - define constant expanses
+   - define constant expanses (that happens monthly), define monthly goals (for month net-income)
    - change password, change email
 
  - **pages to add:**
