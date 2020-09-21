@@ -14,6 +14,7 @@
             crossorigin="anonymous"></script>
 
     <!-- UNIVERSAL CSS / SCRIPT-->
+    <link rel="icon" href="{{ url_for('static',filename='img/icon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename="/styles/styles.css") }}">
     <script>
         //from server to script:
@@ -36,9 +37,9 @@
 <body>
 
 <!--HEADER-->
-<div class="jumbotron p-5" align="center" style="margin-bottom: 0px; background-color: #e3f7ff">
-    <h1 style="color:deeppink">Piggy</h1>
-    <h6>Get Better at Managing Your Budget With Piggy</h6>
+<div class="jumbotron pt-0 pb-3" align="center" style="margin-top:-0.5em; margin-bottom: 0px; background-color: #daf4ff">
+<img src="{{ url_for('static',filename='img/logo.svg') }}" style="max-width: 350px">
+
 </div>
 
 

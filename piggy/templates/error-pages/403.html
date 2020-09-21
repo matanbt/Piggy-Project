@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}404{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-danger m-3">403 Error</h1>
+    <img style="max-width: 500px" src="{{ url_for('static',filename='img/403.png') }}">
+    <h1 class="text-danger m-3">Access Forbidden!</h1>
+
+{% endblock %}
