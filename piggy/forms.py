@@ -6,11 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Float
 from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 from .models import User
-#installed email validator
-
-# ---static validators---:
-def noWhiteSpaces(self,field):
-    return field.data.strip()==str and len(field.strip())!=0
+# import email_validator # used implicitly
 
 
 class RegisterForm(FlaskForm):
@@ -18,18 +14,24 @@ class RegisterForm(FlaskForm):
     # my validators:
     def unique_username(self, username):
         if User.query.filter_by(username=username.data.lower()).first():
-            raise ValidationError('Username is taken, try different one')
+            raise ValidationError('Username is taken, try different one (Maybe you should log in?)')
+
+    def rules_username(self,username):
+        #no spaces allowed
+        if username.data.replace(' ','') == username.data and len(username.data.strip()) != 0:
+            raise ValidationError('Invalid Username')
 
     def unique_email(self, email):
         if User.query.filter_by(email=email.data.lower()).first():
             raise ValidationError('Email is taken, try different one (Maybe you should log in?)')
 
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20), noWhiteSpaces,unique_username])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20),
+                                                   rules_username,unique_username])
     email = StringField('Email', validators=[DataRequired(), Email(), unique_email])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=3)])  # add func?
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=3)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     balance = FloatField("Current Balance",
-                         validators=[DataRequired('Field must be a valid number.')])  # numbers indeed!
+                         validators=[DataRequired('Field must be a valid number.')])
     submit = SubmitField('Sign Up')
 
 
@@ -45,6 +47,11 @@ class LoginForm(FlaskForm):
 
 class AddLogForm(FlaskForm):
 
+    #my validators:
+    def rules_title(self, title):
+        # no spaces allowed
+        return title.data.strip() == title.data and len(title.data.strip()) != 0
+
     log_id = HiddenField('', default='') # new log - '', existing log - 'number of id'
     log_utc = HiddenField('', default='')
 
@@ -58,7 +65,7 @@ class AddLogForm(FlaskForm):
     # category - SelectField - dynamic field --> defined in 'routes'
 
     title = StringField("Title", description='*Optional short description',
-                        default="", validators=[Length(max=20), noWhiteSpaces])
+                        default="", validators=[Length(max=20), rules_title])
     submit_dialog=SubmitField('Add')
     delete_dialog=SubmitField('Delete (!)')
 

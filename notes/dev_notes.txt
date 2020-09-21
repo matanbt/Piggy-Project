@@ -2,29 +2,6 @@
 
 Features To Add: 
 
-Table Page:
-#Scroll Spy with shortcuts to the Monthes (a MUST for long table management)
-#Separate HTML elements that TABLE and ANALYSIS shares - for html saving
-
-analysis page: 
-#Scroll spy for charts
-#FACTS ROW:
---->average monthly net income
---->most weighted category (income, expanses separately)
---->
-
-home page:
-#static cards - more ideas - Biggest Expanse / Income lately?
-dynamic cards! or at least smart cards (pseudo AI)
-#dynamic cards: user notes! saved in SQL
-
-Account:
-#define different month start and end
-#define constant expanses
-#change password, change email
-
-pages to add:
-API Documentation with User-Authetication
 
 ------------------------
 z-index: 1030;

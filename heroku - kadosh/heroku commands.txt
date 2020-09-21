@@ -1,9 +1,0 @@
-
-Some Useful Commands for Heroku CLI:
-$ heroku run python --app mypiggy
-open python's terminal
-
-
---preload
-
-heroku ps:scale worker=1

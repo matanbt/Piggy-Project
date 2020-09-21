@@ -1,13 +1,14 @@
 import datetime
 import time
+import sys
 
 from piggy import db, bcrypt
 from piggy.models import User,Log
 
-def create_table():
+def create_tables():
     db.create_all()
 
-def clear_table():
+def clear_tables():
     db.drop_all()
 
 def createDemoUser():
@@ -21,3 +22,15 @@ def createDemoUser():
                   time_logged=datetime.datetime.now(), category='other', amount=2020)
     db.session.add(new_log)
     db.session.commit()
+
+
+
+if __name__=='__main__':
+
+    # Mini CLI:
+    if len(sys.argv) == 2 and callable(globals().get(sys.argv[1])):
+        func=globals().get(sys.argv[1])
+        func()
+        print(f"'{func.__name__}' ran successfully")
+    else:
+        print('Error')

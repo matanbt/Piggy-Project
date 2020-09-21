@@ -11,23 +11,23 @@ from wtforms.validators import DataRequired
 from . import app, db, bcrypt
 from .forms import RegisterForm, LoginForm, AddLogForm
 from .models import User, Log
-from .scripts import misc
+from .py_helper import misc
 
 
 # ==============   USER PAGES  ============== #
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        flash(f'<b>{current_user.username}</b>, you are already logged in', "info")
+        flash(f'<b>{current_user.username.title()}</b>, you are already logged in', "info")
         return redirect(url_for('home'))
 
     form = LoginForm()
     if form.validate_on_submit():
         # if session and check form.username.data as validator
-        user = User.query.filter_by(username=form.username.data.lower()).first()
+        user = User.query.filter_by(username=form.username.data.lower().strip()).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-            flash(f'<b>{form.username.data}</b> Logged in Succesfully!', "success")
+            flash(f'<b>{user.username.title()}</b> Logged in Succesfully!', "success")
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
@@ -38,13 +38,13 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        flash(f'<b>{current_user.username}</b>, you are already logged in', "info")
+        flash(f'<b>{current_user.username.title()}</b>, you are already logged in', "info")
         return redirect(url_for('home'))
 
     form = RegisterForm()
     if form.validate_on_submit():
         hashed_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data.lower(), email=form.email.data.lower(), password=hashed_pass)
+        user = User(username=form.username.data.lower(), email=form.email.data.lower().strip(), password=hashed_pass)
         user.setDefaultOnRegister()
         db.session.add(user)
         db.session.commit()
@@ -53,7 +53,7 @@ def register():
                       time_logged=datetime.datetime.now(), category='other', amount=form.balance.data)
         db.session.add(new_log)
         db.session.commit()
-        flash(f'<b>{form.username.data}</b> Registered Succesfully! Please Login to start Piggying', "success")
+        flash(f'<b>{user.username.title()}</b> Registered Succesfully! Please Login to start Piggying', "success")
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
@@ -124,8 +124,7 @@ def account():
 @login_required
 def table():
     current_user.logs.sort(reverse=True, key=lambda log: (log.time_logged, log.id))
-    logs_pack = {'sorted_logs': current_user.logs, 'months_count': misc.count_by_months(current_user.logs),
-                 'balance': sum([log.amount for log in current_user.logs])}
+    logs_pack = {'sorted_logs': current_user.logs, 'balance': sum([log.amount for log in current_user.logs])}
     # ADD-LOG form:
     cats = [(cat, cat.split('_')[-1].title()) for cat in json.loads(current_user.categories)]
 
@@ -161,7 +160,7 @@ def table():
                           amount=((-1 if is_exp else 1) * misc.limit_digits(float(add_form.amount.data))))
             db.session.add(new_log)
             db.session.commit()
-            flash(f'<b>{"Expanse" if is_exp else "Income"}</b> Added Succesfully!', "success")
+            flash(f'New <b>{"Expanse" if is_exp else "Income"}</b> Added Succesfully!', "success")
             return redirect(url_for('table'))
 
         # MODIFY

@@ -1,7 +1,7 @@
 {%extends "layout.html"%}
 {%block title%}Table{%endblock%}
 {% block head %}
-      <script src="{{ url_for('static',filename='mark.min.js') }}"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
 {% endblock %}
 
 {%block content%}
@@ -61,6 +61,14 @@
                 </div></a>
 
                 <div class="card-footer">
+                    <div class="media d-sm-block d-md-none">
+                        <svg class="icon mr-1">
+                            <use href="{{ url_for('static',filename='my-icons.svg') }}#laptop"/>
+                        </svg>
+                        <span class="media-body small">
+                            For better experience - Switch to your <b>Desktop</b>
+                        </span>
+                    </div>
                     <small></small>
                 </div>
 
