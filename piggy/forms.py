@@ -50,7 +50,7 @@ class AddLogForm(FlaskForm):
     #my validators:
     def rules_title(self, title):
         # no spaces allowed
-        if title.data.strip() != title.data or len(title.data.strip()) == 0:
+        if title.data.strip() != title.data or (len(title.data.strip()) == 0 and len(title.data)!=0):
             raise ValidationError('Invalid Title')
 
 

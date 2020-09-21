@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}404{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-danger m-3">404 Error</h1>
+    <img style="max-width: 500px" src="{{ url_for('static',filename='img/404.jpg') }}">
+    <h1 class="text-danger m-3">Page Not Found!</h1>
+
+{% endblock %}

@@ -87,19 +87,20 @@
             </div>
 
             <div class="col-md-8">
-                  <table id='mini_table' style="display:table !important;" class="table table-sm shadow-sm table-responsive-lg text-center mt-3 table-hover">
-                        <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Category</th>
-                        </tr>
-                        </thead>
-                      <tbody>
+                <table id='mini_table' style="display:table !important;"
+                       class="table table-sm shadow-sm table-responsive-lg text-center mt-3 table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Category</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                      </tbody>
+                    </tbody>
 
-                    </table>
+                </table>
             </div>
         </div>
 
@@ -114,7 +115,6 @@
                     <h6>Expanses VS Incomes</h6>
                     <a href="{{ url_for('analysis') }}">Keep Analysing...</a><br>
                     <small class="text-muted">*Showing Latest Months Documented</small>
-
 
 
                 </div>
@@ -132,6 +132,18 @@
 
     {% else %}
         <!-- NON User Home: -->
+        <div class="content_block row align-items-center mb-3">
+
+            <div class="col-md-3">
+                <img style="max-width: fit-content; align-content: center" src="{{ url_for('static',filename='img/logo-no-text.svg') }}">
+            </div>
+            <div class="col-md-9 text-left" style="border-left: 3.5px solid #1454d4c7">
+                <h1>What is Piggy?</h1>
+                <h6>Piggy is a <u>budget-management app</u>, <br>It allows you to type-in expanses and incomes and keep track on them. <br>
+                Also to analyze your balance and customize the way you review it</h6>
+            </div>
+        </div>
+
         <h2><a href="{{ url_for('register') }}">Sign Up</a> Now and Get To: </h2>
         <div id="cards" class="row row-cols-1 row-cols-lg-2 mt-5 m-3">
             <div class="col mb-5">
@@ -142,7 +154,7 @@
                 <p>Manage your Incomes and expanses in ONE place.</p>
             </div>
 
-         <div class="col mb-5">
+            <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#bullseye"/>
                 </svg>
@@ -150,32 +162,33 @@
                 <p>Control your Incomes and Expanses in any way your prefer.</p>
             </div>
 
-         <div class="col mb-5">
+            <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#analyze_ic"/>
                 </svg>
-                <h2>Analyze  </h2>
+                <h2>Analyze </h2>
                 <p>Analyize your Incomes and Expanses from various perspectives.</p>
             </div>
 
-        <div class="col mb-5">
+            <div class="col mb-5">
                 <svg class="big-icon mb-2">
                     <use href="{{ url_for('static',filename='my-icons.svg') }}#pen"/>
                 </svg>
-                <h2>Customize  </h2>
+                <h2>Customize </h2>
                 <p>Create Your Own Expanses and Incomes Categories.</p>
             </div>
 
         </div>
 
         <div class="mb-5">
-             <a class="btn btn-primary btn-lg" href="{{url_for('register')}}" style="margin-top:-1.5em" role="button">Get Started Now  »</a>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" style="margin-top:-1.5em" role="button">Get
+                Started Now »</a>
         </div>
 
 
 
         <div class="jumbotron" style="background: #baeef6;margin: -1em;position: relative;">
-             <h1 class="display-4">Piggy</h1>
+            <h1 class="display-4">Piggy</h1>
             <h3>Budget Management & Analysis App</h3>
 
         </div>
