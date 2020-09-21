@@ -4,7 +4,7 @@
 Was written
 explantdfsfsdfg
 
-- Goals:
+- **Goals:**
   - Learning Javascript.
   - Getting to know Python's web-app-backend, and Flask in particular.
   - Dusting off Web Development skills.
