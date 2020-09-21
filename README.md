@@ -40,9 +40,9 @@ explantdfsfsdfg
    Via the [production server](https://mypiggy.herokuapp.com).
 #### Clone/Modify app: 
   - **Database:** Set Postgres' sql database with the following settings `postgresql://postgres:123456@localhost:5000/piggy `, 
-  alternatively change the following line in:
-    ```piggy/__init__.py:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost:5000/piggy' ```.
+  alternatively change the following line in `piggy/__init__.py`: 
+    ```
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost:5000/piggy'```
   - Then, in order to create the needed sql tables, run the following command from the project's dir: `$ python dev_scripts.py create_tables `
   - **Run:** `$ python run.py`
   
@@ -72,4 +72,5 @@ explantdfsfsdfg
    
  - **JS Code:**
    - move maketags to helper markupElements.js
+
 
