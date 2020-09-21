@@ -18,7 +18,7 @@ class RegisterForm(FlaskForm):
 
     def rules_username(self,username):
         #no spaces allowed
-        if username.data.replace(' ','') == username.data and len(username.data.strip()) != 0:
+        if username.data.replace(' ','') != username.data or len(username.data.strip()) == 0:
             raise ValidationError('Invalid Username')
 
     def unique_email(self, email):
@@ -50,7 +50,9 @@ class AddLogForm(FlaskForm):
     #my validators:
     def rules_title(self, title):
         # no spaces allowed
-        return title.data.strip() == title.data and len(title.data.strip()) != 0
+        if title.data.strip() != title.data or len(title.data.strip()) == 0:
+            raise ValidationError('Invalid Title')
+
 
     log_id = HiddenField('', default='') # new log - '', existing log - 'number of id'
     log_utc = HiddenField('', default='')
