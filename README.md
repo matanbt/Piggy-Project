@@ -1,6 +1,6 @@
 # Piggy-Project
 
-##Intro
+## Intro
 Was written
 explantdfsfsdfg
 
@@ -10,11 +10,11 @@ explantdfsfsdfg
   - Dusting off Web Development skills.
   - Another Corona Project.
   
-##Demo:
+## Demo:
 <img src="---">
 
 
-##Files
+## Files
  - **/piggy:** a dir and a python package.
     - **__ init __.py:** Configures the `app` instances and control the imports order (prevent circular imports).
     - **routes.py:** Deals with requests and responses, in particular defines the app routes.
@@ -30,10 +30,10 @@ explantdfsfsdfg
 ## Imports:
 #### CSS:
  - Bootstrap 4.5.2
-####Javascript:
+#### Javascript:
  - Mark.js 8.11.1
  - Chart.js 2.8.0
-####Python:
+#### Python:
 
 ## Usage
 ####Run app directly:
@@ -45,7 +45,7 @@ explantdfsfsdfg
   - Then, in order to create the needed sql tables, run the following command from the project's dir: `$ python dev_scripts.py create_tables `
   - **Run:** `$ python run.py`
   
-##Features to add:
+## Features to add:
  - **Table Page:**
    - Scroll Spy with shortcuts to the Monthes (a MUST for long table management)
    - Separate HTML elements that TABLE and ANALYSIS shares - for html saving
