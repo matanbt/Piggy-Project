@@ -66,6 +66,9 @@ const logDialogController = {
     },
 
     validate_submit: (event) => {
+        logFormUI.disableSubmits(true);
+        views.title.value= views.title.value.trim();
+
         let submit_type = logFormUI.get_form_data();
         views.dialog_form.dataset.type = '';
 
@@ -80,11 +83,11 @@ const logDialogController = {
             for (let isChanged_func of Object.values(logDialogController.check_is_changed)) {
                 if (isChanged_func()) {
                     changed++;
-                    console.log('changed!')
                 }
             }
             if (changed === 0) {
                 event.preventDefault();
+                logFormUI.disableSubmits(false);
                 return false;
             }
         }
@@ -102,6 +105,7 @@ const logDialogController = {
 
         if (!flag) {
             event.preventDefault();
+            logFormUI.disableSubmits(false);
         }
         return flag;
     },
@@ -124,7 +128,6 @@ const logDialogController = {
 }
 
 const tableController = {
-
     setRowsListeners: () => {
         for (let log of state.logs) {
             views.btn_edit(log.id).addEventListener('click', logDialogController.open_edit.bind(undefined, log));

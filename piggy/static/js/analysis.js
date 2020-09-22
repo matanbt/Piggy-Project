@@ -42,9 +42,10 @@ const init_page = async (refreshData = true) => {
     state.filtered_logs = state.queries.getFilteredLogs(state.logs);
 
     if (state.filtered_logs.length === 0) {
-        //todo special treatment to zero case
-    } else {
+        miniTableUI.clearTable();
+        miniTableUI.error('No Items to show');
 
+    } else {
         miniTableUI.clearTable();
         miniTableUI.renderTable(state.filtered_logs);
         state.charts.loadCharts(state.filtered_logs);

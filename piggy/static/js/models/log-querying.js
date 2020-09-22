@@ -124,7 +124,7 @@ export class TQuery {
 
     setQ(qType, val) {
         //parse values:
-        console.log('----set-----');
+
         if (qType === qTypes.search) {
             val = val.toLowerCase();
         }
@@ -140,7 +140,6 @@ export class TQuery {
 
         //validate values
         if(this.validateBeforeSet(qType,val)) {
-            console.log('set: '+qType);
             this.mapQ.set(qType, val);
         } else {
             this.delQ(qType);
@@ -191,8 +190,7 @@ export class TQuery {
     getQueriesFromURL() {
         if (!window.location.hash) return false;
         let params = helpers.parseHASHtoOBJ(window.location.hash);
-        console.log(params);
-        console.log(this);
+
         //parse strings from url if needed
         if(params[qTypes.filters.category])
                 params[qTypes.filters.category] = new Set(params[qTypes.filters.category].split(','));
@@ -209,10 +207,9 @@ export class TQuery {
             else if(params[q]!==undefined && this.getQ(q)!==undefined
                 && params[q]!=this.getQ(q)) {
                 isUserChange = true;
-                console.log((""+params[q]!==undefined) +" & "+ (""+this.getQ(q)!==undefined) + " & "+(""+params[q]!==this.getQ(q)));
             }
         }
-        console.log('user changed the url? '+isUserChange);
+
         if(!isUserChange) return false;
 
 

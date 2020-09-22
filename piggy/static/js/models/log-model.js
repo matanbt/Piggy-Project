@@ -103,7 +103,7 @@ export const validators = {
         return !isNaN(amount) && amount >= 0 && amount.trim().length > 0;
     },
     title: function (title) {
-        return title.length <= 20 && title.trim() === title;
+        return title.length <= 20;
     },
     category: function (category, log_type) {
         return log_type && (category === 'other' || category.split('_')[0] === log_type);

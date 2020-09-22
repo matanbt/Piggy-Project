@@ -105,7 +105,7 @@ const examplesUI = {
 
         let logs = [...state.logs].sort((a, b) => b.utc_ms_verification - a.utc_ms_verification);
         for (let log of logs.slice(0, 3)) {
-            markup += tableUI.makeTags_row(log, false, true);
+            markup += extraUI.makeTags_row(log, 'sm');
         }
 
         views.table.innerHTML = '';

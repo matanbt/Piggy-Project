@@ -125,6 +125,7 @@ def account():
 def table():
     current_user.logs.sort(reverse=True, key=lambda log: (log.time_logged, log.id))
     logs_pack = {'sorted_logs': current_user.logs, 'balance': sum([log.amount for log in current_user.logs])}
+
     # ADD-LOG form:
     cats = [(cat, cat.split('_')[-1].title()) for cat in json.loads(current_user.categories)]
 

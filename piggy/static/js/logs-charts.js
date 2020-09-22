@@ -84,7 +84,7 @@ export const chartsCalcs = {
     },
 
     randColorArr: (len) => {
-        console.log(len);
+
         let colorsArr = [];
         for (let i = 0; i < len; i++) {
             let color = `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},
