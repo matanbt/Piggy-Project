@@ -69,8 +69,7 @@ const logDialogController = {
         logFormUI.disableSubmits(true);
         views.title.value= views.title.value.trim();
 
-        let submit_type = logFormUI.get_form_data();
-        views.dialog_form.dataset.type = '';
+        let submit_type = views.submit_type.value;
 
         // DELETE:
         if (submit_type === 'delete') {
@@ -189,7 +188,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     state.mark_o = new Mark(views.table);
     await getData.getCategories(state.categories);
 
-    state.queries = new TQuery(state.categories.getFullArr());
+    state.queries = new TQuery(state.categories.getFullArr(),true);
 
 
     //filters
@@ -209,10 +208,10 @@ window.addEventListener('DOMContentLoaded', async function () {
         views.open_add_btn_small.addEventListener('click', logDialogController.open_add);
 
         views.submit_dialog.addEventListener('click', () => {
-            views.dialog_form.dataset.type = 'submit';
+            views.submit_type.value = 'submit';
         });
         views.delete_dialog.addEventListener('click', () => {
-            views.dialog_form.dataset.type = 'delete';
+            views.submit_type.value = 'delete';
         });
 
         views.log_type_exp.onchange = logFormUI.onchange_type;

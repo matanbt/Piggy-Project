@@ -138,8 +138,10 @@ def table():
     add_form_pack = {'radio_lst': list(add_form.log_type), 'open_dialog_on_load': False}
     is_exp = add_form.log_type.data == 'exp'
 
+    print(request.form)
+    print(add_form.data)
     # DELETE
-    if add_form.is_submitted() and add_form.delete_dialog.data and add_form.log_id.data:
+    if add_form.is_submitted() and add_form.submit_type.data=='delete' and add_form.log_id.data:
         curr_log = Log.query.get_or_404(int(add_form.log_id.data))
         if current_user.id != curr_log.user_id:
             abort(403)  # trying to access another user's log

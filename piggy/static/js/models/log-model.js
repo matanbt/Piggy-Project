@@ -33,7 +33,7 @@ export default class Log {
     }
 
     getCategory(){
-        if(this.category==='other') return this.is_exp? 'exp' : 'in' + '_other';
+        if(this.category==='other') return this.is_exp? 'exp'+ '_other' : 'in' + '_other';
         return this.category;
     }
 

@@ -12,18 +12,18 @@ export const qTypes = {
     },
 
     filters_arr: ['type', 'date_from', 'date_until', 'amount_min', 'amount_max', 'category'],
-    sort_arr : ['date','amount','category'],
-    sort_order_arr : ['desc','asc'],
+    sort_arr: ['date', 'amount', 'category'],
+    sort_order_arr: ['desc', 'asc'],
 }
-qTypes.qtypes_arr = [qTypes.sortBy,qTypes.search, ...qTypes.filters_arr];
-
+qTypes.qtypes_arr = [qTypes.sortBy, qTypes.search, ...qTypes.filters_arr];
 
 
 export class TQuery {
 
-    constructor(categories_array) {
+    constructor(categories_array, doSort) {
         this.mapQ = new Map();
-        this.categories_array =categories_array;
+        this.categories_array = categories_array;
+        this.doSort = doSort;
         this.getQueriesFromURL();
     }
 
@@ -40,28 +40,30 @@ export class TQuery {
         }
 
         //sort:
-        let [sort,order] = ['date','asc']; //default order
-        if(this.mapQ.has(qTypes.sortBy)){
-            [sort,order] = this.mapQ.get(qTypes.sortBy).split('_');
-        }
-        let comparator;
-        if(sort==='date') comparator = (a,b) =>{
-            [a,b] = [a.time_logged_unix_day,b.time_logged_unix_day];
-             return (b-a) * (order==='desc' ? -1 : 1);
-        }
-        if(sort==='amount') comparator=(a,b) =>{
-            [a,b] = [a.amount,b.amount];
-            return (b-a) * (order==='desc' ? -1 : 1);
-        }
-        else if (sort==='category') comparator = (a,b) =>{
-            a=a.getCategoryOnly();
-            b=b.getCategoryOnly();
-            return order==='desc' ? b.localeCompare(a) : a.localeCompare(b);
+        if (this.doSort) {
+            let [sort, order] = ['date', 'asc']; //default order
+            if (this.mapQ.has(qTypes.sortBy)) {
+                [sort, order] = this.mapQ.get(qTypes.sortBy).split('_');
+            }
+            let comparator;
+            if (sort === 'date') comparator = (a, b) => {
+                [a, b] = [a.time_logged_unix_day, b.time_logged_unix_day];
+                return (b - a) * (order === 'desc' ? -1 : 1);
+            }
+            if (sort === 'amount') comparator = (a, b) => {
+                [a, b] = [a.amount, b.amount];
+                return (b - a) * (order === 'desc' ? -1 : 1);
+            }
+            else if (sort === 'category') comparator = (a, b) => {
+                a = a.getCategoryOnly();
+                b = b.getCategoryOnly();
+                return order === 'desc' ? b.localeCompare(a) : a.localeCompare(b);
+            }
+
+            filtered.sort(comparator);
         }
 
-        filtered.sort(comparator);
-
-    return filtered;
+        return filtered;
     }
 
     logAnswersFilters(log) {
@@ -128,18 +130,18 @@ export class TQuery {
         if (qType === qTypes.search) {
             val = val.toLowerCase();
         }
-        if (qType === qTypes.filters.amount.max ||qType === qTypes.filters.amount.min) {
-            val=parseInt(val);
+        if (qType === qTypes.filters.amount.max || qType === qTypes.filters.amount.min) {
+            val = parseInt(val);
         }
         if (qType === qTypes.filters.date.from || qType === qTypes.filters.date.until) {
-            let prev=val;
-            if(isNaN(val)) val = new Date(val).setHours(0, 0, 0, 0);
-            else val=parseInt(val);
+            let prev = val;
+            if (isNaN(val)) val = new Date(val).setHours(0, 0, 0, 0);
+            else val = parseInt(val);
         }
 
 
         //validate values
-        if(this.validateBeforeSet(qType,val)) {
+        if (this.validateBeforeSet(qType, val)) {
             this.mapQ.set(qType, val);
         } else {
             this.delQ(qType);
@@ -166,11 +168,11 @@ export class TQuery {
             } else if (key === qTypes.filters.category) {
                 let str = Array.from(this.mapQ.get(key)).map(el => Categories.getTitle(el)).join(', ');
                 msgMap.set(key, str);
-            } else if (key === qTypes.sortBy){
-                let str=this.mapQ.get(key).split('_')[0]
-                    + (this.mapQ.get(key).split('_')[1] ==='desc' ? ' (Descending)' :'');
+            } else if (key === qTypes.sortBy) {
+                let str = this.mapQ.get(key).split('_')[0]
+                    + (this.mapQ.get(key).split('_')[1] === 'desc' ? ' (Descending)' : '');
                 msgMap.set(key, str);
-            }else {
+            } else {
                 msgMap.set(key, this.mapQ.get(key));
             }
         }
@@ -192,25 +194,24 @@ export class TQuery {
         let params = helpers.parseHASHtoOBJ(window.location.hash);
 
         //parse strings from url if needed
-        if(params[qTypes.filters.category])
-                params[qTypes.filters.category] = new Set(params[qTypes.filters.category].split(','));
+        if (params[qTypes.filters.category])
+            params[qTypes.filters.category] = new Set(params[qTypes.filters.category].split(','));
 
 
         //check if url is different than current queries
-        let isUserChange=false;
-        for (let q of qTypes.qtypes_arr){
-            if (params[q]===undefined ^ this.getQ(q)===undefined) isUserChange=true;
-            else if(q === qTypes.filters.category) {
-              if (params[q]!==undefined && this.getQ(q)!==undefined &&
-                  !helpers.isSetsEqual(params[q],this.getQ(q))) isUserChange=true;
-            }
-            else if(params[q]!==undefined && this.getQ(q)!==undefined
-                && params[q]!=this.getQ(q)) {
+        let isUserChange = false;
+        for (let q of qTypes.qtypes_arr) {
+            if (params[q] === undefined ^ this.getQ(q) === undefined) isUserChange = true;
+            else if (q === qTypes.filters.category) {
+                if (params[q] !== undefined && this.getQ(q) !== undefined &&
+                    !helpers.isSetsEqual(params[q], this.getQ(q))) isUserChange = true;
+            } else if (params[q] !== undefined && this.getQ(q) !== undefined
+                && params[q] != this.getQ(q)) {
                 isUserChange = true;
             }
         }
 
-        if(!isUserChange) return false;
+        if (!isUserChange) return false;
 
 
         this.resetAll();
@@ -220,19 +221,20 @@ export class TQuery {
         return true; //user change
     }
 
-     validateBeforeSet(qType, val) {
+    validateBeforeSet(qType, val) {
         //false ~ validation failed
-        if (qType === qTypes.filters.type && (val !== 'exp' && val !== 'inc'))  return false;
+        if (qType === qTypes.filters.type && (val !== 'exp' && val !== 'inc')) return false;
 
         if (qType === qTypes.search && !val.trim()) return false;
-        if ((qType === qTypes.filters.amount.max ||qType === qTypes.filters.amount.min) && isNaN(val)) return false;
-        if((qType === qTypes.filters.date.until || qType ===qTypes.filters.date.from) && isNaN(val) ) return false;
-        if(qType === qTypes.filters.category){
-            if (val.size===0) return false;
-            if (Array.from(val).filter(el=> !this.categories_array.includes(el)).length !==0) return false;
+        if ((qType === qTypes.filters.amount.max || qType === qTypes.filters.amount.min) && isNaN(val)) return false;
+        if ((qType === qTypes.filters.date.until || qType === qTypes.filters.date.from) && isNaN(val)) return false;
+        if (qType === qTypes.filters.category) {
+            if (val.size === 0) return false;
+            if (Array.from(val).filter(el => !this.categories_array.includes(el)).length !== 0) return false;
         }
-        if(qType === qTypes.sortBy && (val==='date_asc' ||
-            ! qTypes.sort_order_arr.includes(val.split('_')[1])||! qTypes.sort_arr.includes(val.split('_')[0])) )
+        if(qType === qTypes.sortBy && !this.doSort) return false;
+        if (qType === qTypes.sortBy && (val === 'date_asc' ||
+            !qTypes.sort_order_arr.includes(val.split('_')[1]) || !qTypes.sort_arr.includes(val.split('_')[0])))
             return false;
 
         return true;
@@ -244,8 +246,7 @@ export class TQuery {
         if (this.getQ(qType)) {
             let timezoneFactor = new Date().getTimezoneOffset() * 60000;
             return new Date(this.mapQ.get(qType) - timezoneFactor).toISOString().split('T')[0];
-        }
-        else return undefined;
+        } else return undefined;
 
     }
 

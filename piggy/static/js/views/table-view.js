@@ -11,12 +11,13 @@ export const views ={
     delete_dialog :document.getElementById('delete_dialog'),
 
     //list of form ids
-    hidden_fields : {id:'log_id',utc_ms_verification : 'log_utc' },
+    hidden_fields : {id:'log_id',utc_ms_verification : 'log_utc', submit_type: 'submit_type' },
     fields_ids : ['log_type','amount','title','category','time_logged'], //IDS
 
     //hidden fields
     log_id : document.getElementById('log_id'),
     utc_ms_verification : document.getElementById('log_utc'),
+    submit_type : document.getElementById('submit_type'),
 
     //log type radio
     log_type_inc : document.getElementById('log_type-0'),
@@ -205,10 +206,6 @@ export const logFormUI = {
         }
     },
 
-    get_form_data: function () {
-        let type = views.dialog_form.dataset.type;
-        return type ? type : 'submit';
-    },
 
     disableSubmits : (disabled) =>{
         views.submit_dialog.disabled=disabled;

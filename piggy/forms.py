@@ -55,6 +55,7 @@ class AddLogForm(FlaskForm):
 
 
     log_id = HiddenField('', default='') # new log - '', existing log - 'number of id'
+    submit_type = HiddenField('', default='') # new log - '', existing log - 'number of id'
     log_utc = HiddenField('', default='')
 
     log_type = RadioField('',validators=[DataRequired()], choices=[('in', 'Income'),('exp','Expanse')]) # defined in HTML

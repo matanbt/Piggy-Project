@@ -57,7 +57,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     //data
     await getData.getCategories(state.categories);
-    state.queries = new TQuery(state.categories.getFullArr());
+    state.queries = new TQuery(state.categories.getFullArr(),false);
 
     //filters
     const filtersController = new FiltersController(init_page.bind(undefined, false));
