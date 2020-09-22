@@ -11,8 +11,11 @@ explantdfsfsdfg
   - Another Corona Project.
   
 ## Demo:
+#### Images:
 <img src="---">
 
+#### Demo Users:
+a registered user for test purposes: `username:demo_user | password:123456`
 
 ## Files
  - **/piggy:** a dir and a python package.
