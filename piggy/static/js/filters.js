@@ -59,7 +59,7 @@ export class FiltersController {
 
     //could be cause from my inner-js manual update OR user change
     onchange_URL_HASH(queries) {
-        console.log('changed');
+
         //isUserChange iff user caused the change by modifying the URL
         let isUserURLChange = queries.getQueriesFromURL();
 

@@ -11,12 +11,13 @@ export const views ={
     delete_dialog :document.getElementById('delete_dialog'),
 
     //list of form ids
-    hidden_fields : {id:'log_id',utc_ms_verification : 'log_utc' },
+    hidden_fields : {id:'log_id',utc_ms_verification : 'log_utc', submit_type: 'submit_type' },
     fields_ids : ['log_type','amount','title','category','time_logged'], //IDS
 
     //hidden fields
     log_id : document.getElementById('log_id'),
     utc_ms_verification : document.getElementById('log_utc'),
+    submit_type : document.getElementById('submit_type'),
 
     //log type radio
     log_type_inc : document.getElementById('log_type-0'),
@@ -68,24 +69,24 @@ export const tableUI = {
         let [inc,exp,prevLog]=[0,0,null];
         for (let log of logs){
             if (prevLog && log.getShortDate() !== prevLog.getShortDate()) {
-                htmlToInject += this.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,log.id);
+                htmlToInject += extraUI.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,log.id,'big');
                 [inc,exp]=[0,0];
             }
 
-            htmlToInject+=this.makeTags_row(log);
+            htmlToInject+=extraUI.makeTags_row(log,'big');
             inc += Math.max(0,log.amount);
             exp += Math.min(0,log.amount);
 
             prevLog=log;
         }
         isBefore_id=-1;
-        htmlToInject += this.makeTags_sumMonth(prevLog.getShortDate(),inc, exp);
+        htmlToInject += extraUI.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,-1,'big');
 
         //tbody:
         views.table.insertAdjacentHTML('beforeend',htmlToInject);
 
         //footer:
-        views.table_footer.innerHTML=this.makeTags_sumResults();
+        views.table_footer.innerHTML=extraUI.makeTags_sumResults();
     },
 
     clearTable: () => {
@@ -172,76 +173,7 @@ export const tableUI = {
     },
 
 
-    //  HTML MARKUP
-    makeTags_row : (log,big_table=true,display=false) => {
 
-        let markup= `<tr id='row_${log.id}' class="${!big_table ? 
-           log.getShortDate().replace(' ','_') : 'log_row'}"
-                style="${display ? '' : 'display:none;'}">`;
-
-        if (big_table) markup += `  <td>${log.getShortDate()}</td>`;
-
-        markup += `<td>${big_table ? log.getMedDate() : log.getMedDate()}</td>
-                    <td class="${log.getShortType()}_cell">${log.amount}</td>
-                    <td>${log.getCategoryOnly()}</td>`
-
-        if (big_table) {
-            markup += `<td>
-                            <button class='btn btn-info' type="button" id='btn-expand_${log.id}' data-target="#expand-row_${log.id}"
-                                    data-toggle="collapse" aria-expanded="false">
-                                <svg class="icon-white">
-                                    <use href="${window.from_server.url_for.static}/my-icons.svg#more_ic"/>
-                                </svg>
-                            </button>
-                        </td>
-                    <tr class="collapse" id='expand-row_${log.id}'>
-                        <td>
-                        <svg class="icon">
-                            <use href='${window.from_server.url_for.static}/my-icons.svg#expanded-row_ic'>
-                        </svg>
-                        </td>
-                        <td>${log.getTime()}</td>
-                        <td colspan="2"><b>${log.title}</b></td>
-                        <td>
-
-                        <button class='btn btn-warning' type="button" title='Edit' id='btn-edit_${log.id}'>
-                                <svg class="icon">
-                                    <use href='${window.from_server.url_for.static}/my-icons.svg#edit_ic'>
-                                </svg>
-                            </button>
-                        </td>
-                                                
-                    </tr>`;
-        }
-                   markup+=`</tr>`;
-
-        return markup;
-    },
-
-    makeTags_sumMonth : (month,inc,exp,isBefore=-1,big_table=true) =>{
-        let total=helpers.removeDigits(inc + exp);
-        return `
-        <tr class="row-sum" data-isBefore="${isBefore}">
-            <td colspan="${big_table ? 2 :1}"><b>-- ${month} --</b></td>
-            <td colspan="${big_table ? 3 :2}" style="text-align: right !important;">
-                <small>${inc ? "In: "+inc: " "} ${inc&&exp ? " , " : ""} ${exp ? "Out: "+exp+" " : ""}</small> 
-                <span class="${total >=0 ?'inc' : 'exp'}_span" style="padding:0.7em;">
-                <b>Total: ${total}</b>
-                </span>
-            </td>
-        </tr>
-        `;
-    },
-
-    makeTags_sumResults :() =>{
-        return `
-        <tfoot>
-        <tr id="sum_results" class="row-sum" style="display:none;text-align: center;"><td colspan="5">
-            Found <b><span></span></b> Matches.
-        </td></tr>
-        </tfoot>
-        `;
-    },
 
     filterRowByRow: (fLogs,logs) => {
         let i = 0;
@@ -274,9 +206,10 @@ export const logFormUI = {
         }
     },
 
-    get_form_data: function () {
-        let type = views.dialog_form.dataset.type;
-        return type ? type : 'submit';
+
+    disableSubmits : (disabled) =>{
+        views.submit_dialog.disabled=disabled;
+        views.delete_dialog.disabled=disabled;
     },
 
     //misc

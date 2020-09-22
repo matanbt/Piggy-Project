@@ -66,8 +66,10 @@ const logDialogController = {
     },
 
     validate_submit: (event) => {
-        let submit_type = logFormUI.get_form_data();
-        views.dialog_form.dataset.type = '';
+        logFormUI.disableSubmits(true);
+        views.title.value= views.title.value.trim();
+
+        let submit_type = views.submit_type.value;
 
         // DELETE:
         if (submit_type === 'delete') {
@@ -80,11 +82,11 @@ const logDialogController = {
             for (let isChanged_func of Object.values(logDialogController.check_is_changed)) {
                 if (isChanged_func()) {
                     changed++;
-                    console.log('changed!')
                 }
             }
             if (changed === 0) {
                 event.preventDefault();
+                logFormUI.disableSubmits(false);
                 return false;
             }
         }
@@ -102,6 +104,7 @@ const logDialogController = {
 
         if (!flag) {
             event.preventDefault();
+            logFormUI.disableSubmits(false);
         }
         return flag;
     },
@@ -124,7 +127,6 @@ const logDialogController = {
 }
 
 const tableController = {
-
     setRowsListeners: () => {
         for (let log of state.logs) {
             views.btn_edit(log.id).addEventListener('click', logDialogController.open_edit.bind(undefined, log));
@@ -186,7 +188,7 @@ window.addEventListener('DOMContentLoaded', async function () {
     state.mark_o = new Mark(views.table);
     await getData.getCategories(state.categories);
 
-    state.queries = new TQuery(state.categories.getFullArr());
+    state.queries = new TQuery(state.categories.getFullArr(),true);
 
 
     //filters
@@ -206,10 +208,10 @@ window.addEventListener('DOMContentLoaded', async function () {
         views.open_add_btn_small.addEventListener('click', logDialogController.open_add);
 
         views.submit_dialog.addEventListener('click', () => {
-            views.dialog_form.dataset.type = 'submit';
+            views.submit_type.value = 'submit';
         });
         views.delete_dialog.addEventListener('click', () => {
-            views.dialog_form.dataset.type = 'delete';
+            views.submit_type.value = 'delete';
         });
 
         views.log_type_exp.onchange = logFormUI.onchange_type;

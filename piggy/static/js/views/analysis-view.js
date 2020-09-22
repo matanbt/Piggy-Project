@@ -25,18 +25,18 @@ export const miniTableUI ={
 
         for (let log of logs){
             if (prevLog && log.getShortDate() !== prevLog.getShortDate()) {
-                markup += this.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,false);
+                markup += extraUI.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,undefined,'med');
                 [inc,exp]=[0,0];
             }
 
-            markup+=tableUI.makeTags_row(log,false);
+            markup+=extraUI.makeTags_row(log,'med');
             balance+=log.amount;
             inc += Math.max(0,log.amount);
             exp += Math.min(0,log.amount);
 
             prevLog=log;
         }
-        if(prevLog) markup += this.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,false);
+        if(prevLog) markup += extraUI.makeTags_sumMonth(prevLog.getShortDate(),inc, exp,undefined,'med');
 
         //footer balance:
         markup+=`<tr class='row-sum'>
@@ -45,28 +45,7 @@ export const miniTableUI ={
         views.miniTable.insertAdjacentHTML('beforeend',markup);
     },
 
-    makeTags_sumMonth : (month,inc,exp,big_table=true) =>{
-        let total=helpers.removeDigits(inc + exp);
-        return `
-        <tr class="row-sum" style="">
-            <td colspan="${big_table ? 2 :1}"><b>-- ${month} --</b></td>
-            <td colspan="${big_table ? 3 :2}" style="text-align: right !important;">
-                <!--<small>${inc ? "In: "+inc: " "} ${inc&&exp ? " , " : ""} ${exp ? "Out: "+exp+" " : ""}</small> -->
-                <span class="${total >=0 ?'inc' : 'exp'}_span" style="padding:0.7em;">
-                <b>Total: ${total}</b> 
-                </span>
-                
-                <button class='btn btn-secondary' style="vertical-align: initial; padding: 0.3em; margin-left:0.3em;" 
-                type="button" id='btn-expand_month' data-month="${month}">
-                    <svg class="icon-white">
-                        <use href="${window.from_server.url_for.static}/my-icons.svg#more_ic"/>
-                    </svg>
-                </button>
-                
-            </td>
-        </tr>
-        `;
-    },
+
 
     clearTable: () => {
         for (let row of views.table_rows()) { row.remove();}
@@ -76,9 +55,9 @@ export const miniTableUI ={
         extraUI.setSpinner(views.miniTable,3);
     },
 
-    error : () =>{
+    error : (msg) =>{
         views.miniTable.insertAdjacentHTML('beforeend', `<tr><td colspan="3">
-            ${extraUI.getErrorMarkup()}
+            ${extraUI.getErrorMarkup(msg)}
             </td></tr>`);
     },
 

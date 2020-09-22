@@ -61,11 +61,12 @@ export const chartsCalcs = {
 
     perCategory: (logs) => {
         let catTOweight = new Map();
+
         logs.forEach(log => {
             if (catTOweight.has(log.getCategory())) catTOweight.set(log.getCategory(), catTOweight.get(log.getCategory()) + log.getPosAmount());
             else catTOweight.set(log.getCategory(), log.getPosAmount());
         });
-
+    console.log(catTOweight);
         let [exp_titlesArr, exp_WeightsArr, inc_titlesArr, inc_WeightsArr] = [[], [], [], []];
         for (let [cat, weight] of catTOweight.entries()) {
             let [type, title] = [Categories.getType(cat), Categories.getTitle(cat)];
@@ -84,7 +85,7 @@ export const chartsCalcs = {
     },
 
     randColorArr: (len) => {
-        console.log(len);
+
         let colorsArr = [];
         for (let i = 0; i < len; i++) {
             let color = `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},

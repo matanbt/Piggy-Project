@@ -33,7 +33,7 @@ export default class Log {
     }
 
     getCategory(){
-        if(this.category==='other') return this.is_exp? 'exp' : 'in' + '_other';
+        if(this.category==='other') return this.is_exp? 'exp'+ '_other' : 'in' + '_other';
         return this.category;
     }
 
@@ -103,7 +103,7 @@ export const validators = {
         return !isNaN(amount) && amount >= 0 && amount.trim().length > 0;
     },
     title: function (title) {
-        return title.length <= 20 && title.trim() === title;
+        return title.length <= 20;
     },
     category: function (category, log_type) {
         return log_type && (category === 'other' || category.split('_')[0] === log_type);

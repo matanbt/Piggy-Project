@@ -5,7 +5,7 @@ export class Categories {
 
     getMap(){
         let map=new Map();
-        console.log(this.categories);
+
         for (let cat of this.categories) {
             map.set(cat,{
                 type: cat.split('_')[0],

@@ -54,8 +54,9 @@ export const modCatsUI ={
         views.addCat_input.classList.remove('is-invalid');
     },
 
-    errorAddCat(){
+    errorAddCat(msg){
         views.addCat_input.classList.add('is-invalid');
+        modCatsUI.printMsg(msg,'danger');
     },
 
     addCat(cat,added=false){
@@ -73,15 +74,16 @@ export const modCatsUI ={
     },
 
     //Mod Cat Submitting:
-    printMsg(msg,error=true){
+    printMsg(msg,type){
+        //type in (danger, success, info)
         modCatsUI.clearMsg();
 
-        views.modCats_msg.classList.add(`text-${error ? 'danger' : 'success'}`);
+        views.modCats_msg.classList.add(`text-${type}`);
         views.modCats_msg.innerHTML=msg;
     },
 
     clearMsg (){
-        views.modCats_msg.classList.remove('text-success', 'text-danger');
+        views.modCats_msg.classList.remove('text-success', 'text-danger','text-info');
         views.modCats_msg.innerHTML='';
     },
 
@@ -92,5 +94,9 @@ export const modCatsUI ={
     clearLoading(){
       [views.in_cats_div,views.exp_cats_div].forEach(el=>extraUI.delSpinner(el));
     },
+
+    disableSave(disabled){
+        views.modCats_save.disabled=disabled;
+    }
 };
 

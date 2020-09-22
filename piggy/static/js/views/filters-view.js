@@ -1,4 +1,5 @@
 import {qTypes} from "../models/log-querying.js";
+import {extraUI} from "../helpers.js";
 
 export const views={
    //filters
@@ -46,7 +47,7 @@ export const filtersUI = {
     //render given categories in HTML page
     renderCategories: (categories) => {
         for (let cat of categories.getMap().entries()) {
-            views.inf_cat_div(cat[1].type).insertAdjacentHTML('beforeend', filtersUI.makeTags_category(cat[0], cat[1].title));
+            views.inf_cat_div(cat[1].type).insertAdjacentHTML('beforeend', extraUI.makeTags_category(cat[0], cat[1].title));
         }
     },
 
@@ -66,7 +67,6 @@ export const filtersUI = {
             else if (views.filter_field(q).value) queries.setQ(q, views.filter_field(q).value);
         }
 
-        console.log(queries);
     },
 
     //prints queries to Filters Bar
@@ -101,7 +101,6 @@ export const filtersUI = {
 
             //update category:
             else if (qtype === qTypes.filters.category) {
-                console.log(Array.from(views.inf_cat_all()));
                 Array.from(views.inf_cat_all()).forEach(el => filtersUI.toggle_category_inDialog(el.id, true));
                 if (queries.getQ(qtype) !== undefined) {
                     Array.from(queries.getQ(qtype)).forEach(id => filtersUI.toggle_category_inDialog(id, false));
@@ -149,9 +148,4 @@ export const filtersUI = {
     reset_form_inDialog: () => {
         Array.from(views.inf_cat_all()).forEach(el => filtersUI.toggle_category_inDialog(el.id, true));
     },
-
-    //  HTML MARKUP
-    makeTags_category: (id, title) => {
-        return `<a href="" id="${id}" class="badge badge-secondary mr-1">${title}</a>`;
-    }
 };

@@ -125,6 +125,7 @@ def account():
 def table():
     current_user.logs.sort(reverse=True, key=lambda log: (log.time_logged, log.id))
     logs_pack = {'sorted_logs': current_user.logs, 'balance': sum([log.amount for log in current_user.logs])}
+
     # ADD-LOG form:
     cats = [(cat, cat.split('_')[-1].title()) for cat in json.loads(current_user.categories)]
 
@@ -137,8 +138,10 @@ def table():
     add_form_pack = {'radio_lst': list(add_form.log_type), 'open_dialog_on_load': False}
     is_exp = add_form.log_type.data == 'exp'
 
+    print(request.form)
+    print(add_form.data)
     # DELETE
-    if add_form.is_submitted() and add_form.delete_dialog.data and add_form.log_id.data:
+    if add_form.is_submitted() and add_form.submit_type.data=='delete' and add_form.log_id.data:
         curr_log = Log.query.get_or_404(int(add_form.log_id.data))
         if current_user.id != curr_log.user_id:
             abort(403)  # trying to access another user's log
@@ -207,6 +210,15 @@ def home():
 def about():
     return render_template('about.html')
 
+# ==============   ERROR PAGES  ============== #
+
+@app.errorhandler(404)
+def error_404(e):
+    return render_template('error-pages/404.html')
+
+@app.errorhandler(403)
+def error_403(e):
+    return render_template('error-pages/403.html')
 
 # ==============   API  =============== #
 @app.route('/json/<data_type>')
