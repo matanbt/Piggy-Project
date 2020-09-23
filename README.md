@@ -1,8 +1,7 @@
 # Piggy-Project
 
 ## Description
-a Basic web-app with user registration and database management uses JS' async requests to get data from server.
-Built with friendly, responsive UI.
+A basic web-app with user registration and database management uses JS' async requests to get data from server, provides a friendly and responsive UI.
 
 Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
 
@@ -84,6 +83,6 @@ A registered user for test purposes: `username:demo_user | password:123456`
  - **pages to add:**
    - API Documentation with User-Authetication
   
-## Contributor:
+## Contributors:
 - Logo designer: @
 
