@@ -105,6 +105,7 @@ def account():
         db.session.commit()
         return jsonify({'msg': f"Saved <b>Categories</b> Changes Successfully"}), 200
 
+    #DELETE-SELF USER
     elif 'user_deletion' in request.form:
         if bcrypt.check_password_hash(current_user.password, request.form['password']):
             for log in current_user.logs:
@@ -138,8 +139,6 @@ def table():
     add_form_pack = {'radio_lst': list(add_form.log_type), 'open_dialog_on_load': False}
     is_exp = add_form.log_type.data == 'exp'
 
-    print(request.form)
-    print(add_form.data)
     # DELETE
     if add_form.is_submitted() and add_form.submit_type.data=='delete' and add_form.log_id.data:
         curr_log = Log.query.get_or_404(int(add_form.log_id.data))
