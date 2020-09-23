@@ -184,8 +184,6 @@ def table():
 
     # ERRORS IN FORM
     elif add_form.is_submitted():  # there are errors in add_form
-        print(add_form.errors)
-        print(add_form.data)
         flash(f"Failed add Income/Expanse, Try Again", "danger")
         add_form_pack['open_dialog_on_load'] = True
 
