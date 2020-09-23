@@ -1,12 +1,11 @@
 # Piggy-Project
 
 ## Intro
-Was written
-explantdfsfsdfg
+a Basic web-app with user registration and database management uses JS' async requests to get data from server.
 
 - **Goals:**
   - Learning Javascript.
-  - Getting to know Python's web-app-backend, and Flask in particular.
+  - Getting to know Python's web-app-backend, and Flask framework in particular.
   - Dusting off Web Development skills.
   - Another Corona Project.
   
@@ -30,13 +29,16 @@ a registered user for test purposes: `username:demo_user | password:123456`
  - **run.py:** Contains the initiated `app`, and runs the web-app when called as a script. 
  - **dev_scripts.py:** scripts for developer use.
 
-## Imports:
+## Modules:
 #### CSS:
  - Bootstrap 4.5.2
 #### Javascript:
  - Mark.js 8.11.1
  - Chart.js 2.8.0
 #### Python:
+  - Flask
+  - Flask Forms (Flask_WTF), Flask Login (Flask_Login)
+  - SQLAlchemy
 
 ## Usage
 #### Run app directly:
@@ -52,29 +54,25 @@ a registered user for test purposes: `username:demo_user | password:123456`
   
 ## Features to add:
  - **Table Page:**
-   - Scroll Spy with shortcuts to the Monthes (a MUST for long table management)
-   - Separate HTML elements that TABLE and ANALYSIS shares - for html saving
+   - Scroll Spy for the Months (a MUST for long table management)
+   - Separate HTML elements that TABLE and ANALYSIS share - for DRY html code.
 
- - **analysis page:** 
-   - Scroll spy for charts
-   - FACTS ROW:
+ - **Analysis Page:** 
+   - Scroll spy for the charts
+   - add 'facts' row:
       - average monthly net income
       - most weighted category (income, expanses separately)
      
- - **home page:**
-   - static cards - more ideas - Biggest Expanse / Income lately?
-   - dynamic cards! or at least smart cards (pseudo AI)
-   - dynamic cards: user notes! saved in SQL
+ - **Home Page:**
+   - Dynamic Cards: user can add more cards to his home page, these will contain : annlyzed data (biggest expanse, most recent big income ),user notes, and more...
 
  - **Account:**
-   - define different month start and end
-   - define constant expanses (that happens monthly), define monthly goals (for month net-income)
+   - User can define different month start and end.
+   - User can define: constant expanses (that happens monthly, for example - rent), monthly goals (for month net-income)
    - change password, change email
 
  - **pages to add:**
    - API Documentation with User-Authetication
-   
- - **JS Code:**
-   - move maketags to helper markupElements.js
+  
 
 
