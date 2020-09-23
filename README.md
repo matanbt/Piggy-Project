@@ -25,7 +25,16 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
   
 ## Demo:
 #### Images:
-<img src="---">
+  - Home:
+  <img src="https://github.com/matanbt/Piggy-Project/blob/master/piggy/static/img/demo/home-demo.gif" width='500px'>
+  
+  - Table:
+  <img src="https://github.com/matanbt/Piggy-Project/blob/master/piggy/static/img/demo/table-demo.gif" width='500px'>
+  
+  - Analysis:
+  <img src="https://github.com/matanbt/Piggy-Project/blob/master/piggy/static/img/demo/analysis-demo.gif" width='500px'>
+
+
 
 #### Demo Users:
 A registered user for test purposes: `username:demo_user | password:123456`
