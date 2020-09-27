@@ -1,7 +1,7 @@
 # Piggy-Project
 
 ## Description
-A basic web-app with user registration and database management uses JS' async requests to get data from server, provides a friendly and responsive UI.
+A basic web-app with user registration and database management uses JS' async requests to get data from server and create dynamic pages, provides a friendly and responsive UI.
 
 Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
 
@@ -21,6 +21,7 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
   - Flask
   - Flask Forms (Flask_WTF), Flask Login (Flask_Login)
   - SQLAlchemy
+  - ('requirements.txt' for the elaborated list) 
 
   
 ## Demo:
