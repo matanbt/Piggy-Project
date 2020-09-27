@@ -21,7 +21,7 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
   - Flask
   - Flask Forms (Flask_WTF), Flask Login (Flask_Login)
   - SQLAlchemy
-  - ('requirements.txt' for the elaborated list) 
+  - 'requirements.txt' for more accurate list 
 
   
 ## Demo:
