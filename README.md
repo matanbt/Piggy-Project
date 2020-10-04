@@ -38,7 +38,7 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
 
 
 #### Demo Users:
-A registered user for test purposes: `username:demo_user | password:123456`
+A registered user for test purposes: `---`
 
 ## Files
  - **/piggy:** a dir and a python package.
