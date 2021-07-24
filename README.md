@@ -7,6 +7,7 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
 
 - **Goals:**
   - Learning Javascript.
+  - Organize and analyze data 'on-the-fly'.
   - Getting to know Python's web-app-backend, and Flask framework in particular.
   - Dusting off Web Development skills.
   - Another Corona Project.
