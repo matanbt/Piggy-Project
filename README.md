@@ -12,20 +12,8 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
   - Dusting off Web Development skills.
   - Another Corona Project.
  
- ## Modules:
-#### CSS:
- - Bootstrap 4.5.2
-#### Javascript:
- - Mark.js 8.11.1
- - Chart.js 2.8.0
-#### Python:
-  - Flask
-  - Flask Forms (Flask_WTF), Flask Login (Flask_Login)
-  - SQLAlchemy
-  - 'requirements.txt' for more accurate list 
 
-  
-## Demo:
+## Features:
 #### Images:
   - Home:
   <img src="https://github.com/matanbt/Piggy-Project/blob/master/piggy/static/img/demo/home-demo.gif" width='500px'>
@@ -41,6 +29,20 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
 #### Demo Users:
 A registered user for test purposes: `---`
 
+
+ ## Modules:
+#### CSS:
+ - Bootstrap 4.5.2
+#### Javascript:
+ - Mark.js 8.11.1
+ - Chart.js 2.8.0
+#### Python:
+  - Flask
+  - Flask Forms (Flask_WTF), Flask Login (Flask_Login)
+  - SQLAlchemy
+  - 'requirements.txt' for more accurate list 
+
+  
 ## Files
  - **/piggy:** a dir and a python package.
     - **__ init __.py:** Configures the `app` instance and control the imports order (prevents circular imports).
