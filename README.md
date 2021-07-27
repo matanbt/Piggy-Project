@@ -13,8 +13,8 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
   - Another Corona Project.
  
 
-## Features:
-#### Images:
+## Features
+#### Images
   - Home:
   <img src="https://github.com/matanbt/Piggy-Project/blob/master/piggy/static/img/demo/home-demo.gif" width='500px'>
   
@@ -26,11 +26,11 @@ Written in Python for backend, and (mainly) vanilla JS, HTML for front-end.
 
 
 
-#### Demo Users:
+#### Demo Users
 A registered user for test purposes: `---`
 
 
- ## Modules:
+ ## Modules
 #### CSS:
  - Bootstrap 4.5.2
 #### Javascript:
